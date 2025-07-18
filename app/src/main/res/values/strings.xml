@@ -1,0 +1,158 @@
+<resources>
+    <string name="app_name">Café com Água</string>
+    <string name="screen1_title">Informações da Água</string>
+    <string name="label_marca">Marca da Água</string>
+    <string name="hint_marca">Ex: Água Mineral XYZ</string>
+    <string name="label_fonte">Fonte da Água</string>
+    <string name="hint_fonte">Ex: Fonte ABC</string>
+    <string name="label_pais">País</string>
+    <string name="label_estado">Estado</string>
+    <string name="button_avancar">Avançar</string>
+    <string name="app_title_main">Qualidade da Água para Café</string>
+    <string name="help_screen_title">Ajuda e Informações</string>
+    <string name="help_close_button">Fechar</string>
+    <string name="help_topic_1_param_qual_title">Parâmetros de Qualidade</string>
+    <string name="help_topic_1_param_qual_content">Os parâmetros utilizados nesta avaliação foram inspirados nos padrões de qualidade de água da SCA (Specialty Coffee Association), referência mundial na preparação de cafés especiais.</string>
+    <string name="help_topic_2_tds_title">Resíduo de Evaporação (TDS)</string>
+    <string name="help_topic_2_tds_content">O resíduo de evaporação, também conhecido como TDS (Total Dissolved Solids), representa a quantidade total de minerais dissolvidos na água. Este parâmetro é crucial para a extração correta dos sabores e aromas do café.</string>
+    <string name="help_topic_3_scoring_system_title">Sistema de Pontuação</string>
+    <string name="help_topic_3_scoring_system_content">
+        <![CDATA[ A pontuação tem um mero propósito de referência para amantes de café, de caráter amador, sendo calculada com base na proximidade dos valores com os padrões ideais conhecidos:<br><br> • <b>5 pontos:</b> Valor dentro da faixa ideal.<br> • <b>3.5 pontos:</b> Valor dentro da faixa aceitável.<br> • <b>1 ponto:</b> Valor fora das faixas recomendadas/aceitáveis.<br><br> A classificação da qualidade da água é:<br><br> • <b>20 a 25:</b> Alta Qualidade<br> • <b>12 a 19.5:</b> Qualidade Aceitável<br> • <b>5 a 11.5:</b> Baixa Qualidade ]]>
+    </string>
+    <string name="pontuacao_total_format">Pontuação: %.2f</string>
+    <string name="qualidade_geral_format">Qualidade Geral: %s</string>
+    <string-array name="array_paises">
+        <item>Selecione o País</item>
+        <item>Brasil</item>
+        <item>Estados Unidos</item>
+        <item>Canadá</item>
+        <item>Argentina</item>
+        <item>Portugal</item>
+    </string-array>
+    <string-array name="array_estados_brasil">
+        <item>Selecione o Estado</item>
+        <item>Acre</item>
+        <item>Alagoas</item>
+        <item>Amapá</item>
+        <item>Amazonas</item>
+        <item>Bahia</item>
+        <item>Ceará</item>
+        <item>Distrito Federal</item>
+        <item>Espírito Santo</item>
+        <item>Goiás</item>
+        <item>Maranhão</item>
+        <item>Mato Grosso</item>
+        <item>Mato Grosso do Sul</item>
+        <item>Minas Gerais</item>
+        <item>Pará</item>
+        <item>Paraíba</item>
+        <item>Paraná</item>
+        <item>Pernambuco</item>
+        <item>Piauí</item>
+        <item>Rio de Janeiro</item>
+        <item>Rio Grande do Norte</item>
+        <item>Rio Grande do Sul</item>
+        <item>Rondônia</item>
+        <item>Roraima</item>
+        <item>Santa Catarina</item>
+        <item>São Paulo</item>
+        <item>Sergipe</item>
+        <item>Tocantins</item>
+    </string-array>
+    <string name="label_bicarbonato">Bicarbonato (mg/L)</string>
+    <string name="hint_bicarbonato">Ex: 12.5</string>
+    <string name="label_calcio">Cálcio (mg/L)</string>
+    <string name="hint_calcio">Ex: 8.2</string>
+    <string name="label_magnesio">Magnésio (mg/L)</string>
+    <string name="hint_magnesio">Ex: 3.5</string>
+    <string name="button_voltar">Voltar</string>
+    <string name="unidade_mg_l">%1$s mg/L</string>
+    <string name="title_dados_agua">DADOS DA ÁGUA</string>
+    <string name="hint_digite">Digite</string>
+    <string name="hint_insira_estado">Insira</string>
+    <string name="error_marca_empty">A marca não pode estar vazia!</string>
+    <string name="error_fonte_empty">A fonte não pode estar vazia!</string>
+    <string name="error_pais_empty">O país não pode estar vazio!</string>
+    <string name="error_estado_empty">Por favor, selecione um estado.</string>
+    <string name="error_estado_provincia_empty">Por favor, insira o estado/província.</string>
+    <string name="error_bicarbonato_empty">O Bicarbonato não pode estar vazio!</string>
+    <string name="error_calcio_empty">O Cálcio não pode estar vazio!</string>
+    <string name="error_magnesio_empty">O Magnésio não pode estar vazio!</string>
+    <string name="title_parametros_avaliacao">PARÂMETROS E AVALIAÇÃO</string>
+    <string name="label_sodio_unidade">Sódio (mg/L)</string>
+    <string name="hint_sodio">Ex: 10.0</string>
+    <string name="label_ph">pH</string>
+    <string name="hint_ph">Ex: 7.0</string>
+    <string name="label_residuo_unidade">Resíduo de Evaporação (mg/L)</string>
+    <string name="hint_residuo">Ex: 150.0</string>
+    <string name="label_dureza_calculada">Dureza (Calculada)</string>
+    <string name="label_alcalinidade_calculada">Alcalinidade (Calculada)</string>
+    <string name="button_ver_resultados">Ver Resultados</string>
+    <string name="avaliacao_ideal">Ideal</string>
+    <string name="avaliacao_aceitavel">Aceitável</string>
+    <string name="avaliacao_nao_recomendado">Não Recomendado</string>
+    <string name="avaliacao_nao_avaliado">Não Avaliado</string>
+    <string name="title_resultados">RESULTADOS</string>
+    <string name="label_detalhes_parametros">Detalhes dos Parâmetros:</string>
+    <string name="button_salvar_avaliacao">Salvar Avaliação</string>
+    <string name="button_nova_avaliacao">Nova Avaliação</string>
+    <string name="button_ver_historico">Ver Histórico</string>
+    <string name="title_historico">HISTÓRICO DE AVALIAÇÕES</string>
+    <string name="title_gerenciar_compra">Gerenciar Compra</string>
+    <string name="desc_restaurar_compra">Se você já nos apoiou, pode restaurar sua compra aqui. O benefício é vitalício.</string>
+    <string name="button_restaurar_compra">Restaurar Compra</string>
+    <string name="title_apoie_nosso_trabalho">Apoie nosso trabalho</string>
+    <string name="label_cafe_pequeno">Café Pequeno</string>
+    <string name="label_cafe_medio">Café Médio</string>
+    <string name="label_cafe_grande">Café Grande</string>
+    <string name="button_seguir_sem_apoiar">Seguir para o resultado sem apoiar</string>
+    <string name="title_welcome">CAFÉ COM ÁGUA</string>
+    <string name="subtitle_welcome">Avaliador de Qualidade da Água para Preparo de Café</string>
+    <string name="button_testar_nova_agua">Testar Nova Água</string>
+    <string name="button_historico">Histórico</string>
+    <string name="toast_verificando_compras">Verificando compras…</string>
+    <string name="toast_erro_conexao_loja">Erro ao conectar com a loja. Tente novamente.</string>
+    <string name="toast_compra_restaurada">Compra restaurada! Anúncios removidos.</string>
+    <string name="toast_nenhuma_compra_encontrada">Nenhuma compra encontrada para restaurar.</string>
+    <string name="toast_erro_buscar_compras">Erro ao buscar compras.</string>
+    <string name="toast_erro_carregar_resultados">Erro ao carregar os resultados.</string>
+    <string name="toast_avaliacao_salva">Avaliação salva com sucesso!</string>
+    <string name="toast_compra_cancelada">Compra cancelada.</string>
+    <string name="toast_erro_iniciar_compra">Erro ao iniciar a compra. Tente novamente.</string>
+    <string name="toast_obrigado_apoio">Obrigado pelo apoio! Anúncios removidos.</string>
+    <string name="warning_agua_ja_avaliada">Aviso: Água já avaliada no histórico.</string>
+    <string name="label_historico_agua">Água: %1$s</string>
+    <string name="label_historico_fonte">Fonte: %1$s</string>
+    <string name="label_historico_pontuacao">Pontuação: %1$s</string>
+    <string name="label_historico_qualidade">Qualidade: %1$s</string>
+    <string name="label_qualidade_geral">Qualidade: %1$s</string>
+    <string name="param_ph_valor">pH: %1$s</string>
+    <string name="param_dureza_valor">Dureza: %1$s mg/L</string>
+    <string name="param_alcalinidade_valor">Alcalinidade: %1$s mg/L</string>
+    <string name="param_sodio_valor">Sódio: %1$s mg/L</string>
+    <string name="param_residuo_valor">Res. Evap.: %1$s mg/L</string>
+    <string name="avaliacao_nao_recomendado_abrev">Não Rec.</string>
+    <string name="preco_indisponivel">…</string>
+    <string name="qualidade_alta">Alta</string>
+    <string name="qualidade_aceitavel">Aceitável</string>
+    <string name="qualidade_baixa">Baixa</string>
+    <string name="desc_apoie_nosso_trabalho">Pague-nos um cafezinho e remova os anúncios para sempre.</string>
+    <string name="subtitle_escolha_valor">Escolha quanto vale um app sem anúncios para você:</string>
+    <string name="desc_remover_anuncios">Para uma experiência sem propagandas, remova os anúncios para sempre:</string>
+    <string name="label_remover_anuncios">Remover Anúncios</string>
+    <string name="desc_pagar_cafezinho">Se não se importa com anúncios e quer apoiar o nosso trabalho, pague-nos um cafezinho:</string>
+    <string name="agradecimento_apoio_titulo">Obrigado por seu apoio!</string>
+    <string name="agradecimento_apoio_subtitulo">Os anúncios já foram removidos. Se desejar, você ainda pode nos apoiar com um café:</string>
+    <string name="button_continuar_para_resultado">Continuar para o Resultado</string>
+    <string name="toast_opcao_indisponivel">Opção indisponível no momento. Tente novamente.</string>
+    <string name="toast_obrigado_pelo_apoio_doacao">Muito obrigado pelo seu apoio!</string>
+    <string name="country_name_brasil">Brasil</string>
+    <string name="ads_removed_message">Você já removeu os anúncios. Obrigado!</string>
+    <string name="desc_continuar_apoiando">Sua contribuição é muito apreciada!</string>
+
+    <string name="icone_remover_anuncios">Ícone para a opção de remover anúncios</string>
+    <string name="icone_cafe_pequeno">Ícone para a opção de apoio café pequeno</string>
+    <string name="icone_cafe_medio">Ícone para a opção de apoio café médio</string>
+    <string name="icone_cafe_grande">Ícone para a opção de apoio café grande</string>
+    <string name="logo_do_aplicativo">Logo do aplicativo Cafe com Água</string>
+</resources>
