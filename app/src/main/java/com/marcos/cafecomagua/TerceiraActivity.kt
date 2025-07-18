@@ -66,6 +66,8 @@ class TerceiraActivity : AppCompatActivity() {
         calculateAndEvaluateAll()
     }
 
+    // Em TerceiraActivity.kt
+
     private fun getIntentData() {
         intent?.let {
             calcio = it.getDoubleExtra("calcio", 0.0)
@@ -73,6 +75,18 @@ class TerceiraActivity : AppCompatActivity() {
             bicarbonato = it.getDoubleExtra("bicarbonato", 0.0)
             nomeAgua = it.getStringExtra("nomeAgua") ?: ""
             fonteAgua = it.getStringExtra("fonteAgua") ?: ""
+            if (it.hasExtra("sodio_ocr")) {
+                val sodioOcr = it.getStringExtra("sodio_ocr")
+                binding.editTextSodio.setText(sodioOcr)
+            }
+            if (it.hasExtra("ph_ocr")) {
+                val phOcr = it.getStringExtra("ph_ocr")
+                binding.editTextPH.setText(phOcr)
+            }
+            if (it.hasExtra("residuo_ocr")) {
+                val residuoOcr = it.getStringExtra("residuo_ocr")
+                binding.editTextResiduoEvaporacao.setText(residuoOcr)
+            }
         }
     }
 
@@ -232,9 +246,9 @@ class TerceiraActivity : AppCompatActivity() {
 
     private fun getOverallQuality(pontuacaoTotal: Double): String {
         return when {
-            pontuacaoTotal >= 20.0 -> "Alta"
-            pontuacaoTotal >= 12.0 -> "Aceitável"
-            else -> "Baixa"
+            pontuacaoTotal >= 20.0 -> getString(R.string.quality_high)
+            pontuacaoTotal >= 12.0 -> getString(R.string.quality_acceptable)
+            else -> getString(R.string.quality_low)
         }
     }
 

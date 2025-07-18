@@ -155,4 +155,27 @@
     <string name="icone_cafe_medio">Icono para la opción de apoyo café mediano</string>
     <string name="icone_cafe_grande">Icono para la opción de apoyo café grande</string>
     <string name="logo_do_aplicativo">Logo de la aplicación Café con Agua</string>
+    <string name="scan_label_button">Intenta leer la etiqueta</string>
+    <string name="help_ocr_description">Ayuda para leer etiquetas</string>
+
+    <string name="toast_permission_denied">Permiso de cámara denegado. No es posible leer la etiqueta.</string>
+    <string name="toast_no_image">No se pudo obtener la imagen.</string>
+    <string name="toast_no_camera_app">No se encontró ninguna aplicación de cámara.</string>
+    <string name="toast_image_read_error">Error al leer el archivo de imagen.</string>
+    <string name="toast_ocr_analyzing">Analizando etiqueta…</string>
+    <string name="toast_ocr_failure">Fallo al reconocer el texto: %1$s</string>
+    <string name="toast_ocr_success">¡Valores encontrados! Verifique que son correctos.</string>
+    <string name="toast_ocr_no_params">No se pudieron identificar los parámetros. Por favor, ingréselos manualmente.</string>
+    <string name="quality_high">Alta</string>
+    <string name="quality_acceptable">Aceptable</string>
+    <string name="quality_low">Baja</string>
+
+    <string name="help_topic_ocr_title">Consejos para la Lectura de Etiquetas (OCR)</string>
+    <string name="help_topic_ocr_content">
+    La función de lectura de etiquetas utiliza la cámara para acelerar el ingreso de datos químicos. Sin embargo, el éxito de la captura enfrenta grandes desafíos:\n\n
+    <b>• Falta de Estándar:</b> Las marcas de agua no siguen un formato único. Las tablas pueden ser verticales u horizontales, y los nombres de los minerales pueden estar abreviados (ej: \'Ca\' para Calcio).\n\n
+    <b>• Calidad de la Imagen:</b> Factores como la <b>curvatura</b> de la botella, <b>reflejos</b> de luz, <b>condensación</b> y el <b>enfoque</b> de la cámara pueden degradar la calidad de la imagen y dificultar la lectura del texto.\n\n
+    Por lo tanto, la captura debe ser vista como una <b>herramienta de ayuda</b>. Siempre <b>verifique los valores</b> capturados antes de proceder con la evaluación para garantizar la precisión de los resultados.
+</string>
+
 </resources>

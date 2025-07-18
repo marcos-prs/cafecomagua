@@ -35,5 +35,6 @@
     <color name="avaliacao_verde_trans">#804CAF50</color>
     <color name="avaliacao_amarelo_trans">#80FFC107</color>
     <color name="avaliacao_vermelho_trans">#80F44336</color>
+    <color name="dourado_tonal_background">#4DFFD700</color>
 
 </resources>

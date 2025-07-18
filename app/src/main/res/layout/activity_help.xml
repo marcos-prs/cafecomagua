@@ -9,6 +9,7 @@
     tools:context=".HelpActivity">
 
     <ScrollView
+        android:id="@+id/scrollViewHelp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -90,6 +91,25 @@
                 android:textAppearance="@style/TextAppearance.App.Body"
                 android:layout_marginBottom="16dp"
                 android:justificationMode="inter_word"/>
+
+            <TextView
+                android:id="@+id/textViewTopicOcrTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_topic_ocr_title"
+                android:textAppearance="@style/TextAppearance.App.Title"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/textViewTopicOcrContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.App.Body"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                tools:text="@string/help_topic_ocr_content" />
 
             <View
                 android:layout_width="match_parent"

@@ -63,4 +63,6 @@ dependencies {
     implementation(libs.android.billing)
     implementation(libs.google.play.review.ktx)
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")
+
 }

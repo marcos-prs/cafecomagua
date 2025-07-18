@@ -178,6 +178,15 @@
                 </FrameLayout>
             </LinearLayout>
 
+            <Button
+                android:id="@+id/buttonScanLabel"
+                style="@style/Widget.App.Button.Tonal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="@string/scan_label_button"
+                app:icon="@drawable/ic_camera" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -274,6 +283,22 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/buttonHelpOcr"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_help_outline"
+        android:contentDescription="@string/help_ocr_description"
+        android:padding="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@id/background_border_view"
+        app:layout_constraintEnd_toEndOf="@id/background_border_view"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:tint="@color/dourado_elegante" />
 
     <FrameLayout
         android:id="@+id/ad_container"

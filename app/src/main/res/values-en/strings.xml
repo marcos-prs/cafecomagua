@@ -155,4 +155,27 @@
     <string name="icone_cafe_medio">Icon for medium coffee support option</string>
     <string name="icone_cafe_grande">Icon for large coffee support option</string>
     <string name="logo_do_aplicativo">Coffee with Water app logo</string>
+    <string name="scan_label_button">Try to read label</string>
+    <string name="help_ocr_description">Help reading labels</string>
+
+    <string name="toast_permission_denied">Camera permission denied. Cannot read label.</string>
+    <string name="toast_no_image">Could not get image.</string>
+    <string name="toast_no_camera_app">No camera app found.</string>
+    <string name="toast_image_read_error">Error reading image file.</string>
+    <string name="toast_ocr_analyzing">Analyzing label…</string>
+    <string name="toast_ocr_failure">Failed to recognize text: %1$s</string>
+    <string name="toast_ocr_success">Values found! Please verify they are correct.</string>
+    <string name="toast_ocr_no_params">Could not identify parameters. Please enter manually.</string>
+    <string name="quality_high">High</string>
+    <string name="quality_acceptable">Acceptable</string>
+    <string name="quality_low">Low</string>
+
+    <string name="help_topic_ocr_title">Tips for Label Reading (OCR)</string>
+    <string name="help_topic_ocr_content">
+    The label reading feature uses the camera to speed up entering chemical data. However, a successful capture faces significant challenges:\n\n
+    <b>• Lack of Standardization:</b> Water brands do not follow a single format. Tables can be vertical or horizontal, and mineral names may be abbreviated (e.g., \'Ca\' for Calcium).\n\n
+    <b>• Image Quality:</b> Factors like the bottle\'s <b>curvature</b>, light <b>reflections</b>, <b>condensation</b>, and camera <b>focus</b> can degrade image quality and make the text hard to read.\n\n
+    Therefore, the capture should be seen as an <b>assistance tool</b>. Always <b>verify the captured values</b> before proceeding with the evaluation to ensure accurate results.
+</string>
+
 </resources>

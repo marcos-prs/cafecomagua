@@ -155,4 +155,26 @@
     <string name="icone_cafe_medio">Ícone para a opção de apoio café médio</string>
     <string name="icone_cafe_grande">Ícone para a opção de apoio café grande</string>
     <string name="logo_do_aplicativo">Logo do aplicativo Cafe com Água</string>
+    <string name="scan_label_button">Tentar ler o rótulo</string>
+    <string name="help_ocr_description">Ajuda sobre a leitura de rótulos</string>
+
+    <string name="toast_permission_denied">Permissão da câmera negada. Não é possível ler o rótulo.</string>
+    <string name="toast_no_image">Não foi possível obter a imagem.</string>
+    <string name="toast_no_camera_app">Nenhum app de câmera encontrado.</string>
+    <string name="toast_image_read_error">Erro ao ler o arquivo de imagem.</string>
+    <string name="toast_ocr_analyzing">Analisando rótulo…</string>
+    <string name="toast_ocr_failure">Falha ao reconhecer o texto: %1$s</string>
+    <string name="toast_ocr_success">Valores encontrados! Verifique se estão corretos.</string>
+    <string name="toast_ocr_no_params">Não foi possível identificar os parâmetros. Por favor, insira manualmente.</string>
+    <string name="quality_high">Alta</string>
+    <string name="quality_acceptable">Aceitável</string>
+    <string name="quality_low">Baixa</string>
+
+    <string name="help_topic_ocr_title">Dicas para Leitura de Rótulos (OCR)</string>
+    <string name="help_topic_ocr_content">
+    A função de leitura de rótulos usa a câmera para acelerar o preenchimento dos dados químicos. No entanto, o sucesso da captura enfrenta grandes desafios:\n\n
+    <b>• Falta de Padrão:</b> As marcas de água não seguem um formato único. As tabelas podem ser verticais ou horizontais, e os nomes dos minerais podem ser abreviados (ex: \'Ca\' para Cálcio).\n\n
+    <b>• Qualidade da Imagem:</b> Fatores como a <b>curvatura</b> da garrafa, <b>reflexos</b> de luz, <b>condensação</b> e <b>foco</b> da câmera podem degradar a qualidade da imagem e dificultar a leitura do texto.\n\n
+    Por isso, a captura deve ser vista como uma <b>ferramenta de auxílio</b>. Sempre <b>verifique os valores</b> capturados antes de prosseguir com a avaliação para garantir a precisão dos resultados.
+</string>
 </resources>
