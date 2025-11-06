@@ -11,7 +11,7 @@
     android:layout_marginBottom="4dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/marrom_avermelhado_principal_escuro"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
     app:strokeColor="@color/dourado_elegante"
     app:strokeWidth="1dp">
 

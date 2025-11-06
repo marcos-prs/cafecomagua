@@ -8,7 +8,7 @@ googlePlayReview = "2.0.2"
 kotlinxCoroutinesPlayServices = "1.10.2"
 kotlin = "2.2.0"
 
-androidApplication = "8.11.1"
+androidApplication = "8.13.0"
 kotlinAndroid = "2.2.0"
 
 androidxCoreKtx = "1.16.0"
@@ -19,6 +19,7 @@ constraintlayout = "2.2.1"
 junit = "4.13.2"
 androidxJunit = "1.2.1"
 espressoCore = "3.6.1"
+playServicesMlkitTextRecognition = "19.0.1"
 
 [libraries]
 google-gms-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "googleGmsAds" }
@@ -38,6 +39,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+play-services-mlkit-text-recognition = { module = "com.google.android.gms:play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
 
 
 [plugins]

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -32,7 +33,8 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
         private const val PREFS_NAME = "app_settings"
         private const val PREF_ADS_REMOVED = "ads_removed"
         private const val PREF_SUPPORT_VIEW_COUNT = "support_view_count"
-        private const val SUPPORT_VIEW_FREQUENCY = 10
+        // ✨ ALTERAÇÃO AQUI: Frequência ajustada de 10 para 13.
+        private const val SUPPORT_VIEW_FREQUENCY = 13
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,23 +55,35 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
         enableEdgeToEdge()
         binding = ActivitySupportBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
-        // --- INÍCIO DA CORREÇÃO ---
-        // Substituímos a lógica complexa pela abordagem simples da tela de Histórico.
-        // Isso aplica o padding na raiz da view, ajustando todo o conteúdo de uma vez.
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
-                top = insets.top,
-                bottom = insets.bottom
+                left = systemBars.left,
+                right = systemBars.right,
+                top = systemBars.top,
+                bottom = systemBars.bottom
             )
-            windowInsets
+            insets
         }
-        // --- FIM DA CORREÇÃO ---
 
+        setupToolbar()
         setupBillingClient()
         setupListeners()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun shouldSkipSupportScreen(): Boolean {
@@ -84,6 +98,7 @@ class SupportActivity : AppCompatActivity(), PurchasesUpdatedListener {
         val newCount = currentCount + 1
         prefs.edit { putInt(PREF_SUPPORT_VIEW_COUNT, newCount) }
 
+        // A tela será exibida na primeira vez (newCount=1) e depois a cada 13 vezes.
         return (newCount - 1) % SUPPORT_VIEW_FREQUENCY != 0
     }
 

@@ -3,13 +3,17 @@
 
     <style name="Theme.CafeComAgua" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/marrom_avermelhado_principal</item>
-        <item name="colorPrimaryVariant">@color/marrom_avermelhado_profundo</item>
         <item name="colorOnPrimary">@color/creme_texto</item>
         <item name="colorSecondary">@color/dourado_elegante</item>
-        <item name="colorSecondaryVariant">@color/dourado</item>
         <item name="colorOnSecondary">@color/black</item>
-        <item name="android:colorBackground">@color/marrom_avermelhado_profundo</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorBackground">@color/parchment_white</item>
+        <item name="mainLayoutBackground">@color/parchment_white</item>
+        <item name="colorOnBackground">@color/marrom_avermelhado_profundo</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="colorSurfaceContainer">#F3E6D8</item>
+        <item name="colorOnSurface">@color/marrom_avermelhado_profundo</item>
+        <item name="iconTint">@color/marrom_avermelhado_principal</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
@@ -22,16 +26,13 @@
         <item name="postSplashScreenTheme">@style/Theme.CafeComAgua</item>
     </style>
 
-
     <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.HeadlineMedium">
         <item name="android:fontFamily">@font/roboto_mono_family</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/dourado_elegante</item>
     </style>
 
     <style name="TextAppearance.App.Body" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:fontFamily">@font/roboto_mono_family</item>
-        <item name="android:textColor">@color/creme_texto</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -53,9 +54,10 @@
         <item name="cornerRadius">8dp</item>
     </style>
 
-    <style name="Widget.App.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="strokeColor">@color/dourado_elegante</item>
-        <item name="android:textColor">@color/dourado_elegante</item>
+    <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">@color/dourado_tonal_background</item>
+        <item name="android:textColor">@color/cafe_escuro_text</item>
+        <item name="iconTint">@color/cafe_escuro_text</item>
         <item name="android:fontFamily">@font/roboto_mono_family</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">14dp</item>
@@ -65,16 +67,21 @@
         <item name="cornerRadius">8dp</item>
     </style>
 
-    <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
-        <item name="backgroundTint">@color/dourado_tonal_background</item>
-        <item name="android:textColor">@color/dourado_elegante</item>
+    <style name="Widget.App.Button.Outline" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/marrom_avermelhado_principal</item>
+        <item name="android:textColor">@color/marrom_avermelhado_principal</item>
         <item name="android:fontFamily">@font/roboto_mono_family</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">14dp</item>
         <item name="android:paddingBottom">14dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
         <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="titleTextColor">@color/dourado_elegante</item>
+        <item name="navigationIconTint">@color/dourado_elegante</item>
     </style>
 
 </resources>

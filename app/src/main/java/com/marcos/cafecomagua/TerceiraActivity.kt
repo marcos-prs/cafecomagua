@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -37,36 +36,47 @@ class TerceiraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
         binding = ActivityTerceiraBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
-
         adContainerView = binding.adContainer
 
-        // --- INÍCIO DA CORREÇÃO ---
-        // Adotando o método mais simples e eficaz da HistoricoActivity.
-        // A lógica de insets agora é aplicada diretamente na view raiz.
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Aplica padding na view raiz para afastar TODO o conteúdo das barras.
-            // Isso ajusta tanto o topo da tela quanto o anúncio na base.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
-                top = insets.top,
-                bottom = insets.bottom
+                left = systemBars.left,
+                right = systemBars.right,
+                top = systemBars.top,
+                bottom = systemBars.bottom
             )
-            windowInsets
+            insets
         }
-        // --- FIM DA CORREÇÃO ---
 
+        setupToolbar()
         getIntentData()
         setupListeners()
         loadAdaptiveAd()
         calculateAndEvaluateAll()
     }
 
-    // Em TerceiraActivity.kt
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.action_help -> {
+                startActivity(Intent(this, HelpActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     private fun getIntentData() {
         intent?.let {
@@ -96,18 +106,14 @@ class TerceiraActivity : AppCompatActivity() {
 
         if (!adsRemoved) {
             MobileAds.initialize(this) {}
-
             adView = AdView(this)
-            adView?.adUnitId = "ca-app-pub-3940256099942544/6300978111" // ID de teste
-
+            adView?.adUnitId = "ca-app-pub-7526020095328101/2958565121" // ID de teste
             adContainerView.removeAllViews()
             adContainerView.addView(adView)
-
             val displayMetrics = resources.displayMetrics
             val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
             val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
             adView?.setAdSize(adSize)
-
             val adRequest = AdRequest.Builder().build()
             adView?.loadAd(adRequest)
             adContainerView.visibility = View.VISIBLE
@@ -120,12 +126,8 @@ class TerceiraActivity : AppCompatActivity() {
         binding.editTextSodio.addTextChangedListener(createCustomTextWatcher { calculateAndEvaluateAll() })
         binding.editTextPH.addTextChangedListener(createCustomTextWatcher { calculateAndEvaluateAll() })
         binding.editTextResiduoEvaporacao.addTextChangedListener(createCustomTextWatcher { calculateAndEvaluateAll() })
-
         binding.buttonResultados.setOnClickListener {
             navigateToResults()
-        }
-        binding.buttonVoltar.setOnClickListener {
-            finish()
         }
     }
 
@@ -138,8 +140,8 @@ class TerceiraActivity : AppCompatActivity() {
         val alcalinidadeCalculada = bicarbonato * 0.802
 
         val df = DecimalFormat("#.##")
-        binding.textViewDurezaCalculada.text = getString(R.string.unidade_mg_l, df.format(durezaCalculada))
-        binding.textViewAlcalinidadeCalculada.text = getString(R.string.unidade_mg_l, df.format(alcalinidadeCalculada))
+        binding.textViewDurezaCalculada.setText(getString(R.string.unidade_mg_l, df.format(durezaCalculada)))
+        binding.textViewAlcalinidadeCalculada.setText(getString(R.string.unidade_mg_l, df.format(alcalinidadeCalculada)))
 
         evaluateParameter(sodio, "Sodio", binding.textViewSodioAvaliacao)
         evaluateParameter(ph, "PH", binding.textViewPHAvaliacao)
@@ -244,6 +246,7 @@ class TerceiraActivity : AppCompatActivity() {
         }
     }
 
+    // ✨ CORREÇÃO DO TIPO DE RETORNO
     private fun getOverallQuality(pontuacaoTotal: Double): String {
         return when {
             pontuacaoTotal >= 20.0 -> getString(R.string.quality_high)
@@ -254,6 +257,7 @@ class TerceiraActivity : AppCompatActivity() {
 
     private fun navigateToResults() {
         val pontuacaoTotal = calculateTotalScore()
+        // ✨ CORREÇÃO DA CHAMADA
         val qualidadeGeral = getOverallQuality(pontuacaoTotal)
 
         val sodio = parseDouble(binding.editTextSodio.text.toString())
@@ -330,20 +334,5 @@ class TerceiraActivity : AppCompatActivity() {
     override fun onDestroy() {
         adView?.destroy()
         super.onDestroy()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.global_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_help -> {
-                startActivity(Intent(this, HelpActivity::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 }

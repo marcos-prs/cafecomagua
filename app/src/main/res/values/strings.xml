@@ -78,7 +78,7 @@
     <string name="error_bicarbonato_empty">O Bicarbonato não pode estar vazio!</string>
     <string name="error_calcio_empty">O Cálcio não pode estar vazio!</string>
     <string name="error_magnesio_empty">O Magnésio não pode estar vazio!</string>
-    <string name="title_parametros_avaliacao">PARÂMETROS E AVALIAÇÃO</string>
+    <string name="title_parametros_avaliacao">PARÂMETROS</string>
     <string name="label_sodio_unidade">Sódio (mg/L)</string>
     <string name="hint_sodio">Ex: 10.0</string>
     <string name="label_ph">pH</string>
@@ -169,6 +169,7 @@
     <string name="quality_high">Alta</string>
     <string name="quality_acceptable">Aceitável</string>
     <string name="quality_low">Baixa</string>
+    <string name="toggle_theme_description">Alternar tema</string>
 
     <string name="help_topic_ocr_title">Dicas para Leitura de Rótulos (OCR)</string>
     <string name="help_topic_ocr_content">

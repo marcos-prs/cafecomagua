@@ -26,24 +26,30 @@ class HistoricoAvaliacoesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
         binding = ActivityHistoricoAvaliacoesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Este listener é o único necessário. Ele ajusta a tela inteira.
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updatePadding(top = insets.top, bottom = insets.bottom)
-            windowInsets
+        // ✨ CORREÇÃO: Assinatura do listener corrigida para incluir "view" e "insets".
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                left = systemBars.left,
+                right = systemBars.right,
+                top = systemBars.top,
+                bottom = systemBars.bottom
+            )
+            insets
         }
 
-        supportActionBar?.hide()
+        setupToolbar()
         setupRecyclerView()
         loadAdaptiveAd()
+    }
 
-        binding.buttonVoltar.setOnClickListener {
-            finish()
-        }
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun setupRecyclerView() {
@@ -64,21 +70,14 @@ class HistoricoAvaliacoesActivity : AppCompatActivity() {
 
         if (!adsRemoved) {
             MobileAds.initialize(this) {}
-
-            // --- INÍCIO DA CORREÇÃO ---
-            // O listener de insets que estava aqui foi removido.
             adView = AdView(this).apply {
-                adUnitId = "ca-app-pub-3940256099942544/6300978111" // ID de teste
+                adUnitId = "ca-app-pub-7526020095328101/3457807317" // ID de teste
             }
-            // --- FIM DA CORREÇÃO ---
-
             binding.adContainer.removeAllViews()
             binding.adContainer.addView(adView)
-
             val adWidth = (resources.displayMetrics.widthPixels / resources.displayMetrics.density).toInt()
             val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
             adView?.setAdSize(adSize)
-
             val adRequest = AdRequest.Builder().build()
             adView?.loadAd(adRequest)
             binding.adContainer.visibility = View.VISIBLE
@@ -109,6 +108,10 @@ class HistoricoAvaliacoesActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
             R.id.action_help -> {
                 startActivity(Intent(this, HelpActivity::class.java))
                 true

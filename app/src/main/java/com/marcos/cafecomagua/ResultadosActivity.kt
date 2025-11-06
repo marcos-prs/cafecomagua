@@ -32,39 +32,37 @@ class ResultadosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultadosBinding
     private var avaliacaoAtual: AvaliacaoResultado? = null
-    private lateinit var adView: AdView
+    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
         binding = ActivityResultadosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
-
-        // --- INÍCIO DA CORREÇÃO DE LAYOUT ---
-        // A lógica de insets foi simplificada, seguindo o padrão da HistoricoActivity.
-        // O método setupWindowInsets() foi removido e a lógica colocada diretamente aqui.
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Aplica padding na view raiz. Isso corrige o topo e a base (anúncio) de uma só vez.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
-                top = insets.top,
-                bottom = insets.bottom
+                left = systemBars.left,
+                right = systemBars.right,
+                top = systemBars.top,
+                bottom = systemBars.bottom
             )
-            windowInsets
+            insets
         }
-        // --- FIM DA CORREÇÃO DE LAYOUT ---
 
+        setupToolbar()
         getEvaluationData()
         setupListeners()
         loadAdaptiveAd()
         requestReviewIfAppropriate()
     }
 
-    // O método setupWindowInsets() foi removido pois sua lógica foi movida para o onCreate.
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
 
     private fun getEvaluationData() {
         @Suppress("DEPRECATION")
@@ -108,22 +106,30 @@ class ResultadosActivity : AppCompatActivity() {
         textView.setBackgroundResource(backgroundRes)
     }
 
+    // ✨ FUNÇÃO REESCRITA PARA USAR A LÓGICA CORRETA
     private fun requestReviewIfAppropriate() {
         val prefs = getSharedPreferences("app_ratings", MODE_PRIVATE)
-        val openCount = prefs.getInt("open_count", 0)
         val alreadyRequested = prefs.getBoolean("already_requested", false)
 
-        if (openCount >= 30 && !alreadyRequested) {
-            val manager = ReviewManagerFactory.create(this)
+        // Se já pediu uma vez, não pede de novo.
+        if (alreadyRequested) {
+            return
+        }
 
+        // Incrementa o contador de visitas a esta tela específica.
+        val currentCount = prefs.getInt("results_view_count", 0)
+        val newCount = currentCount + 1
+        prefs.edit { putInt("results_view_count", newCount) }
+
+        // Verifica se o novo número de visitas é um múltiplo de 8.
+        if (newCount % 8 == 0) {
+            val manager = ReviewManagerFactory.create(this)
             lifecycleScope.launch {
                 try {
                     val reviewInfo: ReviewInfo = manager.requestReviewFlow().await()
                     manager.launchReviewFlow(this@ResultadosActivity, reviewInfo).await()
-
-                    prefs.edit {
-                        putBoolean("already_requested", true)
-                    }
+                    // Marca que já foi solicitado para não pedir novamente.
+                    prefs.edit { putBoolean("already_requested", true) }
                 } catch (e: Exception) {
                     Log.e("InAppReview", "Error in review flow", e)
                 }
@@ -139,18 +145,13 @@ class ResultadosActivity : AppCompatActivity() {
             MobileAds.initialize(this) {}
             adView = AdView(this)
             binding.adContainer.addView(adView)
-
-            // --- INÍCIO DA CORREÇÃO DO ANÚNCIO ---
-            // Usando displayMetrics para um cálculo mais confiável da largura da tela.
             val displayMetrics = resources.displayMetrics
             val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
             val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-            // --- FIM DA CORREÇÃO DO ANÚNCIO ---
-
-            adView.setAdSize(adSize)
-            adView.adUnitId = "ca-app-pub-3940256099942544/6300978111" // ID de teste
+            adView?.setAdSize(adSize)
+            adView?.adUnitId = "ca-app-pub-7526020095328101/4790521543"
             val adRequest = AdRequest.Builder().build()
-            adView.loadAd(adRequest)
+            adView?.loadAd(adRequest)
         } else {
             binding.adContainer.isVisible = false
         }
@@ -164,7 +165,6 @@ class ResultadosActivity : AppCompatActivity() {
                 it.isEnabled = false
             }
         }
-
         binding.buttonNovaAvaliacao.setOnClickListener {
             Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -172,13 +172,8 @@ class ResultadosActivity : AppCompatActivity() {
             }
             finish()
         }
-
         binding.buttonVerHistorico.setOnClickListener {
             startActivity(Intent(this, HistoricoAvaliacoesActivity::class.java))
-        }
-
-        binding.buttonVoltar.setOnClickListener {
-            finish()
         }
     }
 
@@ -204,6 +199,10 @@ class ResultadosActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
             R.id.action_help -> {
                 startActivity(Intent(this, HelpActivity::class.java))
                 true
@@ -213,9 +212,7 @@ class ResultadosActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        if (::adView.isInitialized) {
-            adView.destroy()
-        }
+        adView?.destroy()
         super.onDestroy()
     }
 }

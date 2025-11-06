@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget // Adicione esta linha no topo
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.marcos.cafecomagua"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.marcos.cafecomagua"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 19
-        versionName = "0.18"
+        targetSdk = 36
+        versionCode = 35
+        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -63,6 +63,6 @@ dependencies {
     implementation(libs.android.billing)
     implementation(libs.google.play.review.ktx)
     implementation(libs.kotlinx.coroutines.play.services)
-    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")
+    implementation(libs.play.services.mlkit.text.recognition)
 
 }

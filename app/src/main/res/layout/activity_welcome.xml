@@ -6,9 +6,8 @@
     android:id="@+id/main_welcome_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
-    tools:context=".WelcomeActivity"
-    tools:theme="@style/Theme.CafeComAgua">
+    android:background="?attr/mainLayoutBackground"
+    tools:context=".WelcomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/border_view"
@@ -35,11 +34,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/dourado_elegante" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/content_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="imageViewLogo,textViewWelcomeTitle,textViewWelcomeSubtitle,buttonNewEvaluation,buttonViewHistory" />
+        <ImageButton
+            android:id="@+id/buttonToggleTheme"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/toggle_theme_description"
+            android:padding="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonHelp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/icon_tint_selector"
+            tools:src="@drawable/ic_moon_night" /> <androidx.constraintlayout.widget.Group
+        android:id="@+id/content_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="imageViewLogo,textViewWelcomeTitle,textViewWelcomeSubtitle,buttonNewEvaluation,buttonViewHistory" />
 
         <ImageView
             android:id="@+id/imageViewLogo"
@@ -101,7 +110,6 @@
             android:layout_marginTop="48dp"
             app:layout_constraintWidth_max="320dp"
             tools:backgroundTint="@color/dourado_elegante"/>
-
 
         <Button
             android:id="@+id/buttonViewHistory"

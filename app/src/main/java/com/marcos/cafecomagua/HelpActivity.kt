@@ -2,53 +2,71 @@ package com.marcos.cafecomagua
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.PendingPurchasesParams // NOVO IMPORT
+import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.QueryPurchasesParams
-
+import com.marcos.cafecomagua.databinding.ActivityHelpBinding
 
 class HelpActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityHelpBinding
     private lateinit var billingClient: BillingClient
-    private lateinit var buttonRestore: Button
     private val skuRemoveAds = "remocao_anuncios_v1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        binding = ActivityHelpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.help_screen_title)
+        // ✨ 1. Listener de padding para a borda
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                left = systemBars.left,
+                right = systemBars.right,
+                top = systemBars.top,
+                bottom = systemBars.bottom
+            )
+            insets
+        }
 
-        // Inicializa as views
-        val textViewTopic1Content: TextView = findViewById(R.id.textViewTopic1Content)
-        val textViewTopic2Content: TextView = findViewById(R.id.textViewTopic2Content)
-        val textViewTopic3Content: TextView = findViewById(R.id.textViewTopic3Content)
-        val textViewTopicOcrContent: TextView = findViewById(R.id.textViewTopicOcrContent)
-        buttonRestore = findViewById(R.id.buttonRestorePurchase)
-
-        // Define o conteúdo HTML
-        textViewTopic1Content.text = HtmlCompat.fromHtml(getString(R.string.help_topic_1_param_qual_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
-        textViewTopic2Content.text = HtmlCompat.fromHtml(getString(R.string.help_topic_2_tds_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
-        textViewTopic3Content.text = HtmlCompat.fromHtml(getString(R.string.help_topic_3_scoring_system_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
-        textViewTopicOcrContent.text = HtmlCompat.fromHtml(getString(R.string.help_topic_ocr_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
-
+        setupToolbar()
+        setupContent()
         handleIntentExtras()
         setupBillingClient()
+        setupListeners()
+    }
 
-        buttonRestore.setOnClickListener {
+    // ✨ 3. Método padrão para a Toolbar
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    private fun setupContent() {
+        binding.textViewTopic1Content.text = HtmlCompat.fromHtml(getString(R.string.help_topic_1_param_qual_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
+        binding.textViewTopic2Content.text = HtmlCompat.fromHtml(getString(R.string.help_topic_2_tds_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
+        binding.textViewTopic3Content.text = HtmlCompat.fromHtml(getString(R.string.help_topic_3_scoring_system_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
+        binding.textViewTopicOcrContent.text = HtmlCompat.fromHtml(getString(R.string.help_topic_ocr_content), HtmlCompat.FROM_HTML_MODE_COMPACT)
+    }
+
+    private fun setupListeners() {
+        binding.buttonRestorePurchase.setOnClickListener {
             if (billingClient.isReady) {
-                buttonRestore.isEnabled = false
+                binding.buttonRestorePurchase.isEnabled = false
                 Toast.makeText(this, getString(R.string.toast_verificando_compras), Toast.LENGTH_SHORT).show()
                 queryPurchases()
             } else {
@@ -61,25 +79,20 @@ class HelpActivity : AppCompatActivity() {
     private fun handleIntentExtras() {
         val scrollToSection = intent.getStringExtra("SCROLL_TO_SECTION")
         if (scrollToSection == "OCR_HELP") {
-            val scrollView: ScrollView = findViewById(R.id.scrollViewHelp)
-            val ocrTitleView: TextView = findViewById(R.id.textViewTopicOcrTitle)
-            scrollView.post {
-                scrollView.smoothScrollTo(0, ocrTitleView.top)
+            binding.scrollViewHelp.post {
+                binding.scrollViewHelp.smoothScrollTo(0, binding.textViewTopicOcrTitle.top)
             }
         }
     }
 
-    // FUNÇÃO CORRIGIDA
     private fun setupBillingClient() {
-        // Passo 1: Crie o objeto de parâmetros
         val pendingPurchasesParams = PendingPurchasesParams.newBuilder()
             .enableOneTimeProducts()
             .build()
 
-        // Passo 2: Construa o cliente de faturamento, passando os parâmetros
         billingClient = BillingClient.newBuilder(this)
             .setListener { _, _ -> /* Não necessário para restauração */ }
-            .enablePendingPurchases(pendingPurchasesParams) // <-- Passe os parâmetros aqui
+            .enablePendingPurchases(pendingPurchasesParams)
             .build()
 
         billingClient.startConnection(billingClientStateListener)
@@ -120,20 +133,21 @@ class HelpActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, getString(R.string.toast_erro_buscar_compras), Toast.LENGTH_SHORT).show()
                 }
-                buttonRestore.isEnabled = true
+                binding.buttonRestorePurchase.isEnabled = true
             }
         }
     }
 
     private fun grantAdRemoval() {
-        getSharedPreferences("app_settings",MODE_PRIVATE).edit {
+        getSharedPreferences("app_settings", MODE_PRIVATE).edit {
             putBoolean("ads_removed", true)
         }
     }
 
+    // ✨ 3. Lógica do botão "voltar"
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            onBackPressedDispatcher.onBackPressed()
+            finish()
             return true
         }
         return super.onOptionsItemSelected(item)

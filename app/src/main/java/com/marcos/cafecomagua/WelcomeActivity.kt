@@ -15,6 +15,9 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.marcos.cafecomagua.databinding.ActivityWelcomeBinding
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
@@ -22,19 +25,17 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var adContainerView: FrameLayout
     private var mInterstitialAd: InterstitialAd? = null
     private var destinationActivity: Class<*>? = null
+    // ✨ 1. Adicionada uma "bandeira" para controlar se o anúncio já foi exibido nesta sessão.
+    private var isInterstitialAdShownThisSession = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-        enableEdgeToEdge() // Habilita o modo edge-to-edge
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // O bloco WindowInsetsControllerCompat foi removido daqui.
-        // A enableEdgeToEdge() cuidará do contraste dos ícones com base no tema.
-
-        // Aplica padding para que o conteúdo não sobreponha as barras do sistema
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
@@ -50,8 +51,10 @@ class WelcomeActivity : AppCompatActivity() {
         adContainerView = binding.adContainer
 
         setupListeners()
+        updateThemeIcon()
         countAppOpens()
         MobileAds.initialize(this) {}
+        // O anúncio agora é pré-carregado quando a tela abre.
         loadInterstitialAd()
     }
 
@@ -87,7 +90,7 @@ class WelcomeActivity : AppCompatActivity() {
     private fun loadAdaptiveAd() {
         if (adView != null) return
         adView = AdView(this).apply {
-            adUnitId = "ca-app-pub-3940256099942544/6300978111" // ID de teste
+            adUnitId = "ca-app-pub-7526020095328101/2793229383" // ID de teste
             val displayMetrics = resources.displayMetrics
             val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
             val adSize = AdSize
@@ -109,53 +112,80 @@ class WelcomeActivity : AppCompatActivity() {
         binding.buttonViewHistory.setOnClickListener {
             tryToShowAdAndNavigate(HistoricoAvaliacoesActivity::class.java)
         }
+        binding.buttonToggleTheme.setOnClickListener {
+            toggleTheme()
+        }
+    }
+
+    private fun toggleTheme() {
+        val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
+        val isNightMode = resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+        val newMode = if (isNightMode) MODE_NIGHT_NO else MODE_NIGHT_YES
+        prefs.edit().putInt("key_theme", newMode).apply()
+        AppCompatDelegate.setDefaultNightMode(newMode)
+    }
+
+    private fun updateThemeIcon() {
+        val isNightMode = resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+        if (isNightMode) {
+            binding.buttonToggleTheme.setImageResource(R.drawable.ic_sun_day)
+        } else {
+            binding.buttonToggleTheme.setImageResource(R.drawable.ic_moon_night)
+        }
     }
 
     private fun tryToShowAdAndNavigate(destination: Class<*>) {
         this.destinationActivity = destination
         val adsRemoved = getSharedPreferences("app_settings", MODE_PRIVATE)
             .getBoolean("ads_removed", false)
-        if (adsRemoved) {
+
+        // ✨ 2. Nova lógica de decisão.
+        // Se os anúncios foram removidos OU se já mostramos um anúncio nesta sessão, navega direto.
+        if (adsRemoved || isInterstitialAdShownThisSession) {
             navigateToDestination()
             return
         }
+
+        // Se o anúncio estiver carregado, mostre-o.
         if (mInterstitialAd != null) {
             setLoadingState(true)
             showInterstitial()
         } else {
-            setLoadingState(true)
-            loadInterstitialAd()
+            // Se o anúncio ainda não carregou, não prenda o usuário. Navega direto.
+            navigateToDestination()
         }
     }
 
     private fun loadInterstitialAd() {
-        if (getSharedPreferences("app_settings", MODE_PRIVATE)
-                .getBoolean("ads_removed", false)
-        ) return
+        if (getSharedPreferences("app_settings", MODE_PRIVATE).getBoolean("ads_removed", false)) return
         if (mInterstitialAd != null) return
 
         InterstitialAd.load(
             this,
-            "ca-app-pub-3940256099942544/1033173712", // ID de teste
+            "ca-app-pub-7526020095328101/9326848140", // ID de teste
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     mInterstitialAd = null
-                    destinationActivity?.let { navigateToDestination() }
                 }
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     mInterstitialAd = interstitialAd
                     mInterstitialAd?.setImmersiveMode(false)
-                    destinationActivity?.let { showInterstitial() }
+                    // ✨ 3. Removida a chamada para mostrar o anúncio assim que ele carrega.
+                    // Agora ele apenas fica guardado, esperando o momento certo.
                 }
             }
         )
     }
 
     private fun showInterstitial() {
-        val adsRemoved = getSharedPreferences("app_settings", MODE_PRIVATE)
-            .getBoolean("ads_removed", false)
-        if (adsRemoved || destinationActivity == null) {
+        if (destinationActivity == null) {
             navigateToDestination()
             return
         }
@@ -169,6 +199,8 @@ class WelcomeActivity : AppCompatActivity() {
             }
             override fun onAdShowedFullScreenContent() {
                 mInterstitialAd = null
+                // ✨ 4. Quando o anúncio é efetivamente mostrado, levantamos a "bandeira".
+                isInterstitialAdShownThisSession = true
             }
         }
         mInterstitialAd?.show(this)

@@ -78,7 +78,7 @@
     <string name="error_bicarbonato_empty">Bicarbonate cannot be empty!</string>
     <string name="error_calcio_empty">Calcium cannot be empty!</string>
     <string name="error_magnesio_empty">Magnesium cannot be empty!</string>
-    <string name="title_parametros_avaliacao">PARAMETERS AND EVALUATION</string>
+    <string name="title_parametros_avaliacao">PARAMETERS</string>
     <string name="label_sodio_unidade">Sodium (mg/L)</string>
     <string name="hint_sodio">Ex: 10.0</string>
     <string name="label_ph">pH</string>
@@ -169,6 +169,7 @@
     <string name="quality_high">High</string>
     <string name="quality_acceptable">Acceptable</string>
     <string name="quality_low">Low</string>
+    <string name="toggle_theme_description">Toggle theme</string>
 
     <string name="help_topic_ocr_title">Tips for Label Reading (OCR)</string>
     <string name="help_topic_ocr_content">
