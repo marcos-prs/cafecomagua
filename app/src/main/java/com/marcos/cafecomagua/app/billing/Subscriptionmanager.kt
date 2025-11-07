@@ -121,18 +121,22 @@ class SubscriptionManager(
             .setProductList(productList)
             .build()
 
-        billingClient?.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
+        billingClient?.queryProductDetailsAsync(params) { billingResult, result ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                productDetailsList.forEach { productDetails ->
-                    productDetailsMap[productDetails.productId] = productDetails
-                    Log.d(TAG, "Product loaded: ${productDetails.productId}")
+                // NOVO: usar result.productDetailsList
+                result.productDetailsList.forEach { pd ->
+                    productDetailsMap[pd.productId] = pd
+                    Log.d(TAG, "Product loaded: ${pd.productId}")
                 }
+                // (Opcional) tratar itens não buscados
+                // result.unfetchedProductList.forEach { Log.w(TAG, "Unfetched: ${it.productId} status=${it.statusCode}") }
                 onProductsLoaded?.invoke()
             } else {
                 Log.e(TAG, "Failed to query products: ${billingResult.debugMessage}")
             }
         }
     }
+
 
     private fun querySubscriptions() {
         val subscriptionList = listOf(
@@ -146,11 +150,11 @@ class SubscriptionManager(
             .setProductList(subscriptionList)
             .build()
 
-        billingClient?.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
+        billingClient?.queryProductDetailsAsync(params) { billingResult, result ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                productDetailsList.forEach { productDetails ->
-                    productDetailsMap[productDetails.productId] = productDetails
-                    Log.d(TAG, "Subscription loaded: ${productDetails.productId}")
+                result.productDetailsList.forEach { pd ->
+                    productDetailsMap[pd.productId] = pd
+                    Log.d(TAG, "Subscription loaded: ${pd.productId}")
                 }
                 onProductsLoaded?.invoke()
             } else {
@@ -158,6 +162,7 @@ class SubscriptionManager(
             }
         }
     }
+
 
     private fun queryExistingPurchases() {
         // Query compras one-time

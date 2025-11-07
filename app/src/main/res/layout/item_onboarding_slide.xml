@@ -20,8 +20,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textTitle"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginBottom="32dp"
-        tools:src="@drawable/ic_coffee"
-        app:tint="@color/dourado_elegante" />
+        tools:src="@drawable/ic_coffee" />
 
     <!-- Título do slide -->
     <TextView

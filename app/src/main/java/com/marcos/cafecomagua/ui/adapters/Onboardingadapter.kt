@@ -1,4 +1,4 @@
-package com.marcos.cafecomagua.adapters
+package com.marcos.cafecomagua.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

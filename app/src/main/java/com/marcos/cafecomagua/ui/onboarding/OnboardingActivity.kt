@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.viewpager2.widget.ViewPager2
 import com.marcos.cafecomagua.R
-import com.marcos.cafecomagua.adapters.OnboardingAdapter
+import com.marcos.cafecomagua.ui.adapters.OnboardingAdapter
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityOnboardingBinding
@@ -74,12 +74,12 @@ class OnboardingActivity : AppCompatActivity() {
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_1),
                 message = getString(R.string.onboarding_message_1),
-                imageRes = R.drawable.ic_coffee
+                imageRes = R.drawable.ic_star
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_2),
                 message = getString(R.string.onboarding_message_2),
-                imageRes = R.drawable.ic_star
+                imageRes = R.drawable.ic_chemestry
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_3),
