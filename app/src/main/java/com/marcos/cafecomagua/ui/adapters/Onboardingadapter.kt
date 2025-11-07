@@ -3,7 +3,7 @@ package com.marcos.cafecomagua.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.marcos.cafecomagua.OnboardingSlide
+import com.marcos.cafecomagua.ui.onboarding.OnboardingSlide
 import com.marcos.cafecomagua.databinding.ItemOnboardingSlideBinding
 
 /**

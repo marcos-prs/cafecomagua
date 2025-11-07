@@ -1,7 +1,9 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.onboarding
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,9 +11,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.adapters.OnboardingAdapter
-import com.marcos.cafecomagua.analytics.analytics
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager
+import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityOnboardingBinding
+import com.marcos.cafecomagua.ui.home.HomeActivity
 
 /**
  * Activity de Onboarding - mostra tutorial de 3 passos na primeira vez
@@ -28,7 +33,7 @@ class OnboardingActivity : AppCompatActivity() {
         /**
          * Verifica se o onboarding já foi concluído
          */
-        fun isCompleted(context: android.content.Context): Boolean {
+        fun isCompleted(context: Context): Boolean {
             return context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                 .getBoolean(PREF_ONBOARDING_COMPLETED, false)
         }
@@ -36,7 +41,7 @@ class OnboardingActivity : AppCompatActivity() {
         /**
          * Marca onboarding como concluído
          */
-        fun markAsCompleted(context: android.content.Context) {
+        fun markAsCompleted(context: Context) {
             context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                 .edit()
                 .putBoolean(PREF_ONBOARDING_COMPLETED, true)
@@ -105,7 +110,7 @@ class OnboardingActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.buttonSkip.setOnClickListener {
             analytics().logEvent(
-                com.marcos.cafecomagua.analytics.AnalyticsManager.Category.NAVIGATION,
+                AnalyticsManager.Category.NAVIGATION,
                 "onboarding_skipped"
             )
             finishOnboarding()
@@ -120,7 +125,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         binding.buttonGetStarted.setOnClickListener {
             analytics().logEvent(
-                com.marcos.cafecomagua.analytics.AnalyticsManager.Category.NAVIGATION,
+                AnalyticsManager.Category.NAVIGATION,
                 "onboarding_completed"
             )
             finishOnboarding()
@@ -131,13 +136,13 @@ class OnboardingActivity : AppCompatActivity() {
         val isLastPage = position == onboardingAdapter.itemCount - 1
 
         if (isLastPage) {
-            binding.buttonSkip.visibility = android.view.View.GONE
-            binding.buttonNext.visibility = android.view.View.GONE
-            binding.buttonGetStarted.visibility = android.view.View.VISIBLE
+            binding.buttonSkip.visibility = View.GONE
+            binding.buttonNext.visibility = View.GONE
+            binding.buttonGetStarted.visibility = View.VISIBLE
         } else {
-            binding.buttonSkip.visibility = android.view.View.VISIBLE
-            binding.buttonNext.visibility = android.view.View.VISIBLE
-            binding.buttonGetStarted.visibility = android.view.View.GONE
+            binding.buttonSkip.visibility = View.VISIBLE
+            binding.buttonNext.visibility = View.VISIBLE
+            binding.buttonGetStarted.visibility = View.GONE
         }
     }
 

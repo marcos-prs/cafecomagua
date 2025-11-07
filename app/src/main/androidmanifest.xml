@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name="com.marcos.cafecomagua.MyApplication"
+        android:name="com.marcos.cafecomagua.app.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -24,7 +24,7 @@
 
         <!-- AÇÃO CORRIGIDA: A activity de inicialização recebe o tema do Splash -->
         <activity
-            android:name="com.marcos.cafecomagua.HomeActivity"
+            android:name="com.marcos.cafecomagua.ui.home.HomeActivity"
             android:exported="true"
             android:theme="@style/Theme.AppSplash">
             <intent-filter>
@@ -34,29 +34,29 @@
         </activity>
 
         <activity
-            android:name="com.marcos.cafecomagua.HelpActivity"
+            android:name="com.marcos.cafecomagua.ui.help.HelpActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
 
         <activity
-            android:name="com.marcos.cafecomagua.MainActivity"
+            android:name="com.marcos.cafecomagua.WaterInput"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua"
             android:windowSoftInputMode="adjustPan"/>
 
         <activity
-            android:name="com.marcos.cafecomagua.ParametersActivity"
+            android:name="com.marcos.cafecomagua.ui.parameters.ParametersActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua"
             android:windowSoftInputMode="adjustPan"/>
 
         <activity
-            android:name="com.marcos.cafecomagua.ResultsActivity"
+            android:name="com.marcos.cafecomagua.ui.results.ResultsActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
 
         <activity
-            android:name="com.marcos.cafecomagua.HistoryActivity"
+            android:name="com.marcos.cafecomagua.ui.history.HistoryActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
 

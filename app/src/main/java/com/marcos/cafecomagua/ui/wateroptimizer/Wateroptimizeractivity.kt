@@ -1,21 +1,25 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.wateroptimizer
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.marcos.cafecomagua.adapters.DropRecommendationAdapter
+import com.marcos.cafecomagua.ui.help.HelpActivity
+import com.marcos.cafecomagua.app.billing.SubscriptionActivity
+import com.marcos.cafecomagua.ui.adapters.DropRecommendationAdapter
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.databinding.ActivityWaterOptimizerBinding
-import com.marcos.cafecomagua.water.SCAStandards
-import com.marcos.cafecomagua.water.WaterOptimizationCalculator
-import com.marcos.cafecomagua.water.WaterProfile
+import com.marcos.cafecomagua.app.model.MineralSolution
+import com.marcos.cafecomagua.app.model.SCAStandards
+import com.marcos.cafecomagua.app.model.WaterProfile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -79,7 +83,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
+        if (item.itemId == R.id.home) {
             finish()
             return true
         }
@@ -99,15 +103,15 @@ class WaterOptimizerActivity : AppCompatActivity() {
     }
 
     private fun showPremiumRequiredDialog() {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        builder.setTitle(R.string.premium_required_title)
-        builder.setMessage(R.string.premium_required_message)
-        builder.setPositiveButton(R.string.button_subscribe) { _, _ ->
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(com.marcos.cafecomagua.R.string.premium_required_title)
+        builder.setMessage(com.marcos.cafecomagua.R.string.premium_required_message)
+        builder.setPositiveButton(com.marcos.cafecomagua.R.string.button_subscribe) { _, _ ->
             // Navega para tela de assinatura
             startActivity(Intent(this, SubscriptionActivity::class.java))
             finish()
         }
-        builder.setNegativeButton(R.string.button_cancel) { _, _ ->
+        builder.setNegativeButton(com.marcos.cafecomagua.R.string.button_cancel) { _, _ ->
             finish()
         }
         builder.setCancelable(false)
@@ -135,20 +139,20 @@ class WaterOptimizerActivity : AppCompatActivity() {
         val idealWater = SCAStandards.getIdealProfile()
 
         // Água atual
-        binding.textCurrentCalcium.text = getString(R.string.value_with_unit_mg_l, df.format(currentWater.calcium))
-        binding.textCurrentMagnesium.text = getString(R.string.value_with_unit_mg_l, df.format(currentWater.magnesium))
-        binding.textCurrentSodium.text = getString(R.string.value_with_unit_mg_l, df.format(currentWater.sodium))
-        binding.textCurrentBicarbonate.text = getString(R.string.value_with_unit_mg_l, df.format(currentWater.bicarbonate))
-        binding.textCurrentHardness.text = getString(R.string.value_with_unit_mg_l, df.format(currentWater.calculateHardness()))
-        binding.textCurrentAlkalinity.text = getString(R.string.value_with_unit_mg_l, df.format(currentWater.calculateAlkalinity()))
+        binding.textCurrentCalcium.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(currentWater.calcium))
+        binding.textCurrentMagnesium.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(currentWater.magnesium))
+        binding.textCurrentSodium.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(currentWater.sodium))
+        binding.textCurrentBicarbonate.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(currentWater.bicarbonate))
+        binding.textCurrentHardness.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(currentWater.calculateHardness()))
+        binding.textCurrentAlkalinity.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(currentWater.calculateAlkalinity()))
 
         // Água ideal
-        binding.textIdealCalcium.text = getString(R.string.value_with_unit_mg_l, df.format(idealWater.calcium))
-        binding.textIdealMagnesium.text = getString(R.string.value_with_unit_mg_l, df.format(idealWater.magnesium))
-        binding.textIdealSodium.text = getString(R.string.value_with_unit_mg_l, df.format(idealWater.sodium))
-        binding.textIdealBicarbonate.text = getString(R.string.value_with_unit_mg_l, df.format(idealWater.bicarbonate))
-        binding.textIdealHardness.text = getString(R.string.value_with_unit_mg_l, df.format(idealWater.calculateHardness()))
-        binding.textIdealAlkalinity.text = getString(R.string.value_with_unit_mg_l, df.format(idealWater.calculateAlkalinity()))
+        binding.textIdealCalcium.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(idealWater.calcium))
+        binding.textIdealMagnesium.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(idealWater.magnesium))
+        binding.textIdealSodium.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(idealWater.sodium))
+        binding.textIdealBicarbonate.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(idealWater.bicarbonate))
+        binding.textIdealHardness.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(idealWater.calculateHardness()))
+        binding.textIdealAlkalinity.text = getString(com.marcos.cafecomagua.R.string.value_with_unit_mg_l, df.format(idealWater.calculateAlkalinity()))
 
         // Aplica cores baseado na comparação
         applyComparisonColors(currentWater, idealWater)
@@ -160,20 +164,20 @@ class WaterOptimizerActivity : AppCompatActivity() {
     private fun applyComparisonColors(current: WaterProfile, ideal: WaterProfile) {
         // Cálcio
         if (SCAStandards.isInIdealRange(current.calcium, SCAStandards.IDEAL_CALCIUM_RANGE)) {
-            binding.textCurrentCalcium.setTextColor(getColor(R.color.ideal_green))
+            binding.textCurrentCalcium.setTextColor(getColor(com.marcos.cafecomagua.R.color.ideal_green))
         } else if (SCAStandards.isInAcceptableRange(current.calcium, SCAStandards.ACCEPTABLE_CALCIUM_RANGE)) {
-            binding.textCurrentCalcium.setTextColor(getColor(R.color.acceptable_yellow))
+            binding.textCurrentCalcium.setTextColor(getColor(com.marcos.cafecomagua.R.color.acceptable_yellow))
         } else {
-            binding.textCurrentCalcium.setTextColor(getColor(R.color.not_recommended_red))
+            binding.textCurrentCalcium.setTextColor(getColor(com.marcos.cafecomagua.R.color.not_recommended_red))
         }
 
         // Magnésio
         if (SCAStandards.isInIdealRange(current.magnesium, SCAStandards.IDEAL_MAGNESIUM_RANGE)) {
-            binding.textCurrentMagnesium.setTextColor(getColor(R.color.ideal_green))
+            binding.textCurrentMagnesium.setTextColor(getColor(com.marcos.cafecomagua.R.color.ideal_green))
         } else if (SCAStandards.isInAcceptableRange(current.magnesium, SCAStandards.ACCEPTABLE_MAGNESIUM_RANGE)) {
-            binding.textCurrentMagnesium.setTextColor(getColor(R.color.acceptable_yellow))
+            binding.textCurrentMagnesium.setTextColor(getColor(com.marcos.cafecomagua.R.color.acceptable_yellow))
         } else {
-            binding.textCurrentMagnesium.setTextColor(getColor(R.color.not_recommended_red))
+            binding.textCurrentMagnesium.setTextColor(getColor(com.marcos.cafecomagua.R.color.not_recommended_red))
         }
 
         // Similar para outros parâmetros...
@@ -191,7 +195,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
 
         // Exibe score de melhoria
         binding.textImprovementScore.text = getString(
-            R.string.improvement_score_format,
+            com.marcos.cafecomagua.R.string.improvement_score_format,
             df.format(result.improvementScore)
         )
 
@@ -219,13 +223,13 @@ class WaterOptimizerActivity : AppCompatActivity() {
     /**
      * Mostra informações sobre como preparar a solução
      */
-    private fun showSolutionPreparationInfo(solution: com.marcos.cafecomagua.water.MineralSolution) {
+    private fun showSolutionPreparationInfo(solution: MineralSolution) {
         val instructions = calculator.generateSolutionPreparationInstructions(solution)
 
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.solution_preparation_title))
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(com.marcos.cafecomagua.R.string.solution_preparation_title))
         builder.setMessage(instructions)
-        builder.setPositiveButton(R.string.button_ok, null)
+        builder.setPositiveButton(com.marcos.cafecomagua.R.string.button_ok, null)
         builder.show()
     }
 
@@ -259,7 +263,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, shareText)
             type = "text/plain"
         }
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_recipe)))
+        startActivity(Intent.createChooser(shareIntent, getString(com.marcos.cafecomagua.R.string.share_recipe)))
     }
 
     override fun onDestroy() {

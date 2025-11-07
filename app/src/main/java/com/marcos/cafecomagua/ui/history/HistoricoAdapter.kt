@@ -1,10 +1,12 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.history
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
+import com.marcos.cafecomagua.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 

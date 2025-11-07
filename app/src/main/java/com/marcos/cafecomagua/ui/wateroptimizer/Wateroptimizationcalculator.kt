@@ -1,5 +1,10 @@
-package com.marcos.cafecomagua.water
+package com.marcos.cafecomagua.ui.wateroptimizer
 
+import com.marcos.cafecomagua.app.model.DropRecommendation
+import com.marcos.cafecomagua.app.model.MineralSolution
+import com.marcos.cafecomagua.app.model.SCAStandards
+import com.marcos.cafecomagua.app.model.WaterOptimizationResult
+import com.marcos.cafecomagua.app.model.WaterProfile
 import kotlin.math.roundToInt
 
 /**

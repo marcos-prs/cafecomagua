@@ -1,6 +1,8 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.app.billing
 
+import android.R
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -11,11 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.databinding.ActivitySubscriptionBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import com.marcos.cafecomagua.ui.results.ResultsActivity
 
 /**
  * Activity refatorada para gerenciar assinaturas e doações
@@ -81,7 +85,7 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
+        if (item.itemId == R.id.home) {
             finish()
             return true
         }
@@ -158,12 +162,12 @@ class SubscriptionActivity : AppCompatActivity() {
         if (isPremium) {
             // Esconde assinatura, mostra apenas doações
             binding.layoutSubscriptionSection.visibility = View.GONE
-            binding.textSubtitleDonation.text = getString(R.string.thank_you_premium_user)
+            binding.textSubtitleDonation.text = getString(com.marcos.cafecomagua.R.string.thank_you_premium_user)
 
             if (isLegacy) {
-                binding.textPremiumStatus.text = getString(R.string.premium_status_legacy)
+                binding.textPremiumStatus.text = getString(com.marcos.cafecomagua.R.string.premium_status_legacy)
             } else {
-                binding.textPremiumStatus.text = getString(R.string.premium_status_active)
+                binding.textPremiumStatus.text = getString(com.marcos.cafecomagua.R.string.premium_status_active)
             }
             binding.textPremiumStatus.visibility = View.VISIBLE
         } else {
@@ -179,19 +183,19 @@ class SubscriptionActivity : AppCompatActivity() {
     private fun updatePrices() {
         binding.textSubscriptionPrice.text = subscriptionManager.getProductPrice(
             SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY
-        ) ?: getString(R.string.preco_indisponivel)
+        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
 
         binding.textSmallCoffeePrice.text = subscriptionManager.getProductPrice(
             SubscriptionManager.SKU_SMALL_COFFEE
-        ) ?: getString(R.string.preco_indisponivel)
+        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
 
         binding.textMediumCoffeePrice.text = subscriptionManager.getProductPrice(
             SubscriptionManager.SKU_MEDIUM_COFFEE
-        ) ?: getString(R.string.preco_indisponivel)
+        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
 
         binding.textLargeCoffeePrice.text = subscriptionManager.getProductPrice(
             SubscriptionManager.SKU_LARGE_COFFEE
-        ) ?: getString(R.string.preco_indisponivel)
+        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
     }
 
     /**
@@ -248,7 +252,7 @@ class SubscriptionActivity : AppCompatActivity() {
      */
     private fun openSubscriptionManagement() {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = android.net.Uri.parse(
+            data = Uri.parse(
                 "https://play.google.com/store/account/subscriptions"
             )
         }

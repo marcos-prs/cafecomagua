@@ -1,4 +1,4 @@
-package com.marcos.cafecomagua.adapters
+package com.marcos.cafecomagua.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -15,9 +15,9 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
-import com.marcos.cafecomagua.AvaliacaoResultado
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.R
-import com.marcos.cafecomagua.databinding.ItemAvaliacaoHistoricoBinding
+import com.marcos.cafecomagua.databinding.ItemHistoryBinding
 import java.text.DecimalFormat
 
 /**
@@ -112,7 +112,7 @@ class HistoryAdapterWithAds(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_EVALUATION -> {
-                val binding = ItemAvaliacaoHistoricoBinding.inflate(
+                val binding = ItemHistoryBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -150,7 +150,7 @@ class HistoryAdapterWithAds(
      * ViewHolder para itens de avaliação
      */
     inner class EvaluationViewHolder(
-        private val binding: ItemAvaliacaoHistoricoBinding
+        private val binding: ItemHistoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(avaliacao: AvaliacaoResultado, onClick: (AvaliacaoResultado) -> Unit) {

@@ -1,12 +1,12 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.parameters
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,13 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
-import com.marcos.cafecomagua.databinding.ActivityTerceiraBinding
-import com.marcos.cafecomagua.analytics.AnalyticsManager
-import com.marcos.cafecomagua.analytics.analytics
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
+import com.marcos.cafecomagua.ui.help.HelpActivity
+import com.marcos.cafecomagua.app.billing.SubscriptionActivity
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager
+import com.marcos.cafecomagua.app.analytics.analytics
+import com.marcos.cafecomagua.databinding.ActivityParametersBinding
 import java.text.DecimalFormat
 import java.util.Date
 
@@ -35,7 +34,7 @@ import java.util.Date
  */
 class ParametersActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityTerceiraBinding
+    private lateinit var binding: ActivityParametersBinding
     private var calcio: Double = 0.0
     private var magnesio: Double = 0.0
     private var bicarbonato: Double = 0.0
@@ -45,7 +44,7 @@ class ParametersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        binding = ActivityTerceiraBinding.inflate(layoutInflater)
+        binding = ActivityParametersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
@@ -81,11 +80,11 @@ class ParametersActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
+            R.id.home -> {
                 finish()
                 true
             }
-            R.id.action_help -> {
+            com.marcos.cafecomagua.R.id.action_help -> {
                 startActivity(Intent(this, HelpActivity::class.java))
                 true
             }
@@ -133,8 +132,8 @@ class ParametersActivity : AppCompatActivity() {
         val alcalinidadeCalculada = bicarbonato * 0.802
 
         val df = DecimalFormat("#.##")
-        binding.textViewDurezaCalculada.text = getString(R.string.unidade_mg_l, df.format(durezaCalculada))
-        binding.textViewAlcalinidadeCalculada.text = getString(R.string.unidade_mg_l, df.format(alcalinidadeCalculada))
+        binding.textViewDurezaCalculada.text = getString(com.marcos.cafecomagua.R.string.unidade_mg_l, df.format(durezaCalculada))
+        binding.textViewAlcalinidadeCalculada.text = getString(com.marcos.cafecomagua.R.string.unidade_mg_l, df.format(alcalinidadeCalculada))
 
         evaluateParameter(sodio, "Sodio", binding.textViewSodioAvaliacao)
         evaluateParameter(ph, "PH", binding.textViewPHAvaliacao)
@@ -154,31 +153,31 @@ class ParametersActivity : AppCompatActivity() {
     private fun evaluateParameter(valor: Double, parametro: String, textViewAvaliacao: TextView) {
         val (avaliacaoTexto, corAvaliacao) = when (parametro) {
             "Sodio" -> when (valor) {
-                10.0 -> getString(R.string.avaliacao_ideal) to R.color.avaliacao_verde
-                in 9.7..10.3 -> getString(R.string.avaliacao_aceitavel) to R.color.avaliacao_amarelo
-                else -> getString(R.string.avaliacao_nao_recomendado) to R.color.avaliacao_vermelho
+                10.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal) to com.marcos.cafecomagua.R.color.avaliacao_verde
+                in 9.7..10.3 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel) to com.marcos.cafecomagua.R.color.avaliacao_amarelo
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado) to com.marcos.cafecomagua.R.color.avaliacao_vermelho
             }
             "PH" -> when (valor) {
-                7.0 -> getString(R.string.avaliacao_ideal) to R.color.avaliacao_verde
-                in 6.5..7.5 -> getString(R.string.avaliacao_aceitavel) to R.color.avaliacao_amarelo
-                else -> getString(R.string.avaliacao_nao_recomendado) to R.color.avaliacao_vermelho
+                7.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal) to com.marcos.cafecomagua.R.color.avaliacao_verde
+                in 6.5..7.5 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel) to com.marcos.cafecomagua.R.color.avaliacao_amarelo
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado) to com.marcos.cafecomagua.R.color.avaliacao_vermelho
             }
             "ResiduoEvaporacao" -> when (valor) {
-                150.0 -> getString(R.string.avaliacao_ideal) to R.color.avaliacao_verde
-                in 75.0..175.0 -> getString(R.string.avaliacao_aceitavel) to R.color.avaliacao_amarelo
-                else -> getString(R.string.avaliacao_nao_recomendado) to R.color.avaliacao_vermelho
+                150.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal) to com.marcos.cafecomagua.R.color.avaliacao_verde
+                in 75.0..175.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel) to com.marcos.cafecomagua.R.color.avaliacao_amarelo
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado) to com.marcos.cafecomagua.R.color.avaliacao_vermelho
             }
             "Dureza" -> when (valor) {
-                in 68.0..85.0 -> getString(R.string.avaliacao_ideal) to R.color.avaliacao_verde
-                in 50.0..74.99 -> getString(R.string.avaliacao_aceitavel) to R.color.avaliacao_amarelo
-                else -> getString(R.string.avaliacao_nao_recomendado) to R.color.avaliacao_vermelho
+                in 68.0..85.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal) to com.marcos.cafecomagua.R.color.avaliacao_verde
+                in 50.0..74.99 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel) to com.marcos.cafecomagua.R.color.avaliacao_amarelo
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado) to com.marcos.cafecomagua.R.color.avaliacao_vermelho
             }
             "Alcalinidade" -> when (valor) {
-                40.0 -> getString(R.string.avaliacao_ideal) to R.color.avaliacao_verde
-                in 35.0..45.0 -> getString(R.string.avaliacao_aceitavel) to R.color.avaliacao_amarelo
-                else -> getString(R.string.avaliacao_nao_recomendado) to R.color.avaliacao_vermelho
+                40.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal) to com.marcos.cafecomagua.R.color.avaliacao_verde
+                in 35.0..45.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel) to com.marcos.cafecomagua.R.color.avaliacao_amarelo
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado) to com.marcos.cafecomagua.R.color.avaliacao_vermelho
             }
-            else -> getString(R.string.avaliacao_nao_avaliado) to android.R.color.darker_gray
+            else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_avaliado) to R.color.darker_gray
         }
 
         textViewAvaliacao.text = avaliacaoTexto
@@ -241,9 +240,9 @@ class ParametersActivity : AppCompatActivity() {
 
     private fun getOverallQuality(pontuacaoTotal: Double): String {
         return when {
-            pontuacaoTotal >= 20.0 -> getString(R.string.quality_high)
-            pontuacaoTotal >= 12.0 -> getString(R.string.quality_acceptable)
-            else -> getString(R.string.quality_low)
+            pontuacaoTotal >= 20.0 -> getString(com.marcos.cafecomagua.R.string.quality_high)
+            pontuacaoTotal >= 12.0 -> getString(com.marcos.cafecomagua.R.string.quality_acceptable)
+            else -> getString(com.marcos.cafecomagua.R.string.quality_low)
         }
     }
 
@@ -285,31 +284,31 @@ class ParametersActivity : AppCompatActivity() {
     private fun getEvaluationText(valor: Double, parametro: String): String {
         return when (parametro) {
             "Sodio" -> when (valor) {
-                10.0 -> getString(R.string.avaliacao_ideal)
-                in 9.7..10.3 -> getString(R.string.avaliacao_aceitavel)
-                else -> getString(R.string.avaliacao_nao_recomendado)
+                10.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal)
+                in 9.7..10.3 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel)
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado)
             }
             "PH" -> when (valor) {
-                7.0 -> getString(R.string.avaliacao_ideal)
-                in 6.5..7.5 -> getString(R.string.avaliacao_aceitavel)
-                else -> getString(R.string.avaliacao_nao_recomendado)
+                7.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal)
+                in 6.5..7.5 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel)
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado)
             }
             "ResiduoEvaporacao" -> when (valor) {
-                150.0 -> getString(R.string.avaliacao_ideal)
-                in 75.0..175.0 -> getString(R.string.avaliacao_aceitavel)
-                else -> getString(R.string.avaliacao_nao_recomendado)
+                150.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal)
+                in 75.0..175.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel)
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado)
             }
             "Dureza" -> when (valor) {
-                in 68.0..85.0 -> getString(R.string.avaliacao_ideal)
-                in 50.0..74.99 -> getString(R.string.avaliacao_aceitavel)
-                else -> getString(R.string.avaliacao_nao_recomendado)
+                in 68.0..85.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal)
+                in 50.0..74.99 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel)
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado)
             }
             "Alcalinidade" -> when (valor) {
-                40.0 -> getString(R.string.avaliacao_ideal)
-                in 35.0..45.0 -> getString(R.string.avaliacao_aceitavel)
-                else -> getString(R.string.avaliacao_nao_recomendado)
+                40.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_ideal)
+                in 35.0..45.0 -> getString(com.marcos.cafecomagua.R.string.avaliacao_aceitavel)
+                else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_recomendado)
             }
-            else -> getString(R.string.avaliacao_nao_avaliado)
+            else -> getString(com.marcos.cafecomagua.R.string.avaliacao_nao_avaliado)
         }
     }
 

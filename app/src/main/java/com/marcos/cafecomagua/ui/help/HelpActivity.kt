@@ -1,4 +1,4 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.help
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,6 +16,7 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.QueryPurchasesParams
+import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.databinding.ActivityHelpBinding
 
 class HelpActivity : AppCompatActivity() {

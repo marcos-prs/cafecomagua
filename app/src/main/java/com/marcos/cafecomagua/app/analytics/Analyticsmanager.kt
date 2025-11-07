@@ -1,4 +1,4 @@
-package com.marcos.cafecomagua.analytics
+package com.marcos.cafecomagua.app.analytics
 
 import android.content.Context
 import android.util.Log

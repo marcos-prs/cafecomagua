@@ -186,4 +186,50 @@
     Por lo tanto, la captura debe ser vista como una <b>herramienta de ayuda</b>. Siempre <b>verifique los valores</b> capturados antes de proceder con la evaluación para garantizar la precisión de los resultados.
 </string>
 
+    <!-- Onboarding -->
+    <string name="button_next">Siguiente</string>
+    <string name="button_skip">Saltar</string>
+    <string name="button_start">Comenzar</string>
+    <string name="onboarding_icon">Ícono de diapositiva</string>
+    <string name="onboarding_slide_1_title">Bienvenido a Café con Agua</string>
+    <string name="onboarding_slide_1_description">Evalúa la calidad de tu agua y descubre cómo afecta el sabor de tu café</string>
+    <string name="onboarding_slide_2_title">Análisis Basado en Estándares SCA</string>
+    <string name="onboarding_slide_2_description">Utilizamos los estándares de la Specialty Coffee Association para evaluar tu agua</string>
+    <string name="onboarding_slide_3_title">Optimización Premium</string>
+    <string name="onboarding_slide_3_description">Los suscriptores premium tienen acceso a la calculadora de optimización con recomendaciones personalizadas</string>
+
+    <!-- Water Optimizer -->
+    <string name="water_optimizer_title">Optimizador de Agua</string>
+    <string name="water_comparison_title">Comparación de Agua</string>
+    <string name="parameter">Parámetro</string>
+    <string name="current_water">Actual</string>
+    <string name="ideal_water">Ideal</string>
+    <string name="improvement_potential">Potencial de Mejora</string>
+    <string name="improvement_score_format">%s/10</string>
+    <string name="drop_recommendations_title">Recomendaciones de Gotas</string>
+    <string name="button_save_recipe">Guardar Receta</string>
+    <string name="button_share_recipe">Compartir Receta</string>
+    <string name="button_view_guide">Ver Guía</string>
+    <string name="share_recipe">Compartir receta</string>
+    <string name="value_with_unit_mg_l">%s mg/L</string>
+
+    <!-- Premium -->
+    <string name="premium_required_title">Función Premium</string>
+    <string name="premium_required_message">El Optimizador de Agua es una función exclusiva para suscriptores premium. ¡Suscríbete ahora para tener acceso!</string>
+    <string name="button_subscribe">Suscribirse</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="solution_preparation_title">Preparación de la Solución</string>
+    <string name="button_ok">OK</string>
+
+    <!-- Subscription Screen -->
+    <string name="subscription_title">Hazte Premium</string>
+    <string name="subscription_subtitle">Elimina anuncios y desbloquea funciones exclusivas</string>
+    <string name="monthly_subscription">Suscripción Mensual</string>
+    <string name="subscription_benefits">✓ Sin anuncios\n✓ Optimizador de Agua\n✓ Guardar recetas ilimitadas\n✓ Soporte prioritario</string>
+    <string name="donation_title">Apoya Nuestro Trabajo</string>
+    <string name="thank_you_premium_user">¡Gracias por ser usuario Premium!</string>
+    <string name="premium_status_active">Premium Activo</string>
+    <string name="premium_status_legacy">Premium (Vitalicio)</string>
+    <string name="manage_subscription">Gestionar Suscripción</string>
+
 </resources>

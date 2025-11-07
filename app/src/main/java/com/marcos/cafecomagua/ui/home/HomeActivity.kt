@@ -1,25 +1,26 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.home
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
-import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import androidx.core.content.edit
-import com.google.android.gms.ads.*
-import com.marcos.cafecomagua.databinding.ActivityWelcomeBinding
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import com.marcos.cafecomagua.ui.help.HelpActivity
+import com.marcos.cafecomagua.ui.history.HistoryActivity
+import com.marcos.cafecomagua.ui.onboarding.OnboardingActivity
+import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.ads.InterstitialAdManager
-import com.marcos.cafecomagua.analytics.AnalyticsManager
-import com.marcos.cafecomagua.analytics.analytics
-import org.tensorflow.lite.support.label.Category
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager
+import com.marcos.cafecomagua.app.analytics.analytics
+import com.marcos.cafecomagua.databinding.ActivityHomeBinding
+import com.marcos.cafecomagua.databinding.ActivityWaterInputBinding
+import com.marcos.cafecomagua.ui.waterinput.WaterInputActivity
 
 /**
  * HomeActivity (ex-WelcomeActivity)
@@ -33,7 +34,7 @@ import org.tensorflow.lite.support.label.Category
  * ✅ Integrado verificação de onboarding
  */
 class HomeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWelcomeBinding
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var interstitialManager: InterstitialAdManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +43,13 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // ✅ NOVO: Verificar se onboarding foi concluído
-        if (!OnboardingActivity.isCompleted(this)) {
+        if (!OnboardingActivity.Companion.isCompleted(this)) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
             return
         }
 
-        binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
@@ -142,7 +143,7 @@ class HomeActivity : AppCompatActivity() {
                 AnalyticsManager.Category.EVALUATION,
                 AnalyticsManager.Event.EVALUATION_STARTED
             )
-            startActivity(Intent(this, WaterInputActivity::class.java))
+            startActivity(Intent(this, ActivityWaterInputBinding::class.java))
         }
 
         // ✅ MODIFICADO: Usa intersticial inteligente (a cada 3 visualizações)
@@ -156,7 +157,7 @@ class HomeActivity : AppCompatActivity() {
             interstitialManager.showIfAvailable(
                 activity = this,
                 counterKey = "history_views",
-                frequency = InterstitialAdManager.HISTORY_VIEW_FREQUENCY
+                frequency = InterstitialAdManager.Companion.HISTORY_VIEW_FREQUENCY
             )
         }
 
@@ -175,18 +176,18 @@ class HomeActivity : AppCompatActivity() {
     private fun toggleTheme() {
         val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
         val isNightMode = resources.configuration.uiMode and
-                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
-                android.content.res.Configuration.UI_MODE_NIGHT_YES
+                Configuration.UI_MODE_NIGHT_MASK ==
+                Configuration.UI_MODE_NIGHT_YES
 
-        val newMode = if (isNightMode) MODE_NIGHT_NO else MODE_NIGHT_YES
+        val newMode = if (isNightMode) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_YES
         prefs.edit().putInt("key_theme", newMode).apply()
         AppCompatDelegate.setDefaultNightMode(newMode)
     }
 
     private fun updateThemeIcon() {
         val isNightMode = resources.configuration.uiMode and
-                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
-                android.content.res.Configuration.UI_MODE_NIGHT_YES
+                Configuration.UI_MODE_NIGHT_MASK ==
+                Configuration.UI_MODE_NIGHT_YES
 
         if (isNightMode) {
             binding.buttonToggleTheme.setImageResource(R.drawable.ic_sun_day)

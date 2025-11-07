@@ -44,5 +44,6 @@
 
     <color name="ideal_green">#4CAF50</color>
     <color name="acceptable_yellow">#FFC107</color>
+    <color name="not_recommended_red">#F44336</color>
 
 </resources>

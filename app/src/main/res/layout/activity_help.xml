@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/mainLayoutBackground"
-    tools:context=".HelpActivity">
+    tools:context=".ui.help.HelpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/border_container"

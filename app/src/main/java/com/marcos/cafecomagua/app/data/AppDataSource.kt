@@ -1,10 +1,11 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.app.data
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 
 private const val PREFS_NAME = "cafecomagua_prefs"
 private const val AVALIACOES_KEY = "avaliacoes_salvas"

@@ -1,4 +1,4 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.app.model
 
 import java.io.Serializable
 import java.util.Date

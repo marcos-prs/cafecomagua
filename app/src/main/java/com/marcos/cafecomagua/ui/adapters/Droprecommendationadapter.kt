@@ -1,11 +1,11 @@
-package com.marcos.cafecomagua.adapters
+package com.marcos.cafecomagua.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.databinding.ItemDropRecommendationBinding
-import com.marcos.cafecomagua.water.DropRecommendation
+import com.marcos.cafecomagua.app.model.DropRecommendation
 import java.text.DecimalFormat
 
 /**

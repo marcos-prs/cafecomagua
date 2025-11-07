@@ -186,4 +186,50 @@
     Therefore, the capture should be seen as an <b>assistance tool</b>. Always <b>verify the captured values</b> before proceeding with the evaluation to ensure accurate results.
 </string>
 
+    <!-- Onboarding -->
+    <string name="button_next">Next</string>
+    <string name="button_skip">Skip</string>
+    <string name="button_start">Start</string>
+    <string name="onboarding_icon">Slide icon</string>
+    <string name="onboarding_slide_1_title">Welcome to Coffee with Water</string>
+    <string name="onboarding_slide_1_description">Evaluate your water quality and discover how it affects your coffee\'s flavor</string>
+    <string name="onboarding_slide_2_title">SCA Standards-Based Analysis</string>
+    <string name="onboarding_slide_2_description">We use Specialty Coffee Association standards to evaluate your water</string>
+    <string name="onboarding_slide_3_title">Premium Optimization</string>
+    <string name="onboarding_slide_3_description">Premium subscribers have access to the optimization calculator with personalized recommendations</string>
+
+    <!-- Water Optimizer -->
+    <string name="water_optimizer_title">Water Optimizer</string>
+    <string name="water_comparison_title">Water Comparison</string>
+    <string name="parameter">Parameter</string>
+    <string name="current_water">Current</string>
+    <string name="ideal_water">Ideal</string>
+    <string name="improvement_potential">Improvement Potential</string>
+    <string name="improvement_score_format">%s/10</string>
+    <string name="drop_recommendations_title">Drop Recommendations</string>
+    <string name="button_save_recipe">Save Recipe</string>
+    <string name="button_share_recipe">Share Recipe</string>
+    <string name="button_view_guide">View Guide</string>
+    <string name="share_recipe">Share recipe</string>
+    <string name="value_with_unit_mg_l">%s mg/L</string>
+
+    <!-- Premium -->
+    <string name="premium_required_title">Premium Feature</string>
+    <string name="premium_required_message">The Water Optimizer is an exclusive feature for premium subscribers. Subscribe now for access!</string>
+    <string name="button_subscribe">Subscribe</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="solution_preparation_title">Solution Preparation</string>
+    <string name="button_ok">OK</string>
+
+    <!-- Subscription Screen -->
+    <string name="subscription_title">Go Premium</string>
+    <string name="subscription_subtitle">Remove ads and unlock exclusive features</string>
+    <string name="monthly_subscription">Monthly Subscription</string>
+    <string name="subscription_benefits">✓ No ads\n✓ Water Optimizer\n✓ Save unlimited recipes\n✓ Priority support</string>
+    <string name="donation_title">Support Our Work</string>
+    <string name="thank_you_premium_user">Thank you for being a Premium user!</string>
+    <string name="premium_status_active">Premium Active</string>
+    <string name="premium_status_legacy">Premium (Lifetime)</string>
+    <string name="manage_subscription">Manage Subscription</string>
+
 </resources>

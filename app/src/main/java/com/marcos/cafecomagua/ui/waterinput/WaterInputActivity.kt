@@ -1,5 +1,6 @@
-package com.marcos.cafecomagua
+package com.marcos.cafecomagua.ui.waterinput
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -24,11 +25,16 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.marcos.cafecomagua.databinding.ActivityMainBinding
-import com.marcos.cafecomagua.analytics.AnalyticsManager
-import com.marcos.cafecomagua.analytics.analytics
+import com.marcos.cafecomagua.app.data.AppDataSource
+import com.marcos.cafecomagua.ui.help.HelpActivity
+import com.marcos.cafecomagua.R
+import com.marcos.cafecomagua.databinding.ActivityWaterInputBinding
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager
+import com.marcos.cafecomagua.app.analytics.analytics
+import com.marcos.cafecomagua.ui.parameters.ParametersActivity
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -60,7 +66,7 @@ fun String.unaccent(): String {
  * ✅ Nome da classe atualizado
  */
 class WaterInputActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityWaterInputBinding
     private var adView: AdView? = null
     private lateinit var adContainerView: FrameLayout
     private var ocrData = mutableMapOf<String, String>()
@@ -95,7 +101,7 @@ class WaterInputActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityWaterInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         adContainerView = binding.adContainer
@@ -199,7 +205,7 @@ class WaterInputActivity : AppCompatActivity() {
             }
     }
 
-    private fun parseOcrResultAndPopulateFields(visionText: com.google.mlkit.vision.text.Text) {
+    private fun parseOcrResultAndPopulateFields(visionText: Text) {
         ocrData.clear()
         val paramsToFind = parameterList.toMutableList()
         val numberRegex = Regex("(\\d+[.,]\\d+|\\d+)")
@@ -279,8 +285,8 @@ class WaterInputActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.buttonScanLabel.setOnClickListener {
             when {
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> launchCamera()
-                else -> requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> launchCamera()
+                else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
         }
         binding.buttonHelpOcr.setOnClickListener {
