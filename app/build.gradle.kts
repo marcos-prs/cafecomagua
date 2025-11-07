@@ -63,7 +63,6 @@ dependencies {
     // Google Ads
     implementation(libs.google.gms.ads)
 
-    // ✅ CORRIGIDO: Coroutines completo
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services)
 

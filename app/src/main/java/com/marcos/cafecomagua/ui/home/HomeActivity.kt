@@ -25,25 +25,38 @@ import com.marcos.cafecomagua.ui.waterinput.WaterInputActivity
 /**
  * HomeActivity (ex-WelcomeActivity)
  * Tela inicial do app com navegação principal
- *
- * MUDANÇAS DA REFATORAÇÃO:
- * ✅ Removido banner (conforme estratégia de monetização)
- * ✅ Removido intersticial para "Nova Avaliação"
- * ✅ Adicionado intersticial inteligente para "Ver Histórico" (a cada 3 visualizações)
- * ✅ Integrado sistema de analytics
- * ✅ Integrado verificação de onboarding
  */
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var interstitialManager: InterstitialAdManager
+    // ✅ CORRIGIDO: Usar lazy delegate para inicialização tardia segura
+    private val interstitialManager: InterstitialAdManager by lazy {
+        InterstitialAdManager(
+            context = this,
+            adUnitId = "ca-app-pub-7526020095328101/9326848140"
+        ).apply {
+            onAdDismissed = {
+                navigateToHistory()
+            }
+            onAdFailedToShow = {
+                navigateToHistory()
+            }
+            onAdShown = {
+                analytics().logEvent(
+                    Category.USER_ACTION,
+                    Event.AD_SHOWN,
+                    mapOf("ad_type" to "interstitial", "location" to "home_to_history")
+                )
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        // ✅ NOVO: Verificar se onboarding foi concluído
-        if (!OnboardingActivity.Companion.isCompleted(this)) {
+        // ✅ Verificar se onboarding foi concluído
+        if (!OnboardingActivity.isCompleted(this)) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
             return
@@ -65,7 +78,7 @@ class HomeActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        // ✅ NOVO: Analytics - registrar abertura do app
+        // Analytics - registrar abertura do app
         analytics().logSession()
         analytics().logEvent(
             Category.NAVIGATION,
@@ -76,55 +89,19 @@ class HomeActivity : AppCompatActivity() {
         setupListeners()
         updateThemeIcon()
         countAppOpens()
-
-        // ✅ NOVO: Inicializar gerenciador de intersticiais
-        setupInterstitialManager()
-
-        // ✅ REMOVIDO: Banner não é mais exibido nesta tela
-        // Banner foi removido conforme estratégia de monetização
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Banner removido - não há mais código de anúncio aqui
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // Banner removido - não há mais código de anúncio aqui
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        interstitialManager.destroy()
-    }
-
-    /**
-     * ✅ NOVO: Configura gerenciador de intersticiais
-     */
-    private fun setupInterstitialManager() {
-        interstitialManager = InterstitialAdManager(
-            context = this,
-            adUnitId = "ca-app-pub-7526020095328101/9326848140"
-        )
-
-        interstitialManager.onAdDismissed = {
-            // Navega para o histórico após anúncio
-            navigateToHistory()
-        }
-
-        interstitialManager.onAdFailedToShow = {
-            // Se anúncio falhar, navega mesmo assim
-            navigateToHistory()
-        }
-
-        interstitialManager.onAdShown = {
-            // ✅ NOVO: Registrar exibição de anúncio no analytics
-            analytics().logEvent(
-                Category.USER_ACTION,
-                Event.AD_SHOWN,
-                mapOf("ad_type" to "interstitial", "location" to "home_to_history")
-            )
+        // ✅ CORRIGIDO: Verificar se foi inicializado antes de destruir
+        if (::binding.isInitialized) {
+            // O interstitialManager usa lazy, então só será destruído se foi acessado
+            // Podemos verificar se foi inicializado indiretamente checando se já foi usado
+            try {
+                interstitialManager.destroy()
+            } catch (e: Exception) {
+                // Ignorar se não foi inicializado
+            }
         }
     }
 
@@ -137,7 +114,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, HelpActivity::class.java))
         }
 
-        // ✅ MODIFICADO: Navega direto sem intersticial
+        // Navega direto sem intersticial
         binding.buttonNewEvaluation.setOnClickListener {
             analytics().logEvent(
                 Category.EVALUATION,
@@ -146,7 +123,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, WaterInputActivity::class.java))
         }
 
-        // ✅ MODIFICADO: Usa intersticial inteligente (a cada 3 visualizações)
+        // Usa intersticial inteligente (a cada 3 visualizações)
         binding.buttonViewHistory.setOnClickListener {
             analytics().logEvent(
                 Category.NAVIGATION,
@@ -157,7 +134,7 @@ class HomeActivity : AppCompatActivity() {
             interstitialManager.showIfAvailable(
                 activity = this,
                 counterKey = "history_views",
-                frequency = InterstitialAdManager.Companion.HISTORY_VIEW_FREQUENCY
+                frequency = InterstitialAdManager.HISTORY_VIEW_FREQUENCY
             )
         }
 

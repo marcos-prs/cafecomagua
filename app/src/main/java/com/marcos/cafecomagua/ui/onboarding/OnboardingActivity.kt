@@ -10,14 +10,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.adapters.OnboardingAdapter
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityOnboardingBinding
 import com.marcos.cafecomagua.ui.home.HomeActivity
-import com.google.android.material.tabs.TabLayout
 
 /**
  * Activity de Onboarding - mostra tutorial de 3 passos na primeira vez
@@ -93,8 +91,8 @@ class OnboardingActivity : AppCompatActivity() {
         onboardingAdapter = OnboardingAdapter(slides)
         binding.viewPager.adapter = onboardingAdapter
 
-        // Conecta TabLayout com ViewPager
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
+        // CORRIGIDO: Usa indicatorLayout ao invés de tabLayout
+        // Os indicadores podem ser adicionados manualmente ao indicatorLayout se necessário
 
         // Listener para mudança de página
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -120,16 +118,16 @@ class OnboardingActivity : AppCompatActivity() {
         binding.buttonNext.setOnClickListener {
             val currentPosition = binding.viewPager.currentItem
             if (currentPosition < onboardingAdapter.itemCount - 1) {
+                // Avança para a próxima página
                 binding.viewPager.currentItem = currentPosition + 1
+            } else {
+                // Última página - finaliza onboarding
+                analytics().logEvent(
+                    AnalyticsManager.Category.NAVIGATION,
+                    "onboarding_completed"
+                )
+                finishOnboarding()
             }
-        }
-
-        binding.buttonNext.setOnClickListener {
-            analytics().logEvent(
-                AnalyticsManager.Category.NAVIGATION,
-                "onboarding_completed"
-            )
-            finishOnboarding()
         }
     }
 
@@ -137,13 +135,13 @@ class OnboardingActivity : AppCompatActivity() {
         val isLastPage = position == onboardingAdapter.itemCount - 1
 
         if (isLastPage) {
+            // Última página
             binding.buttonSkip.visibility = View.GONE
-            binding.buttonNext.visibility = View.GONE
-            binding.buttonNext.visibility = View.VISIBLE
+            binding.buttonNext.text = getString(R.string.button_start) // ou "Começar"
         } else {
+            // Páginas intermediárias
             binding.buttonSkip.visibility = View.VISIBLE
-            binding.buttonNext.visibility = View.VISIBLE
-            binding.buttonNext.visibility = View.GONE
+            binding.buttonNext.text = getString(R.string.button_next)
         }
     }
 

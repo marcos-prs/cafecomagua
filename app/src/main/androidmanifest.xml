@@ -22,7 +22,6 @@
         android:theme="@style/Theme.CafeComAgua"
         tools:targetApi="31">
 
-        <!-- AÇÃO CORRIGIDA: A activity de inicialização recebe o tema do Splash -->
         <activity
             android:name="com.marcos.cafecomagua.ui.home.HomeActivity"
             android:exported="true"
@@ -32,6 +31,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- ✅ ADICIONE ESTA ACTIVITY -->
+        <activity
+            android:name="com.marcos.cafecomagua.ui.onboarding.OnboardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CafeComAgua" />
 
         <activity
             android:name="com.marcos.cafecomagua.ui.help.HelpActivity"

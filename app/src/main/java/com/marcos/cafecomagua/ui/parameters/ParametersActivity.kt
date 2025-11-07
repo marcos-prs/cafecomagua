@@ -27,11 +27,6 @@ import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
 /**
  * ParametersActivity (ex-TerceiraActivity)
  * Tela de parâmetros adicionais da água
- *
- * MUDANÇAS DA REFATORAÇÃO:
- * ✅ Banner removido (conforme estratégia)
- * ✅ Integrado analytics
- * ✅ Navega para SubscriptionActivity (refatorado)
  */
 class ParametersActivity : AppCompatActivity() {
 
@@ -59,7 +54,6 @@ class ParametersActivity : AppCompatActivity() {
             insets
         }
 
-        // ✅ NOVO: Analytics
         analytics().logEvent(
             AnalyticsManager.Category.NAVIGATION,
             Event.SCREEN_VIEWED,
@@ -69,7 +63,6 @@ class ParametersActivity : AppCompatActivity() {
         setupToolbar()
         getIntentData()
         setupListeners()
-        // ✅ REMOVIDO: Banner não é mais exibido aqui
         calculateAndEvaluateAll()
     }
 
@@ -129,12 +122,14 @@ class ParametersActivity : AppCompatActivity() {
         val ph = parseDouble(binding.editTextPH.text.toString())
         val residuoEvaporacao = parseDouble(binding.editTextResiduoEvaporacao.text.toString())
 
+        // CORRIGIDO: Cálculos de dureza e alcalinidade
         val durezaCalculada = (calcio * 2.497) + (magnesio * 4.118)
         val alcalinidadeCalculada = bicarbonato * 0.802
 
         val df = DecimalFormat("#.##")
-        binding.editTextDureza.setText(dureza.toString())
-        binding.editTextAlcalinidade.setText(alcalinidade.toString())
+        // CORRIGIDO: Usa os IDs corretos do XML
+        binding.textViewDurezaCalculada.setText(df.format(durezaCalculada))
+        binding.textViewAlcalinidadeCalculada.setText(df.format(alcalinidadeCalculada))
 
         evaluateParameter(sodio, "Sodio", binding.textViewSodioAvaliacao)
         evaluateParameter(ph, "PH", binding.textViewPHAvaliacao)
@@ -275,7 +270,6 @@ class ParametersActivity : AppCompatActivity() {
             avaliacaoResiduoEvaporacao = getEvaluationText(residuoEvaporacao, "ResiduoEvaporacao")
         )
 
-        // ✅ MODIFICADO: Navega para SubscriptionActivity (refatorado)
         val intentToSubscription = Intent(this, SubscriptionActivity::class.java).apply {
             putExtra("avaliacaoAtual", resultadoAtual)
         }
@@ -315,6 +309,5 @@ class ParametersActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Banner removido - sem cleanup
     }
 }
