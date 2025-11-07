@@ -171,6 +171,13 @@
     <string name="quality_low">Baixa</string>
     <string name="toggle_theme_description">Alternar tema</string>
 
+    <string name="drops_format">Gotas: %d</string>
+    <string name="ppm_added_format">PPM adicionado: %s</string>
+    <string name="final_value_format">Valor final: %s ppm</string>
+    <string name="status_optimal">Ideal</string>
+    <string name="status_needs_adjustment">Precisa Ajuste</string>
+    <string name="info">Informações</string>
+
     <string name="help_topic_ocr_title">Dicas para Leitura de Rótulos (OCR)</string>
     <string name="help_topic_ocr_content">
     A função de leitura de rótulos usa a câmera para acelerar o preenchimento dos dados químicos. No entanto, o sucesso da captura enfrenta grandes desafios:\n\n

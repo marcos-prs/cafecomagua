@@ -171,6 +171,13 @@
     <string name="quality_low">Low</string>
     <string name="toggle_theme_description">Toggle theme</string>
 
+    <string name="drops_format">Gotas: %d</string>
+    <string name="ppm_added_format">PPM adicionado: %s</string>
+    <string name="final_value_format">Valor final: %s ppm</string>
+    <string name="status_optimal">Ideal</string>
+    <string name="status_needs_adjustment">Precisa Ajuste</string>
+    <string name="info">Informações</string>
+
     <string name="help_topic_ocr_title">Tips for Label Reading (OCR)</string>
     <string name="help_topic_ocr_content">
     The label reading feature uses the camera to speed up entering chemical data. However, a successful capture faces significant challenges:\n\n

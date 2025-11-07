@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/mainLayoutBackground"
-    tools:context=".HistoricoAvaliacoesActivity">
+    tools:context=".HistoryActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/border_container"
@@ -57,7 +57,7 @@
             app:layout_constraintBottom_toTopOf="@id/ad_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_avaliacao_historico"/>
+            tools:listitem="@layout/item_history"/>
 
         <FrameLayout
             android:id="@+id/ad_container"

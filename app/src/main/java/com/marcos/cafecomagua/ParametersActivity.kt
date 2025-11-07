@@ -19,14 +19,23 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.marcos.cafecomagua.databinding.ActivityTerceiraBinding
+import com.marcos.cafecomagua.analytics.AnalyticsManager
+import com.marcos.cafecomagua.analytics.analytics
 import java.text.DecimalFormat
 import java.util.Date
 
-class TerceiraActivity : AppCompatActivity() {
+/**
+ * ParametersActivity (ex-TerceiraActivity)
+ * Tela de parâmetros adicionais da água
+ *
+ * MUDANÇAS DA REFATORAÇÃO:
+ * ✅ Banner removido (conforme estratégia)
+ * ✅ Integrado analytics
+ * ✅ Navega para SubscriptionActivity (refatorado)
+ */
+class ParametersActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTerceiraBinding
-    private var adView: AdView? = null
-    private lateinit var adContainerView: FrameLayout
     private var calcio: Double = 0.0
     private var magnesio: Double = 0.0
     private var bicarbonato: Double = 0.0
@@ -38,7 +47,6 @@ class TerceiraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTerceiraBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        adContainerView = binding.adContainer
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -51,10 +59,17 @@ class TerceiraActivity : AppCompatActivity() {
             insets
         }
 
+        // ✅ NOVO: Analytics
+        analytics().logEvent(
+            AnalyticsManager.Category.NAVIGATION,
+            AnalyticsManager.Event.SCREEN_VIEWED,
+            mapOf("screen_name" to "parameters")
+        )
+
         setupToolbar()
         getIntentData()
         setupListeners()
-        loadAdaptiveAd()
+        // ✅ REMOVIDO: Banner não é mais exibido aqui
         calculateAndEvaluateAll()
     }
 
@@ -100,28 +115,6 @@ class TerceiraActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadAdaptiveAd() {
-        val sharedPref = getSharedPreferences("app_settings", MODE_PRIVATE)
-        val adsRemoved = sharedPref.getBoolean("ads_removed", false)
-
-        if (!adsRemoved) {
-            MobileAds.initialize(this) {}
-            adView = AdView(this)
-            adView?.adUnitId = "ca-app-pub-7526020095328101/2958565121" // ID de teste
-            adContainerView.removeAllViews()
-            adContainerView.addView(adView)
-            val displayMetrics = resources.displayMetrics
-            val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
-            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-            adView?.setAdSize(adSize)
-            val adRequest = AdRequest.Builder().build()
-            adView?.loadAd(adRequest)
-            adContainerView.visibility = View.VISIBLE
-        } else {
-            adContainerView.visibility = View.GONE
-        }
-    }
-
     private fun setupListeners() {
         binding.editTextSodio.addTextChangedListener(createCustomTextWatcher { calculateAndEvaluateAll() })
         binding.editTextPH.addTextChangedListener(createCustomTextWatcher { calculateAndEvaluateAll() })
@@ -140,8 +133,8 @@ class TerceiraActivity : AppCompatActivity() {
         val alcalinidadeCalculada = bicarbonato * 0.802
 
         val df = DecimalFormat("#.##")
-        binding.textViewDurezaCalculada.setText(getString(R.string.unidade_mg_l, df.format(durezaCalculada)))
-        binding.textViewAlcalinidadeCalculada.setText(getString(R.string.unidade_mg_l, df.format(alcalinidadeCalculada)))
+        binding.textViewDurezaCalculada.text = getString(R.string.unidade_mg_l, df.format(durezaCalculada))
+        binding.textViewAlcalinidadeCalculada.text = getString(R.string.unidade_mg_l, df.format(alcalinidadeCalculada))
 
         evaluateParameter(sodio, "Sodio", binding.textViewSodioAvaliacao)
         evaluateParameter(ph, "PH", binding.textViewPHAvaliacao)
@@ -246,7 +239,6 @@ class TerceiraActivity : AppCompatActivity() {
         }
     }
 
-    // ✨ CORREÇÃO DO TIPO DE RETORNO
     private fun getOverallQuality(pontuacaoTotal: Double): String {
         return when {
             pontuacaoTotal >= 20.0 -> getString(R.string.quality_high)
@@ -257,7 +249,6 @@ class TerceiraActivity : AppCompatActivity() {
 
     private fun navigateToResults() {
         val pontuacaoTotal = calculateTotalScore()
-        // ✨ CORREÇÃO DA CHAMADA
         val qualidadeGeral = getOverallQuality(pontuacaoTotal)
 
         val sodio = parseDouble(binding.editTextSodio.text.toString())
@@ -284,10 +275,11 @@ class TerceiraActivity : AppCompatActivity() {
             avaliacaoResiduoEvaporacao = getEvaluationText(residuoEvaporacao, "ResiduoEvaporacao")
         )
 
-        val intentToSupport = Intent(this, SupportActivity::class.java).apply {
+        // ✅ MODIFICADO: Navega para SubscriptionActivity (refatorado)
+        val intentToSubscription = Intent(this, SubscriptionActivity::class.java).apply {
             putExtra("avaliacaoAtual", resultadoAtual)
         }
-        startActivity(intentToSupport)
+        startActivity(intentToSubscription)
     }
 
     private fun getEvaluationText(valor: Double, parametro: String): String {
@@ -321,18 +313,8 @@ class TerceiraActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        adView?.pause()
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        adView?.resume()
-    }
-
     override fun onDestroy() {
-        adView?.destroy()
         super.onDestroy()
+        // Banner removido - sem cleanup
     }
 }

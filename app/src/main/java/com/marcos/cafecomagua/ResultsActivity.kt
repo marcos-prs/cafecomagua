@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.DecimalFormat
 
-class ResultadosActivity : AppCompatActivity() {
+class ResultsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultadosBinding
     private var avaliacaoAtual: AvaliacaoResultado? = null
@@ -127,7 +127,7 @@ class ResultadosActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val reviewInfo: ReviewInfo = manager.requestReviewFlow().await()
-                    manager.launchReviewFlow(this@ResultadosActivity, reviewInfo).await()
+                    manager.launchReviewFlow(this@ResultsActivity, reviewInfo).await()
                     // Marca que já foi solicitado para não pedir novamente.
                     prefs.edit { putBoolean("already_requested", true) }
                 } catch (e: Exception) {
@@ -173,7 +173,7 @@ class ResultadosActivity : AppCompatActivity() {
             finish()
         }
         binding.buttonVerHistorico.setOnClickListener {
-            startActivity(Intent(this, HistoricoAvaliacoesActivity::class.java))
+            startActivity(Intent(this, HistoryActivity::class.java))
         }
     }
 

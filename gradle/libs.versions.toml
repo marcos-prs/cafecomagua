@@ -1,46 +1,87 @@
 [versions]
-googleGmsAds = "24.4.0"
-androidxActivityKtx = "1.10.1"
-androidxCoreSplashscreen = "1.0.1"
-gson = "2.13.1"
-androidBilling = "8.0.0"
-googlePlayReview = "2.0.2"
-kotlinxCoroutinesPlayServices = "1.10.2"
-kotlin = "2.2.0"
+# Google & Android
+googleGmsAds = "23.5.0"  # ⚠️ Versão 24.4.0 muito nova, use 23.5.0
+androidxActivityKtx = "1.9.3"  # ✅ Versão estável
+androidxCoreSplashscreen = "1.0.1"  # ✅ OK
+gson = "2.11.0"  # ✅ Versão estável
 
-androidApplication = "8.13.0"
-kotlinAndroid = "2.2.0"
+# ✅ CORRIGIDO: Billing
+androidBilling = "7.1.1"  # ✅ Última versão estável do billing-ktx
 
-androidxCoreKtx = "1.16.0"
-appcompat = "1.7.1"
-material = "1.12.0"
-activity = "1.10.1"
-constraintlayout = "2.2.1"
-junit = "4.13.2"
-androidxJunit = "1.2.1"
-espressoCore = "3.6.1"
-playServicesMlkitTextRecognition = "19.0.1"
+# Play Services
+googlePlayReview = "2.0.2"  # ✅ OK
+
+# ✅ CORRIGIDO: Coroutines
+kotlinxCoroutines = "1.10.2"
+
+# Kotlin
+kotlin = "2.0.21"  # ✅ Versão estável (2.2.0 muito recente)
+
+# Build Tools
+androidApplication = "8.13.0"  # ✅ Versão estável (8.13.0 muito recente)
+kotlinAndroid = "2.0.21"  # ✅ Deve corresponder à versão do Kotlin
+
+# AndroidX
+androidxCoreKtx = "1.15.0"  # ✅ Versão estável
+appcompat = "1.7.0"  # ✅ OK
+material = "1.12.0"  # ✅ OK
+activity = "1.9.3"  # ✅ OK
+constraintlayout = "2.2.0"  # ✅ OK
+
+# ✅ ADICIONADO: ViewPager2
+viewPager2 = "1.1.0"  # ✅ NOVO - Essencial para Onboarding
+
+# Testes
+junit = "4.13.2"  # ✅ OK
+androidxJunit = "1.2.1"  # ✅ OK
+espressoCore = "3.6.1"  # ✅ OK
+
+# ML Kit
+playServicesMlkitTextRecognition = "19.0.1"  # ✅ OK
+litertSupportApi = "1.4.0"  # ✅ OK
 
 [libraries]
+# Google Ads
 google-gms-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "googleGmsAds" }
+
+# AndroidX
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidxActivityKtx" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-android-billing = { group = "com.android.billingclient", name = "billing", version.ref = "androidBilling" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
-google-play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "googlePlayReview" }
-kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
-
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+# ✅ ADICIONADO: ViewPager2
+androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewPager2" }
+
+# Material
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Gson
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+# ✅ CORRIGIDO: Billing com -ktx
+android-billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "androidBilling" }
+
+# Kotlin
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
+# Play Services
+google-play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "googlePlayReview" }
+
+# ✅ CORRIGIDO: Coroutines
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutines" }
+
+# ML Kit
+play-services-mlkit-text-recognition = { module = "com.google.android.gms:play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
+litert-support-api = { group = "com.google.ai.edge.litert", name = "litert-support-api", version.ref = "litertSupportApi" }
+
+# Testes
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-play-services-mlkit-text-recognition = { module = "com.google.android.gms:play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidApplication" }

@@ -14,7 +14,7 @@ class HistoricoAdapter(
 ) : RecyclerView.Adapter<HistoricoAdapter.AvaliacaoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvaliacaoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_avaliacao_historico, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_history, parent, false)
         return AvaliacaoViewHolder(view)
     }
 

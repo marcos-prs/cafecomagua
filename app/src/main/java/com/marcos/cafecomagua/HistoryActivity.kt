@@ -17,7 +17,7 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.marcos.cafecomagua.databinding.ActivityHistoricoAvaliacoesBinding
 
-class HistoricoAvaliacoesActivity : AppCompatActivity() {
+class HistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHistoricoAvaliacoesBinding
     private lateinit var adapter: HistoricoAdapter
@@ -56,7 +56,7 @@ class HistoricoAvaliacoesActivity : AppCompatActivity() {
         binding.recyclerViewHistorico.layoutManager = LinearLayoutManager(this)
         val avaliacoesSalvas = AppDataSource.getAvaliacoes()
         adapter = HistoricoAdapter(avaliacoesSalvas) { avaliacaoClicada ->
-            val intent = Intent(this, ResultadosActivity::class.java).apply {
+            val intent = Intent(this, ResultsActivity::class.java).apply {
                 putExtra("avaliacaoAtual", avaliacaoClicada)
             }
             startActivity(intent)

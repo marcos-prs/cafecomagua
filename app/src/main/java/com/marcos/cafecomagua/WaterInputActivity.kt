@@ -27,6 +27,8 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.marcos.cafecomagua.databinding.ActivityMainBinding
+import com.marcos.cafecomagua.analytics.AnalyticsManager
+import com.marcos.cafecomagua.analytics.analytics
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -48,7 +50,16 @@ fun String.unaccent(): String {
     return result
 }
 
-class MainActivity : AppCompatActivity() {
+/**
+ * WaterInputActivity (ex-MainActivity)
+ * Tela de entrada de dados da água
+ *
+ * MUDANÇAS DA REFATORAÇÃO:
+ * ✅ Banner mantido (conforme estratégia)
+ * ✅ Integrado analytics (rastreamento de OCR)
+ * ✅ Nome da classe atualizado
+ */
+class WaterInputActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var adView: AdView? = null
     private lateinit var adContainerView: FrameLayout
@@ -100,6 +111,13 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        // ✅ NOVO: Analytics
+        analytics().logEvent(
+            AnalyticsManager.Category.NAVIGATION,
+            AnalyticsManager.Event.SCREEN_VIEWED,
+            mapOf("screen_name" to "water_input")
+        )
+
         setupToolbar()
         loadAdaptiveAd()
         setupAdapters()
@@ -150,35 +168,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ✨ FUNÇÃO SUBSTITUÍDA
     private fun recognizeText(image: InputImage) {
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         binding.buttonScanLabel.isEnabled = false
         Toast.makeText(this, getString(R.string.toast_ocr_analyzing), Toast.LENGTH_SHORT).show()
+
+        // ✅ NOVO: Analytics - registrar tentativa de OCR
+        analytics().logEvent(
+            AnalyticsManager.Category.USER_ACTION,
+            AnalyticsManager.Event.OCR_ATTEMPTED
+        )
+
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 binding.buttonScanLabel.isEnabled = true
                 Log.d("OCR_RESULT_RAW", visionText.text)
-                // Passando o objeto 'visionText' completo, e não apenas o texto bruto.
                 parseOcrResultAndPopulateFields(visionText)
             }
             .addOnFailureListener { e ->
                 binding.buttonScanLabel.isEnabled = true
                 Toast.makeText(this, getString(R.string.toast_ocr_failure, e.message), Toast.LENGTH_LONG).show()
                 Log.e("OCR_ERROR", "Text recognition failed", e)
+
+                // ✅ NOVO: Analytics - registrar falha do OCR
+                analytics().logEvent(
+                    AnalyticsManager.Category.USER_ACTION,
+                    AnalyticsManager.Event.OCR_FAILED,
+                    mapOf("error" to (e.message ?: "unknown"))
+                )
             }
     }
 
-    // ✨ FUNÇÃO SUBSTITUÍDA
     private fun parseOcrResultAndPopulateFields(visionText: com.google.mlkit.vision.text.Text) {
         ocrData.clear()
         val paramsToFind = parameterList.toMutableList()
-        // Regex para encontrar números, incluindo decimais com ponto ou vírgula.
         val numberRegex = Regex("(\\d+[.,]\\d+|\\d+)")
 
         Log.d("OCR_TABLE_PARSER", "--- INICIANDO ANÁLISE ESTRUTURADA ---")
 
-        // Nova lógica: Itera sobre os blocos e linhas reconhecidos pelo ML Kit.
         for (block in visionText.textBlocks) {
             for (line in block.lines) {
                 val lineText = line.text.unaccent().lowercase()
@@ -186,7 +213,6 @@ class MainActivity : AppCompatActivity() {
 
                 var foundParam: ParameterInfo? = null
 
-                // 1. Encontra qual parâmetro (se houver) está nesta linha
                 for (param in paramsToFind) {
                     if (param.keywords.any { keyword -> lineText.contains(keyword.unaccent().lowercase()) }) {
                         foundParam = param
@@ -194,36 +220,40 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                // 2. Se um parâmetro foi encontrado, procura por um número NA MESMA LINHA
                 if (foundParam != null) {
-                    // Pega o último número encontrado na linha, uma boa heurística para colunas alinhadas à direita
                     val numberMatch = numberRegex.findAll(lineText)
                         .map { it.value.replace(",", ".") }
                         .lastOrNull()
 
                     if (numberMatch != null) {
                         ocrData[foundParam.canonicalName] = numberMatch
-                        paramsToFind.remove(foundParam) // Remove para não procurar de novo
+                        paramsToFind.remove(foundParam)
                         Log.d("OCR_TABLE_PARSER", "SUCESSO: '${foundParam.canonicalName}' -> '$numberMatch'")
                     }
                 }
             }
         }
 
-        // Popula os campos do formulário com os dados encontrados
         ocrData["bicarbonato"]?.let { binding.editTextBicarbonato.setText(it) }
         ocrData["calcio"]?.let { binding.editTextCalcio.setText(it) }
         ocrData["magnesio"]?.let { binding.editTextMagnesio.setText(it) }
 
         if (ocrData.isNotEmpty()) {
             Toast.makeText(this, getString(R.string.toast_ocr_success), Toast.LENGTH_LONG).show()
+
+            // ✅ NOVO: Analytics - registrar sucesso do OCR
+            analytics().logEvent(
+                AnalyticsManager.Category.USER_ACTION,
+                AnalyticsManager.Event.OCR_SUCCESS,
+                mapOf("params_found" to ocrData.size)
+            )
         } else {
             Toast.makeText(this, getString(R.string.toast_ocr_no_params), Toast.LENGTH_LONG).show()
         }
         Log.d("OCR_TABLE_PARSER", "--- ANÁLISE FINALIZADA ---")
     }
 
-
+    // ✅ Banner mantido nesta tela conforme estratégia
     private fun loadAdaptiveAd() {
         val sharedPref = getSharedPreferences("app_settings", MODE_PRIVATE)
         val adsRemoved = sharedPref.getBoolean("ads_removed", false)
@@ -309,7 +339,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToNextScreen() {
-        val intent = Intent(this, TerceiraActivity::class.java).apply {
+        val intent = Intent(this, ParametersActivity::class.java).apply {
             putExtra("nomeAgua", binding.editTextMarca.text.toString().trim())
             putExtra("fonteAgua", binding.editTextFonte.text.toString().trim())
             putExtra("bicarbonato", binding.editTextBicarbonato.text.toString().toDoubleOrNull() ?: 0.0)

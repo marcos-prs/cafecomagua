@@ -39,7 +39,6 @@ android {
     }
 }
 
-// Configuração nova para substituir o kotlinOptions
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -47,22 +46,36 @@ kotlin {
 }
 
 dependencies {
+    // Core
     implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.gson)
+
+    // ✅ CORRIGIDO: Billing com -ktx
+    implementation(libs.android.billing)
+    implementation(libs.google.play.review.ktx)
+
+    // Google Ads
+    implementation(libs.google.gms.ads)
+
+    // ✅ CORRIGIDO: Coroutines completo
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    // ✅ ADICIONADO: ViewPager2
+    implementation(libs.androidx.viewpager2)
+
+    // ML Kit
+    implementation(libs.play.services.mlkit.text.recognition)
+    implementation(libs.litert.support.api)
+
+    // Testes
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.google.gms.ads)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.gson)
-    implementation(libs.android.billing)
-    implementation(libs.google.play.review.ktx)
-    implementation(libs.kotlinx.coroutines.play.services)
-    implementation(libs.play.services.mlkit.text.recognition)
-
 }
