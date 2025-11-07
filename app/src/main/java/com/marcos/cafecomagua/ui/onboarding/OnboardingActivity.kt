@@ -17,6 +17,7 @@ import com.marcos.cafecomagua.app.analytics.AnalyticsManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityOnboardingBinding
 import com.marcos.cafecomagua.ui.home.HomeActivity
+import com.google.android.material.tabs.TabLayout
 
 /**
  * Activity de Onboarding - mostra tutorial de 3 passos na primeira vez
