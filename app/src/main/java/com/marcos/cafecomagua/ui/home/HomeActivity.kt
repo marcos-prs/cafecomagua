@@ -16,10 +16,10 @@ import com.marcos.cafecomagua.ui.history.HistoryActivity
 import com.marcos.cafecomagua.ui.onboarding.OnboardingActivity
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.ads.InterstitialAdManager
-import com.marcos.cafecomagua.app.analytics.AnalyticsManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityHomeBinding
-import com.marcos.cafecomagua.databinding.ActivityWaterInputBinding
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Category
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
 import com.marcos.cafecomagua.ui.waterinput.WaterInputActivity
 
 /**
@@ -68,8 +68,8 @@ class HomeActivity : AppCompatActivity() {
         // ✅ NOVO: Analytics - registrar abertura do app
         analytics().logSession()
         analytics().logEvent(
-            AnalyticsManager.Category.NAVIGATION,
-            AnalyticsManager.Event.SCREEN_VIEWED,
+            Category.NAVIGATION,
+            Event.SCREEN_VIEWED,
             mapOf("screen_name" to "home")
         )
 
@@ -121,8 +121,8 @@ class HomeActivity : AppCompatActivity() {
         interstitialManager.onAdShown = {
             // ✅ NOVO: Registrar exibição de anúncio no analytics
             analytics().logEvent(
-                AnalyticsManager.Category.USER_ACTION,
-                AnalyticsManager.Event.AD_SHOWN,
+                Category.USER_ACTION,
+                Event.AD_SHOWN,
                 mapOf("ad_type" to "interstitial", "location" to "home_to_history")
             )
         }
@@ -131,7 +131,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.buttonHelp.setOnClickListener {
             analytics().logEvent(
-                AnalyticsManager.Category.NAVIGATION,
+                Category.NAVIGATION,
                 "help_opened"
             )
             startActivity(Intent(this, HelpActivity::class.java))
@@ -140,16 +140,16 @@ class HomeActivity : AppCompatActivity() {
         // ✅ MODIFICADO: Navega direto sem intersticial
         binding.buttonNewEvaluation.setOnClickListener {
             analytics().logEvent(
-                AnalyticsManager.Category.EVALUATION,
-                AnalyticsManager.Event.EVALUATION_STARTED
+                Category.EVALUATION,
+                Event.EVALUATION_STARTED
             )
-            startActivity(Intent(this, ActivityWaterInputBinding::class.java))
+            startActivity(Intent(this, WaterInputActivity::class.java))
         }
 
         // ✅ MODIFICADO: Usa intersticial inteligente (a cada 3 visualizações)
         binding.buttonViewHistory.setOnClickListener {
             analytics().logEvent(
-                AnalyticsManager.Category.NAVIGATION,
+                Category.NAVIGATION,
                 "history_button_clicked"
             )
 

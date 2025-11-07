@@ -25,52 +25,51 @@ class AnalyticsManager private constructor(private val context: Context) {
                 }
             }
         }
+    }
 
-        // Categorias de eventos
-        object Category {
-            const val USER_ACTION = "user_action"
-            const val NAVIGATION = "navigation"
-            const val EVALUATION = "evaluation"
-            const val MONETIZATION = "monetization"
-            const val PREMIUM = "premium"
-        }
+    // ✅ MOVER ESTES OBJECTS PARA FORA DO COMPANION OBJECT
+    object Category {
+        const val USER_ACTION = "user_action"
+        const val NAVIGATION = "navigation"
+        const val EVALUATION = "evaluation"
+        const val MONETIZATION = "monetization"
+        const val PREMIUM = "premium"
+    }
 
-        // Eventos específicos
-        object Event {
-            // Navegação
-            const val APP_OPENED = "app_opened"
-            const val SCREEN_VIEWED = "screen_viewed"
+    object Event {
+        // Navegação
+        const val APP_OPENED = "app_opened"
+        const val SCREEN_VIEWED = "screen_viewed"
 
-            // Avaliações
-            const val EVALUATION_STARTED = "evaluation_started"
-            const val EVALUATION_COMPLETED = "evaluation_completed"
-            const val EVALUATION_SAVED = "evaluation_saved"
-            const val HISTORY_VIEWED = "history_viewed"
+        // Avaliações
+        const val EVALUATION_STARTED = "evaluation_started"
+        const val EVALUATION_COMPLETED = "evaluation_completed"
+        const val EVALUATION_SAVED = "evaluation_saved"
+        const val HISTORY_VIEWED = "history_viewed"
 
-            // OCR
-            const val OCR_ATTEMPTED = "ocr_attempted"
-            const val OCR_SUCCESS = "ocr_success"
-            const val OCR_FAILED = "ocr_failed"
+        // OCR
+        const val OCR_ATTEMPTED = "ocr_attempted"
+        const val OCR_SUCCESS = "ocr_success"
+        const val OCR_FAILED = "ocr_failed"
 
-            // Premium
-            const val PREMIUM_FEATURE_ATTEMPTED = "premium_feature_attempted"
-            const val WATER_OPTIMIZER_OPENED = "water_optimizer_opened"
-            const val RECIPE_SAVED = "recipe_saved"
-            const val RECIPE_SHARED = "recipe_shared"
+        // Premium
+        const val PREMIUM_FEATURE_ATTEMPTED = "premium_feature_attempted"
+        const val WATER_OPTIMIZER_OPENED = "water_optimizer_opened"
+        const val RECIPE_SAVED = "recipe_saved"
+        const val RECIPE_SHARED = "recipe_shared"
 
-            // Monetização
-            const val SUBSCRIPTION_SCREEN_VIEWED = "subscription_screen_viewed"
-            const val SUBSCRIPTION_BUTTON_CLICKED = "subscription_button_clicked"
-            const val DONATION_BUTTON_CLICKED = "donation_button_clicked"
-            const val PURCHASE_COMPLETED = "purchase_completed"
-            const val PURCHASE_FAILED = "purchase_failed"
+        // Monetização
+        const val SUBSCRIPTION_SCREEN_VIEWED = "subscription_screen_viewed"
+        const val SUBSCRIPTION_BUTTON_CLICKED = "subscription_button_clicked"
+        const val DONATION_BUTTON_CLICKED = "donation_button_clicked"
+        const val PURCHASE_COMPLETED = "purchase_completed"
+        const val PURCHASE_FAILED = "purchase_failed"
 
-            // Anúncios
-            const val AD_LOADED = "ad_loaded"
-            const val AD_SHOWN = "ad_shown"
-            const val AD_CLICKED = "ad_clicked"
-            const val AD_FAILED = "ad_failed"
-        }
+        // Anúncios
+        const val AD_LOADED = "ad_loaded"
+        const val AD_SHOWN = "ad_shown"
+        const val AD_CLICKED = "ad_clicked"
+        const val AD_FAILED = "ad_failed"
     }
 
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

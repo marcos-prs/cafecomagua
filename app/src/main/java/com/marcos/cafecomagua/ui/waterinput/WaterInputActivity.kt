@@ -40,6 +40,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
 
 data class ParameterInfo(
     val canonicalName: String,
@@ -120,7 +121,7 @@ class WaterInputActivity : AppCompatActivity() {
         // ✅ NOVO: Analytics
         analytics().logEvent(
             AnalyticsManager.Category.NAVIGATION,
-            AnalyticsManager.Event.SCREEN_VIEWED,
+            Event.SCREEN_VIEWED,
             mapOf("screen_name" to "water_input")
         )
 
@@ -182,7 +183,7 @@ class WaterInputActivity : AppCompatActivity() {
         // ✅ NOVO: Analytics - registrar tentativa de OCR
         analytics().logEvent(
             AnalyticsManager.Category.USER_ACTION,
-            AnalyticsManager.Event.OCR_ATTEMPTED
+            Event.OCR_ATTEMPTED
         )
 
         recognizer.process(image)
@@ -199,7 +200,7 @@ class WaterInputActivity : AppCompatActivity() {
                 // ✅ NOVO: Analytics - registrar falha do OCR
                 analytics().logEvent(
                     AnalyticsManager.Category.USER_ACTION,
-                    AnalyticsManager.Event.OCR_FAILED,
+                    Event.OCR_FAILED,
                     mapOf("error" to (e.message ?: "unknown"))
                 )
             }
@@ -250,7 +251,7 @@ class WaterInputActivity : AppCompatActivity() {
             // ✅ NOVO: Analytics - registrar sucesso do OCR
             analytics().logEvent(
                 AnalyticsManager.Category.USER_ACTION,
-                AnalyticsManager.Event.OCR_SUCCESS,
+                Event.OCR_SUCCESS,
                 mapOf("params_found" to ocrData.size)
             )
         } else {

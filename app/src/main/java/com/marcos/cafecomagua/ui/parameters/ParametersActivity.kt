@@ -22,6 +22,7 @@ import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityParametersBinding
 import java.text.DecimalFormat
 import java.util.Date
+import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
 
 /**
  * ParametersActivity (ex-TerceiraActivity)
@@ -61,7 +62,7 @@ class ParametersActivity : AppCompatActivity() {
         // ✅ NOVO: Analytics
         analytics().logEvent(
             AnalyticsManager.Category.NAVIGATION,
-            AnalyticsManager.Event.SCREEN_VIEWED,
+            Event.SCREEN_VIEWED,
             mapOf("screen_name" to "parameters")
         )
 
@@ -132,8 +133,8 @@ class ParametersActivity : AppCompatActivity() {
         val alcalinidadeCalculada = bicarbonato * 0.802
 
         val df = DecimalFormat("#.##")
-        binding.textViewDurezaCalculada.text = getString(com.marcos.cafecomagua.R.string.unidade_mg_l, df.format(durezaCalculada))
-        binding.textViewAlcalinidadeCalculada.text = getString(com.marcos.cafecomagua.R.string.unidade_mg_l, df.format(alcalinidadeCalculada))
+        binding.editTextDureza.setText(dureza.toString())
+        binding.editTextAlcalinidade.setText(alcalinidade.toString())
 
         evaluateParameter(sodio, "Sodio", binding.textViewSodioAvaliacao)
         evaluateParameter(ph, "PH", binding.textViewPHAvaliacao)

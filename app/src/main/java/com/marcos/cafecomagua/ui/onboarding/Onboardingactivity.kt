@@ -75,17 +75,17 @@ class OnboardingActivity : AppCompatActivity() {
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_1),
                 message = getString(R.string.onboarding_message_1),
-                imageRes = R.drawable.onboarding_welcome
+                imageRes = R.drawable.ic_coffee
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_2),
                 message = getString(R.string.onboarding_message_2),
-                imageRes = R.drawable.onboarding_sca
+                imageRes = R.drawable.ic_star
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_3),
                 message = getString(R.string.onboarding_message_3),
-                imageRes = R.drawable.onboarding_premium
+                imageRes = R.drawable.ic_premium
             )
         )
 
@@ -123,7 +123,7 @@ class OnboardingActivity : AppCompatActivity() {
             }
         }
 
-        binding.buttonGetStarted.setOnClickListener {
+        binding.buttonNext.setOnClickListener {
             analytics().logEvent(
                 AnalyticsManager.Category.NAVIGATION,
                 "onboarding_completed"
@@ -138,11 +138,11 @@ class OnboardingActivity : AppCompatActivity() {
         if (isLastPage) {
             binding.buttonSkip.visibility = View.GONE
             binding.buttonNext.visibility = View.GONE
-            binding.buttonGetStarted.visibility = View.VISIBLE
+            binding.buttonNext.visibility = View.VISIBLE
         } else {
             binding.buttonSkip.visibility = View.VISIBLE
             binding.buttonNext.visibility = View.VISIBLE
-            binding.buttonGetStarted.visibility = View.GONE
+            binding.buttonNext.visibility = View.GONE
         }
     }
 

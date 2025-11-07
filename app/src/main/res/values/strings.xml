@@ -197,6 +197,13 @@
     <string name="onboarding_slide_2_description">Utilizamos os padrões da Specialty Coffee Association para avaliar sua água</string>
     <string name="onboarding_slide_3_title">Otimização Premium</string>
     <string name="onboarding_slide_3_description">Assinantes premium têm acesso à calculadora de otimização com recomendações personalizadas</string>
+    <string name="onboarding_title_1">Bem-vindo ao Café com Água</string>
+    <string name="onboarding_message_1">Avalie a qualidade da sua água e descubra como ela afeta o sabor do seu café</string>
+    <string name="onboarding_title_2">Padrões SCA</string>
+    <string name="onboarding_message_2">Utilizamos os padrões da Specialty Coffee Association para análise profissional</string>
+    <string name="onboarding_title_3">Recursos Premium</string>
+    <string name="onboarding_message_3">Desbloqueie funcionalidades avançadas e otimize sua experiência</string>
+
 
     <!-- Water Optimizer -->
     <string name="water_optimizer_title">Otimizador de Água</string>

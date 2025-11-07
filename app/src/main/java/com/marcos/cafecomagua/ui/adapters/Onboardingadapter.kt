@@ -20,8 +20,8 @@ class OnboardingAdapter(
         fun bind(slide: OnboardingSlide) {
             binding.apply {
                 textTitle.text = slide.title
-                textMessage.text = slide.message
-                imageIllustration.setImageResource(slide.imageRes)
+                textDescription.text = slide.message
+                imageIcon.setImageResource(slide.imageRes)
             }
         }
     }

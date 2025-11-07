@@ -156,8 +156,8 @@ class HistoryAdapterWithAds(
         fun bind(avaliacao: AvaliacaoResultado, onClick: (AvaliacaoResultado) -> Unit) {
             val df = DecimalFormat("#.##")
 
-            binding.textViewNomeAgua.text = avaliacao.nomeAgua
-            binding.textViewFonteAgua.text = context.getString(
+            binding.textViewAgua.text = avaliacao.nomeAgua
+            binding.textViewFonte.text = context.getString(
                 R.string.label_historico_fonte,
                 avaliacao.fonteAgua
             )
@@ -173,7 +173,7 @@ class HistoryAdapterWithAds(
                 else -> avaliacao.qualidadeGeral
             }
 
-            binding.textViewQualidade.text = context.getString(
+            binding.textViewQualidadeGeral.text = context.getString(
                 R.string.label_historico_qualidade,
                 qualidadeText
             )

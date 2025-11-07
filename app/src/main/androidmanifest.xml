@@ -39,7 +39,7 @@
             android:theme="@style/Theme.CafeComAgua" />
 
         <activity
-            android:name="com.marcos.cafecomagua.WaterInput"
+            android:name="com.marcos.cafecomagua.ui.waterinput.WaterInputActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua"
             android:windowSoftInputMode="adjustPan"/>
@@ -61,7 +61,7 @@
             android:theme="@style/Theme.CafeComAgua" />
 
         <activity
-            android:name="com.marcos.cafecomagua.SupportActivity"
+            android:name="com.marcos.cafecomagua.app.billing.SubscriptionActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
 
