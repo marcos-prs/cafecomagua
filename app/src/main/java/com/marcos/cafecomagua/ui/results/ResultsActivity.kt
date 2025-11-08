@@ -38,7 +38,6 @@ class ResultsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultsBinding
     private var avaliacaoAtual: AvaliacaoResultado? = null
-    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -60,7 +59,6 @@ class ResultsActivity : AppCompatActivity() {
         setupToolbar()
         getEvaluationData()
         setupListeners()
-        loadAdaptiveAd()
         requestReviewIfAppropriate()
     }
 
@@ -143,26 +141,6 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadAdaptiveAd() {
-        val sharedPref = getSharedPreferences("app_settings", MODE_PRIVATE)
-        val adsRemoved = sharedPref.getBoolean("ads_removed", false)
-
-        if (!adsRemoved) {
-            MobileAds.initialize(this) {}
-            adView = AdView(this)
-            binding.adContainer.addView(adView)
-            val displayMetrics = resources.displayMetrics
-            val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
-            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-            adView?.setAdSize(adSize)
-            adView?.adUnitId = "ca-app-pub-7526020095328101/4790521543"
-            val adRequest = AdRequest.Builder().build()
-            adView?.loadAd(adRequest)
-        } else {
-            binding.adContainer.isVisible = false
-        }
-    }
-
     private fun setupListeners() {
         binding.buttonSalvarAvaliacao.setOnClickListener {
             avaliacaoAtual?.let { avaliacao ->
@@ -215,10 +193,5 @@ class ResultsActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroy() {
-        adView?.destroy()
-        super.onDestroy()
     }
 }

@@ -13,13 +13,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.marcos.cafecomagua.ui.help.HelpActivity
 import com.marcos.cafecomagua.ui.history.HistoryActivity
-import com.marcos.cafecomagua.ui.onboarding.OnboardingActivity
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.ads.InterstitialAdManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityHomeBinding
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Category
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
+import com.marcos.cafecomagua.ui.onboarding.OnboardingActivity
 import com.marcos.cafecomagua.ui.waterinput.WaterInputActivity
 
 /**

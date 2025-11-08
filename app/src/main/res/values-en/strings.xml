@@ -237,5 +237,24 @@
     <string name="premium_status_active">Premium Active</string>
     <string name="premium_status_legacy">Premium (Lifetime)</string>
     <string name="manage_subscription">Manage Subscription</string>
+    <string name="subscribe_now">Assine agora</string>
+
+    <!-- Onboarding - Slide 4 (Premium) -->
+    <string name="onboarding_title_4">Water Optimizer</string>
+    <string name="onboarding_message_4">Obtenha recomendações personalizadas de gotas minerais para transformar sua água em ideal para café</string>
+
+    <!-- Premium Features -->
+    <string name="premium_feature">Premium</string>
+    <string name="premium_feature_1">Cálculo automático de dosagem de gotas</string>
+    <string name="premium_feature_2">Comparação detalhada com padrões SCA</string>
+    <string name="premium_feature_3">Salvar e compartilhar receitas</string>
+
+    <!-- Screenshot Placeholder -->
+    <string name="screenshot_placeholder_title">Adicione uma Screenshot Aqui</string>
+    <string name="screenshot_placeholder_message">Capture a tela do Water Optimizer\ne substitua este placeholder</string>
+    <string name="water_optimizer_preview">Prévia do Water Optimizer</string>
+    <string name="water_optimizer_icon">Ícone do Water Optimizer</string>
+    <string name="feature_icon">Ícone de recurso</string>
+
 
 </resources>

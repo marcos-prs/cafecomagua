@@ -24,8 +24,8 @@ import com.marcos.cafecomagua.databinding.ActivityHistoryBinding
 class HistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHistoryBinding
+    private val AD_UNIT_ID = "ca-app-pub-7526020095328101/9525187132" // ID Nativo de Teste
     private lateinit var adapter: HistoricoAdapter
-    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -47,7 +47,6 @@ class HistoryActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
-        loadAdaptiveAd()
     }
 
     private fun setupToolbar() {
@@ -59,51 +58,22 @@ class HistoryActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         binding.recyclerViewHistorico.layoutManager = LinearLayoutManager(this)
         val avaliacoesSalvas = AppDataSource.getAvaliacoes()
-        adapter = HistoricoAdapter(avaliacoesSalvas) { avaliacaoClicada ->
-            val intent = Intent(this, ResultsActivity::class.java).apply {
-                putExtra("avaliacaoAtual", avaliacaoClicada)
+
+        // Inicializa o Adapter com a lista e o Ad Unit ID
+        adapter = HistoricoAdapter(
+            context = this,
+            avaliacoes = avaliacoesSalvas,
+            adUnitId = AD_UNIT_ID,
+            onItemClick = { avaliacaoClicada ->
+                val intent = Intent(this, ResultsActivity::class.java).apply {
+                    putExtra("avaliacaoAtual", avaliacaoClicada)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
-        }
+        )
         binding.recyclerViewHistorico.adapter = adapter
     }
 
-    private fun loadAdaptiveAd() {
-        val sharedPref = getSharedPreferences("app_settings", MODE_PRIVATE)
-        val adsRemoved = sharedPref.getBoolean("ads_removed", false)
-
-        if (!adsRemoved) {
-            MobileAds.initialize(this) {}
-            adView = AdView(this).apply {
-                adUnitId = "ca-app-pub-7526020095328101/3457807317" // ID de teste
-            }
-            binding.adContainer.removeAllViews()
-            binding.adContainer.addView(adView)
-            val adWidth = (resources.displayMetrics.widthPixels / resources.displayMetrics.density).toInt()
-            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-            adView?.setAdSize(adSize)
-            val adRequest = AdRequest.Builder().build()
-            adView?.loadAd(adRequest)
-            binding.adContainer.visibility = View.VISIBLE
-        } else {
-            binding.adContainer.visibility = View.GONE
-        }
-    }
-
-    override fun onPause() {
-        adView?.pause()
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        adView?.resume()
-    }
-
-    override fun onDestroy() {
-        adView?.destroy()
-        super.onDestroy()
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.global_menu, menu)

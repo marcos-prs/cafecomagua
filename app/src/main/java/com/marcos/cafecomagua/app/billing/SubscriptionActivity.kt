@@ -13,17 +13,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.databinding.ActivitySubscriptionBinding
+import com.marcos.cafecomagua.databinding.ItemNativeAdBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import com.marcos.cafecomagua.ui.results.ResultsActivity
 
 /**
- * Activity refatorada para gerenciar assinaturas e doações
- * Substitui o SupportActivity com modelo de assinatura
+ * Activity refatorada para gerenciar assinaturas
+ * Foco em conversão para assinatura premium
  */
 class SubscriptionActivity : AppCompatActivity() {
 
@@ -31,11 +36,13 @@ class SubscriptionActivity : AppCompatActivity() {
     private lateinit var subscriptionManager: SubscriptionManager
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var avaliacaoAtual: AvaliacaoResultado? = null
+    private var nativeAd: NativeAd? = null
 
     companion object {
         private const val PREFS_NAME = "app_settings"
         private const val PREF_SUPPORT_VIEW_COUNT = "support_view_count"
         private const val SUPPORT_VIEW_FREQUENCY = 13
+        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110" // Test ID - substitua pelo seu
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +81,7 @@ class SubscriptionActivity : AppCompatActivity() {
         setupSubscriptionManager()
         setupUI()
         setupListeners()
+        loadNativeAd()
     }
 
     private fun setupToolbar() {
@@ -147,8 +155,6 @@ class SubscriptionActivity : AppCompatActivity() {
      */
     private fun setupUI() {
         updateUI()
-
-        // Exibe badge "POPULAR" na assinatura
         binding.badgePopular.visibility = View.VISIBLE
     }
 
@@ -160,20 +166,20 @@ class SubscriptionActivity : AppCompatActivity() {
         val isLegacy = subscriptionManager.isLegacyUser()
 
         if (isPremium) {
-            // Esconde assinatura, mostra apenas doações
+            // Esconde seção de assinatura, mostra status premium
             binding.layoutSubscriptionSection.visibility = View.GONE
-            binding.textSubtitleDonation.text = getString(com.marcos.cafecomagua.R.string.thank_you_premium_user)
+            binding.cardPremiumStatus.visibility = View.VISIBLE
+            binding.adContainer.visibility = View.GONE
 
             if (isLegacy) {
                 binding.textPremiumStatus.text = getString(com.marcos.cafecomagua.R.string.premium_status_legacy)
             } else {
                 binding.textPremiumStatus.text = getString(com.marcos.cafecomagua.R.string.premium_status_active)
             }
-            binding.textPremiumStatus.visibility = View.VISIBLE
         } else {
             // Mostra opções de assinatura
             binding.layoutSubscriptionSection.visibility = View.VISIBLE
-            binding.textPremiumStatus.visibility = View.GONE
+            binding.cardPremiumStatus.visibility = View.GONE
         }
     }
 
@@ -184,52 +190,20 @@ class SubscriptionActivity : AppCompatActivity() {
         binding.textSubscriptionPrice.text = subscriptionManager.getProductPrice(
             SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY
         ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
-
-        binding.textSmallCoffeePrice.text = subscriptionManager.getProductPrice(
-            SubscriptionManager.SKU_SMALL_COFFEE
-        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
-
-        binding.textMediumCoffeePrice.text = subscriptionManager.getProductPrice(
-            SubscriptionManager.SKU_MEDIUM_COFFEE
-        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
-
-        binding.textLargeCoffeePrice.text = subscriptionManager.getProductPrice(
-            SubscriptionManager.SKU_LARGE_COFFEE
-        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
     }
 
     /**
      * Configura listeners dos botões
      */
     private fun setupListeners() {
-        // Botão de assinatura mensal
+        // Card de assinatura (clique em qualquer lugar)
         binding.cardSubscription.setOnClickListener {
-            subscriptionManager.launchPurchaseFlow(
-                this,
-                SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY
-            )
+            launchSubscription()
         }
 
-        // Botões de doação
-        binding.cardSupportSmall.setOnClickListener {
-            subscriptionManager.launchPurchaseFlow(
-                this,
-                SubscriptionManager.SKU_SMALL_COFFEE
-            )
-        }
-
-        binding.cardSupportMedium.setOnClickListener {
-            subscriptionManager.launchPurchaseFlow(
-                this,
-                SubscriptionManager.SKU_MEDIUM_COFFEE
-            )
-        }
-
-        binding.cardSupportLarge.setOnClickListener {
-            subscriptionManager.launchPurchaseFlow(
-                this,
-                SubscriptionManager.SKU_LARGE_COFFEE
-            )
+        // Botão de assinar dentro do card
+        binding.buttonSubscribe.setOnClickListener {
+            launchSubscription()
         }
 
         // Botão de continuar sem assinar
@@ -248,6 +222,77 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
     /**
+     * Inicia o fluxo de assinatura
+     */
+    private fun launchSubscription() {
+        subscriptionManager.launchPurchaseFlow(
+            this,
+            SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY
+        )
+    }
+
+    /**
+     * Carrega anúncio nativo
+     */
+    private fun loadNativeAd() {
+        // Não carrega anúncio se for premium
+        if (subscriptionManager.isPremiumActive()) {
+            binding.adContainer.visibility = View.GONE
+            return
+        }
+
+        val adLoader = AdLoader.Builder(this, AD_UNIT_ID)
+            .forNativeAd { ad ->
+                nativeAd?.destroy()
+                nativeAd = ad
+                populateNativeAd(ad)
+            }
+            .build()
+
+        adLoader.loadAd(AdRequest.Builder().build())
+    }
+
+    /**
+     * Popula o layout do anúncio nativo
+     */
+    private fun populateNativeAd(ad: NativeAd) {
+        val adBinding = ItemNativeAdBinding.inflate(layoutInflater)
+        val nativeAdView = adBinding.root as NativeAdView
+
+        // Preenche os componentes do anúncio
+        adBinding.adHeadline.text = ad.headline
+        nativeAdView.headlineView = adBinding.adHeadline
+
+        ad.body?.let {
+            adBinding.adBody.text = it
+            adBinding.adBody.visibility = View.VISIBLE
+            nativeAdView.bodyView = adBinding.adBody
+        }
+
+        ad.icon?.let {
+            adBinding.adIcon.setImageDrawable(it.drawable)
+            adBinding.adIcon.visibility = View.VISIBLE
+            nativeAdView.iconView = adBinding.adIcon
+        }
+
+        ad.starRating?.let {
+            adBinding.adStars.rating = it.toFloat()
+            adBinding.adStars.visibility = View.VISIBLE
+            nativeAdView.starRatingView = adBinding.adStars
+        }
+
+        ad.callToAction?.let {
+            adBinding.adCallToAction.text = it
+            nativeAdView.callToActionView = adBinding.adCallToAction
+        }
+
+        nativeAdView.setNativeAd(ad)
+        binding.adContainer.removeAllViews()
+        binding.adContainer.addView(nativeAdView)
+        binding.adContainer.visibility = View.VISIBLE
+    }
+
+    /**
      * Abre página de gerenciamento de assinaturas do Google Play
      */
     private fun openSubscriptionManagement() {
@@ -261,6 +306,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        nativeAd?.destroy()
         subscriptionManager.destroy()
     }
 }

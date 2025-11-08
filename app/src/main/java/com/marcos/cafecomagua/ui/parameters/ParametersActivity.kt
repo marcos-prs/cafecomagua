@@ -14,6 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.ui.help.HelpActivity
 import com.marcos.cafecomagua.app.billing.SubscriptionActivity
@@ -36,6 +39,7 @@ class ParametersActivity : AppCompatActivity() {
     private var bicarbonato: Double = 0.0
     private var nomeAgua: String = ""
     private var fonteAgua: String = ""
+    private var adView: AdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -63,6 +67,7 @@ class ParametersActivity : AppCompatActivity() {
         setupToolbar()
         getIntentData()
         setupListeners()
+        setupAdBanner()
         calculateAndEvaluateAll()
     }
 
@@ -84,6 +89,22 @@ class ParametersActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupAdBanner() {
+        // Cria o AdView programaticamente
+        adView = AdView(this)
+        adView?.apply {
+            setAdSize(AdSize.BANNER)
+            adUnitId = "ca-app-pub-3940256099942544/6300978111" // ID de teste - substitua pelo seu ID real
+        }
+
+        // Adiciona o AdView ao container
+        binding.adContainer.addView(adView)
+
+        // Carrega o anúncio
+        val adRequest = AdRequest.Builder().build()
+        adView?.loadAd(adRequest)
     }
 
     private fun getIntentData() {
@@ -307,7 +328,18 @@ class ParametersActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        adView?.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adView?.resume()
+    }
+
     override fun onDestroy() {
+        adView?.destroy()
         super.onDestroy()
     }
 }

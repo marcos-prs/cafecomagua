@@ -8,12 +8,15 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/mainLayoutBackground"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/mainLayoutBackground"
             app:title="@string/subscription_title"
             app:navigationIcon="@drawable/ic_arrow_back" />
 
@@ -31,20 +34,55 @@
             android:padding="16dp">
 
             <!-- Status Premium (se já for premium) -->
-            <TextView
-                android:id="@+id/text_premium_status"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_premium_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/premium_status_active"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/ideal_green"
-                android:padding="12dp"
-                android:background="@drawable/border_gold_thin"
-                android:gravity="center"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@color/ideal_green"
                 android:visibility="gone"
-                android:layout_marginBottom="16dp"
-                tools:visibility="visible" />
+                android:layout_marginBottom="24dp"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_premium"
+                        android:contentDescription="Premium"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/text_premium_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/premium_status_active"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/thank_you_premium_user"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:alpha="0.9" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Seção de Assinatura -->
             <LinearLayout
@@ -53,21 +91,69 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <!-- Card de Apresentação Premium -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/subscription_title"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
-                <TextView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="24dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/ic_premium"
+                            android:contentDescription="Premium"
+                            android:layout_marginBottom="16dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/subscription_title"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
+                            android:gravity="center"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/subscription_subtitle"
+                            android:textSize="14sp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:gravity="center"
+                            android:layout_marginBottom="20dp" />
+
+                        <!-- Benefícios -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/subscription_benefits"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="6dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:layout_marginBottom="4dp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Anúncio Nativo -->
+                <FrameLayout
+                    android:id="@+id/ad_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/subscription_subtitle"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="24dp" />
 
                 <!-- Card de Assinatura -->
                 <com.google.android.material.card.MaterialCardView
@@ -115,217 +201,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="R$ 3,89/mês"
-                            android:textSize="24sp"
+                            android:textSize="28sp"
                             android:textStyle="bold"
                             android:textColor="@color/ideal_green"
                             android:layout_marginTop="8dp"
-                            android:layout_marginBottom="12dp"
+                            android:layout_marginBottom="16dp"
                             tools:text="R$ 3,89/mês" />
 
-                        <TextView
+                        <Button
+                            android:id="@+id/button_subscribe"
+                            style="@style/Widget.Material3.Button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/subscription_benefits"
-                            android:textSize="14sp"
-                            android:lineSpacingExtra="4dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- Divisor -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?attr/colorOutline"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp" />
-
-            <!-- Seção de Doações -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/donation_title"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:id="@+id/text_subtitle_donation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/desc_pagar_cafezinho"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Cards de Doação -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:divider="@android:color/transparent"
-                android:showDividers="middle"
-                android:dividerPadding="12dp">
-
-                <!-- Café Pequeno -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_support_small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:text="☕"
-                            android:textSize="32sp"
-                            android:gravity="center" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_cafe_pequeno"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/text_small_coffee_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="R$ 5,00"
-                                android:textSize="14sp"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                tools:text="R$ 5,00" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Café Médio -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_support_medium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:text="☕☕"
-                            android:textSize="28sp"
-                            android:gravity="center" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_cafe_medio"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/text_medium_coffee_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="R$ 10,00"
-                                android:textSize="14sp"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                tools:text="R$ 10,00" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Café Grande -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_support_large"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:text="☕☕☕"
-                            android:textSize="24sp"
-                            android:gravity="center" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:layout_marginStart="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_cafe_grande"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/text_large_coffee_price"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="R$ 15,00"
-                                android:textSize="14sp"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                tools:text="R$ 15,00" />
-
-                        </LinearLayout>
+                            android:text="@string/subscribe_now"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -343,18 +232,30 @@
                 android:textColor="@color/ideal_green"
                 android:padding="12dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:focusable="true" />
 
             <!-- Botão Continuar -->
-            <Button
-                android:id="@+id/button_continue_to_results"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_continuar_para_resultado"
-                android:layout_marginTop="24dp"
-                style="@style/Widget.Material3.Button.TonalButton" />
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp">
+
+                <Button
+                    android:id="@+id/button_continue_to_results"
+                    style="@style/Widget.App.Button.Tonal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_continuar_para_resultado"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintWidth_max="320dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
