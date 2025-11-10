@@ -12,7 +12,7 @@
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="colorSurfaceContainer">#F3E6D8</item>
         <item name="colorOnSurface">@color/marrom_avermelhado_profundo</item>
-        <item name="iconTint">@color/marrom_avermelhado_principal</item>
+        <item name="iconTint">@color/dourado_elegante</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>

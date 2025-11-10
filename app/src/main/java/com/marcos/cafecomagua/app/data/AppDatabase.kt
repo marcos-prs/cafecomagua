@@ -1,21 +1,27 @@
 package com.marcos.cafecomagua.app.data
 
+import RecipeDao
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.marcos.cafecomagua.app.model.AvaliacaoResultado
+import com.marcos.cafecomagua.app.model.SavedRecipe
 
 @Database(
-    entities = [AvaliacaoResultado::class],
-    version = 1,
+    entities = [
+        AvaliacaoResultado::class,
+        SavedRecipe::class // 1. ADICIONADA A ENTIDADE SavedRecipe
+    ],
+    version = 2, // 2. VERSÃO INCREMENTADA (de 1 para 2)
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun avaliacaoDao(): AvaliacaoDao
+    abstract fun recipeDao(): RecipeDao
 
     companion object {
         // Volatile garante que a instância seja sempre visível para outros threads.
@@ -30,7 +36,11 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "cafecomagua_database"
                 )
-                    // .fallbackToDestructiveMigration() // Use isso se mudar o schema e não quiser criar um plano de migração
+                    // 4. HABILITADO o fallbackToDestructiveMigration.
+                    // Isso permite que o Room recrie o banco se o schema
+                    // mudar (version++), sem a necessidade de uma migração complexa.
+                    // Perfeito para desenvolvimento.
+                    .fallbackToDestructiveMigration(false)
                     .build()
                 INSTANCE = instance
                 instance

@@ -9,17 +9,18 @@ import kotlin.math.roundToInt
 
 /**
  * Calculadora de otimização de água para café
- * Implementa a lógica da planilha Lotus Water Drops
+ * NOVA FILOSOFIA: Trabalha com faixas ideais, não números fixos
  */
 class WaterOptimizationCalculator {
 
     companion object {
-        private const val MAX_DROPS_PER_MINERAL = 20 // Limite seguro por mineral
-        private const val WATER_VOLUME_ML = 450.0 // Volume padrão de água em ml
+        private const val MAX_DROPS_PER_MINERAL = 20
+        private const val WATER_VOLUME_ML = 450.0
     }
 
     /**
      * Calcula quantas gotas de cada mineral são necessárias para otimizar a água
+     * NOVA FILOSOFIA: Busca atingir o CENTRO da faixa ideal, não um número fixo
      */
     fun calculateOptimization(
         currentWater: WaterProfile,
@@ -30,30 +31,42 @@ class WaterOptimizationCalculator {
         val recommendations = mutableListOf<DropRecommendation>()
         val warnings = mutableListOf<String>()
 
-        // Calcula diferenças necessárias
-        val calciumDiff = targetWater.calcium - currentWater.calcium
-        val magnesiumDiff = targetWater.magnesium - currentWater.magnesium
-        val sodioDiff = targetWater.sodium - currentWater.sodium
-        val bicarbonatoDiff = targetWater.bicarbonate - currentWater.bicarbonate
+        // Calcula dureza e alcalinidade atuais
+        val currentHardness = currentWater.calculateHardness()
+        val currentAlkalinity = currentWater.calculateAlkalinity()
+
+        // Alvos baseados no CENTRO das faixas ideais
+        val targetHardness = 70.0 // Centro de 50-90
+        val targetAlkalinity = 40.0 // Centro de 30-50
+        val targetSodium = 5.0 // Centro de 0-10
+
+        // Calcula diferenças necessárias (só valores positivos)
+        val hardnessDiff = (targetHardness - currentHardness).coerceAtLeast(0.0)
+        val alkalinityDiff = (targetAlkalinity - currentAlkalinity).coerceAtLeast(0.0)
+        val sodioDiff = (targetSodium - currentWater.sodium).coerceAtLeast(0.0)
 
         // Processa cada mineral
         availableSolutions.forEach { solution ->
             when (solution.elementType) {
                 MineralSolution.ElementType.CALCIUM -> {
-                    if (calciumDiff > 0) {
-                        val recommendation = calculateDrops(
+                    if (hardnessDiff > 0) {
+                        // 70% da dureza vem do cálcio
+                        val calciumTarget = (hardnessDiff * 0.70) / 2.497
+                        val recommendation = calculateDropsForHardness(
                             solution = solution,
-                            targetIncrease = calciumDiff,
+                            targetIncrease = calciumTarget,
                             currentValue = currentWater.calcium
                         )
                         recommendations.add(recommendation)
                     }
                 }
                 MineralSolution.ElementType.MAGNESIUM -> {
-                    if (magnesiumDiff > 0) {
-                        val recommendation = calculateDrops(
+                    if (hardnessDiff > 0) {
+                        // 30% da dureza vem do magnésio
+                        val magnesiumTarget = (hardnessDiff * 0.30) / 4.118
+                        val recommendation = calculateDropsForHardness(
                             solution = solution,
-                            targetIncrease = magnesiumDiff,
+                            targetIncrease = magnesiumTarget,
                             currentValue = currentWater.magnesium
                         )
                         recommendations.add(recommendation)
@@ -70,37 +83,46 @@ class WaterOptimizationCalculator {
                     }
                 }
                 MineralSolution.ElementType.POTASSIUM -> {
-                    // Potássio é alternativa ao sódio para bicarbonato
-                    if (bicarbonatoDiff > 0 && sodioDiff <= 0) {
+                    if (alkalinityDiff > 0) {
+                        // Converte alcalinidade → bicarbonato
+                        val bicarbonateTarget = alkalinityDiff / 0.820
                         val recommendation = calculateDropsForBicarbonate(
                             solution = solution,
-                            targetIncrease = bicarbonatoDiff,
+                            targetIncrease = bicarbonateTarget,
                             currentValue = currentWater.bicarbonate
                         )
                         recommendations.add(recommendation)
                     }
                 }
                 MineralSolution.ElementType.BICARBONATE -> {
-                    // Já processado via potássio/sódio
+                    // Já processado via potássio
                 }
             }
         }
 
-        // Gera avisos
-        if (currentWater.calcium >= targetWater.calcium) {
-            warnings.add("Cálcio já está no nível ideal ou acima. Não é necessário adicionar.")
-        }
-        if (currentWater.magnesium >= targetWater.magnesium) {
-            warnings.add("Magnésio já está no nível ideal ou acima. Não é necessário adicionar.")
-        }
-        if (recommendations.isEmpty()) {
-            warnings.add("Sua água já está próxima ou acima dos valores ideais!")
-        }
-
         // Calcula perfil alcançável
         val achievableProfile = calculateAchievableProfile(currentWater, recommendations)
+        val finalHardness = achievableProfile.calculateHardness()
+        val finalAlkalinity = achievableProfile.calculateAlkalinity()
 
-        // Calcula score de melhoria
+        // Gera avisos baseados em FAIXAS
+        if (currentHardness >= 50.0 && currentHardness <= 90.0) {
+            warnings.add("✓ Dureza já está na faixa ideal (50-90 ppm)")
+        } else if (finalHardness in 50.0..90.0) {
+            warnings.add("✓ Dureza atingirá a faixa ideal!")
+        }
+
+        if (currentAlkalinity >= 30.0 && currentAlkalinity <= 50.0) {
+            warnings.add("✓ Alcalinidade já está na faixa ideal (30-50 ppm)")
+        } else if (finalAlkalinity in 30.0..50.0) {
+            warnings.add("✓ Alcalinidade atingirá a faixa ideal!")
+        }
+
+        if (recommendations.isEmpty()) {
+            warnings.add("Sua água já está nas faixas ideais! 🎉")
+        }
+
+        // Calcula score de melhoria (CORRIGIDO)
         val improvementScore = calculateImprovementScore(currentWater, achievableProfile, targetWater)
 
         return WaterOptimizationResult(
@@ -114,6 +136,38 @@ class WaterOptimizationCalculator {
     }
 
     /**
+     * Calcula gotas para atingir dureza ideal (considera conversão Ca/Mg → Dureza)
+     */
+    private fun calculateDropsForHardness(
+        solution: MineralSolution,
+        targetIncrease: Double,
+        currentValue: Double
+    ): DropRecommendation {
+        val dropsNeeded = (targetIncrease / solution.ppmPerDrop).roundToInt()
+            .coerceIn(0, MAX_DROPS_PER_MINERAL)
+
+        val ppmAdded = dropsNeeded * solution.ppmPerDrop
+        val finalPpm = currentValue + ppmAdded
+
+        // Verifica se a dureza ficará na faixa ideal
+        val isOptimal = when (solution.elementType) {
+            MineralSolution.ElementType.CALCIUM ->
+                (finalPpm * 2.497) in 50.0..90.0
+            MineralSolution.ElementType.MAGNESIUM ->
+                (finalPpm * 4.118) in 50.0..90.0
+            else -> false
+        }
+
+        return DropRecommendation(
+            solution = solution,
+            dropsNeeded = dropsNeeded,
+            ppmAdded = ppmAdded,
+            finalPpm = finalPpm,
+            isOptimal = isOptimal
+        )
+    }
+
+    /**
      * Calcula quantas gotas são necessárias para atingir um aumento alvo
      */
     private fun calculateDrops(
@@ -121,14 +175,12 @@ class WaterOptimizationCalculator {
         targetIncrease: Double,
         currentValue: Double
     ): DropRecommendation {
-        // Calcula gotas necessárias
         val dropsNeeded = (targetIncrease / solution.ppmPerDrop).roundToInt()
             .coerceIn(0, MAX_DROPS_PER_MINERAL)
 
         val ppmAdded = dropsNeeded * solution.ppmPerDrop
         val finalPpm = currentValue + ppmAdded
 
-        // Verifica se está na faixa ideal
         val isOptimal = when (solution.elementType) {
             MineralSolution.ElementType.CALCIUM ->
                 SCAStandards.isInIdealRange(finalPpm, SCAStandards.IDEAL_CALCIUM_RANGE)
@@ -156,8 +208,7 @@ class WaterOptimizationCalculator {
         targetIncrease: Double,
         currentValue: Double
     ): DropRecommendation {
-        // Conversão aproximada: 1 gota de KHCO3 ou NaHCO3 ≈ 5 ppm de HCO3
-        val bicarbonatePpmPerDrop = solution.ppmPerDrop * 0.73 // Fator de conversão
+        val bicarbonatePpmPerDrop = solution.ppmPerDrop * 0.73
 
         val dropsNeeded = (targetIncrease / bicarbonatePpmPerDrop).roundToInt()
             .coerceIn(0, MAX_DROPS_PER_MINERAL)
@@ -206,13 +257,14 @@ class WaterOptimizationCalculator {
             magnesium = newMagnesium,
             sodium = newSodium,
             bicarbonate = newBicarbonate,
-            ph = current.ph, // pH não é ajustado diretamente
+            ph = current.ph,
             tds = newCalcium + newMagnesium + newSodium + newBicarbonate
         )
     }
 
     /**
      * Calcula score de melhoria (0-100) comparando antes e depois
+     * CORRIGIDO: Agora retorna sempre um valor entre 0-100
      */
     private fun calculateImprovementScore(
         before: WaterProfile,
@@ -223,32 +275,57 @@ class WaterOptimizationCalculator {
         val afterScore = calculateProfileScore(after)
         val targetScore = 100.0
 
-        val improvement = afterScore - beforeScore
-        return (improvement / (targetScore - beforeScore) * 100.0).coerceIn(0.0, 100.0)
+        // Se a água já está no ideal ou acima, não há melhoria possível
+        if (beforeScore >= targetScore) {
+            return 0.0
+        }
+
+        // Calcula quanto da distância até o ideal foi percorrida
+        val possibleImprovement = targetScore - beforeScore
+        val actualImprovement = (afterScore - beforeScore).coerceAtLeast(0.0)
+
+        // Retorna porcentagem de melhoria alcançada (0-100)
+        return ((actualImprovement / possibleImprovement) * 100.0).coerceIn(0.0, 100.0)
     }
 
     /**
      * Calcula score geral de um perfil de água (0-100)
+     * NOVA FILOSOFIA: Baseado em faixas ideais com pesos (Alk 50%, Dureza 30%, Sódio+TDS 20%)
      */
     private fun calculateProfileScore(profile: WaterProfile): Double {
-        val calciumScore = SCAStandards.getProximityScore(
-            profile.calcium,
-            SCAStandards.IDEAL_CALCIUM_RANGE
-        )
-        val magnesiumScore = SCAStandards.getProximityScore(
-            profile.magnesium,
-            SCAStandards.IDEAL_MAGNESIUM_RANGE
-        )
-        val sodiumScore = SCAStandards.getProximityScore(
-            profile.sodium,
-            SCAStandards.IDEAL_SODIUM_RANGE
-        )
-        val bicarbonateScore = SCAStandards.getProximityScore(
-            profile.bicarbonate,
-            SCAStandards.IDEAL_BICARBONATE_RANGE
-        )
+        val hardness = profile.calculateHardness()
+        val alkalinity = profile.calculateAlkalinity()
 
-        return (calciumScore + magnesiumScore + sodiumScore + bicarbonateScore) / 4.0
+        // Pontuação baseada nas faixas (0, 50 ou 100 pontos)
+        val alkPoints = when (alkalinity) {
+            in 30.0..50.0 -> 100.0
+            in 51.0..75.0 -> 50.0
+            else -> 0.0
+        }
+
+        val hardnessPoints = when (hardness) {
+            in 50.0..90.0 -> 100.0
+            in 91.0..110.0 -> 50.0
+            else -> 0.0
+        }
+
+        val sodiumPoints = when (profile.sodium) {
+            in 0.0..10.0 -> 100.0
+            in 11.0..30.0 -> 50.0
+            else -> 0.0
+        }
+
+        val tdsPoints = when (profile.tds) {
+            in 100.0..180.0 -> 100.0
+            in 75.0..99.99, in 181.0..250.0 -> 50.0
+            else -> 0.0
+        }
+
+        // Aplica pesos da nova filosofia
+        return (alkPoints * 0.50) +
+                (hardnessPoints * 0.30) +
+                (sodiumPoints * 0.10) +
+                (tdsPoints * 0.10)
     }
 
     /**

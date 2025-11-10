@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:background="?attr/mainLayoutBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -14,15 +15,18 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/Widget.App.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/mainLayoutBackground"
-            app:title="@string/subscription_title"
-            app:navigationIcon="@drawable/ic_arrow_back" />
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Café com Água"
+            app:titleCentered="true"
+            app:layout_scrollFlags="scroll|enterAlways"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -31,234 +35,155 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
 
-            <!-- Status Premium (se já for premium) -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_premium_status"
+                android:id="@+id/headerCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
-                app:cardBackgroundColor="@color/ideal_green"
-                android:visibility="gone"
-                android:layout_marginBottom="24dp"
-                tools:visibility="visible">
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp"
-                    android:gravity="center">
+                    android:padding="20dp">
 
                     <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:id="@+id/image_premium_logo"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_premium"
-                        android:contentDescription="Premium"
-                        android:layout_marginBottom="12dp" />
+                        android:contentDescription="@string/premium_title"/>
 
                     <TextView
-                        android:id="@+id/text_premium_status"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/premium_status_active"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:gravity="center" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/thank_you_premium_user"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/white"
-                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:alpha="0.9" />
+                        android:text="Melhores resultados, sem distrações."
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
-
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Seção de Assinatura -->
-            <LinearLayout
-                android:id="@+id/layout_subscription_section"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- Card de Apresentação Premium -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="0dp"
-                    android:layout_marginBottom="24dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceVariant">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="24dp"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:src="@drawable/ic_premium"
-                            android:contentDescription="Premium"
-                            android:layout_marginBottom="16dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/subscription_title"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:textColor="?attr/colorOnSurface"
-                            android:gravity="center"
-                            android:layout_marginBottom="8dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/subscription_subtitle"
-                            android:textSize="14sp"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:gravity="center"
-                            android:layout_marginBottom="20dp" />
-
-                        <!-- Benefícios -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/subscription_benefits"
-                            android:textSize="14sp"
-                            android:lineSpacingExtra="6dp"
-                            android:textColor="?attr/colorOnSurface"
-                            android:layout_marginBottom="4dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Anúncio Nativo -->
-                <FrameLayout
-                    android:id="@+id/ad_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp" />
-
-                <!-- Card de Assinatura -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_subscription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
-                    app:strokeWidth="2dp"
-                    app:strokeColor="@color/ideal_green"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="20dp">
-
-                        <!-- Badge Popular -->
-                        <TextView
-                            android:id="@+id/badge_popular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="POPULAR"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/white"
-                            android:background="@drawable/popular_badge_background"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="8dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="4dp"
-                            android:layout_marginBottom="12dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/monthly_subscription"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/text_subscription_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="R$ 3,89/mês"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/ideal_green"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="16dp"
-                            tools:text="R$ 3,89/mês" />
-
-                        <Button
-                            android:id="@+id/button_subscribe"
-                            style="@style/Widget.Material3.Button"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/subscribe_now"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- Link para gerenciar assinatura -->
             <TextView
-                android:id="@+id/text_manage_subscription"
+                style="@style/TextAppearance.App.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/manage_subscription"
-                android:textSize="12sp"
-                android:textColor="@color/ideal_green"
-                android:padding="12dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/benefits"
+                android:textAllCaps="true"/>
 
-            <!-- Botão Continuar -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="24dp">
+                android:columnCount="2"
+                android:useDefaultMargins="true"
+                android:alignmentMode="alignBounds"
+                android:columnOrderPreserved="false">
 
-                <Button
-                    android:id="@+id/button_continue_to_results"
-                    style="@style/Widget.App.Button.Tonal"
+                <include layout="@layout/layout_benefit_chip"
+                    android:id="@+id/benefit_ads_removal"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                <include layout="@layout/layout_benefit_chip"
+                    android:id="@+id/benefit_water_optimizer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                <include layout="@layout/layout_benefit_chip"
+                    android:id="@+id/benefit_unlimited_recipes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                <include layout="@layout/layout_benefit_chip"
+                    android:id="@+id/benefit_priority_support"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+            </GridLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/monthlyCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:strokeColor="?attr/colorSecondary"
+                app:strokeWidth="2dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/button_continuar_para_resultado"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintWidth_max="320dp" />
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        style="@style/TextAppearance.App.Label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/special_offer"/>
 
+                    <TextView
+                        style="@style/TextAppearance.App.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/monthly_plan"/>
+
+                    <TextView
+                        android:id="@+id/text_subscription_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="R$ 3,89/mês"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ideal_green"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubscribe"
+                        style="@style/Widget.App.Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/subscribe_now"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRestore"
+                style="@style/Widget.App.Button.Outline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/restore_purchase"/>
+
+            <TextView
+                android:id="@+id/tos"
+                style="@style/TextAppearance.App.Body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/legal_smallprint"
+                android:textSize="12sp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnContinueFree"
+                style="@style/Widget.Material3.Button.TextButton" android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/continue_to_result"/>
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

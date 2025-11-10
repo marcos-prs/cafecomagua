@@ -3,16 +3,17 @@ package com.marcos.cafecomagua.ui.home
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Toast // 👈 ADICIONADO
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AlertDialog // 👈 ADICIONADO
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.core.view.isVisible
 import com.marcos.cafecomagua.ui.help.HelpActivity
 import com.marcos.cafecomagua.ui.history.HistoryActivity
 import com.marcos.cafecomagua.R
@@ -23,36 +24,20 @@ import com.marcos.cafecomagua.databinding.ActivityHomeBinding
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Category
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
 import com.marcos.cafecomagua.ui.onboarding.OnboardingActivity
-import androidx.lifecycle.lifecycleScope // 👈 ADICIONADO
+import androidx.lifecycle.lifecycleScope
 import com.marcos.cafecomagua.app.billing.PremiumBottomSheetFragment
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.ui.wateroptimizer.WaterOptimizerActivity
-import com.marcos.cafecomagua.app.MyApplication // 👈 ADICIONADO
-import kotlinx.coroutines.launch // 👈 ADICIONADO
-import kotlinx.coroutines.flow.first // 👈 ADICIONADO
+import com.marcos.cafecomagua.app.MyApplication
+import com.marcos.cafecomagua.ui.wateroptimizer.SavedRecipesActivity
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 
-/**
- * HomeActivity (ex-WelcomeActivity)
- * Tela inicial do app com navegação principal
- */
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    private val interstitialManager: InterstitialAdManager by lazy {
-        InterstitialAdManager(
-            context = this,
-            adUnitId = "ca-app-pub-7526020095328101/9326848140"
-        ).apply {
-            onAdDismissed = { navigateToHistory() }
-            onAdFailedToShow = { navigateToHistory() }
-            onAdShown = {
-                analytics().logEvent(
-                    Category.USER_ACTION,
-                    Event.AD_SHOWN,
-                    mapOf("ad_type" to "interstitial", "location" to "home_to_history")
-                )
-            }
-        }
-    }
+
+    private var interstitialManager: InterstitialAdManager? = null
+
     private val subscriptionManager: SubscriptionManager by lazy {
         SubscriptionManager(this, lifecycleScope)
     }
@@ -60,9 +45,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         enableEdgeToEdge()
-        super.onCreate(savedInstanceState) // ✅ MOVIDO para cima
+        super.onCreate(savedInstanceState)
 
-        // ✅ Verificar se onboarding foi concluído
         if (!OnboardingActivity.isCompleted(this)) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
@@ -70,7 +54,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root) // ✅ CHAMADO ANTES de setupListeners()
+        setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -93,7 +77,8 @@ class HomeActivity : AppCompatActivity() {
             mapOf("screen_name" to "home")
         )
 
-        // ✅ CHAMADA ÚNICA E CORRETA
+        // Configurar premium UI e interstitial
+        setupPremiumFeatures()
         setupListeners()
         updateThemeIcon()
         countAppOpens()
@@ -102,20 +87,35 @@ class HomeActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         subscriptionManager.destroy()
-        // (O try/catch para o interstitialManager está correto)
-        if (::binding.isInitialized) {
-            try {
-                interstitialManager.destroy()
-            } catch (e: Exception) {
-                // Ignorar
+        interstitialManager?.destroy()
+    }
+
+    private fun setupPremiumFeatures() {
+        val isPremium = subscriptionManager.isPremiumActive()
+
+        // Controla visibilidade dos recursos premium
+        binding.buttonSavedRecipes.isVisible = isPremium
+        binding.imagePremiumBadge.isVisible = isPremium
+
+        // Inicializa anúncios apenas para usuários não-premium
+        if (!isPremium) {
+            interstitialManager = InterstitialAdManager(
+                context = this,
+                adUnitId = "ca-app-pub-7526020095328101/9326848140"
+            ).apply {
+                onAdDismissed = { navigateToHistory() }
+                onAdFailedToShow = { navigateToHistory() }
+                onAdShown = {
+                    analytics().logEvent(
+                        Category.USER_ACTION,
+                        Event.AD_SHOWN,
+                        mapOf("ad_type" to "interstitial", "location" to "home_to_history")
+                    )
+                }
             }
         }
     }
 
-    /**
-     * ✅ FUNÇÃO COMPLETA
-     * Agora inclui todos os botões do seu layout, com a nova lógica do Otimizador.
-     */
     private fun setupListeners() {
         // Botões do topo
         binding.buttonHelp.setOnClickListener {
@@ -125,6 +125,7 @@ class HomeActivity : AppCompatActivity() {
             )
             startActivity(Intent(this, HelpActivity::class.java))
         }
+
         binding.buttonToggleTheme.setOnClickListener {
             toggleTheme()
         }
@@ -135,11 +136,10 @@ class HomeActivity : AppCompatActivity() {
                 Category.EVALUATION,
                 Event.EVALUATION_STARTED
             )
-            // Chama o novo fluxo de Fragments
             startActivity(Intent(this, EvaluationHostActivity::class.java))
         }
 
-        // ✅ LÓGICA DO OTIMIZADOR ATUALIZADA
+        // Otimizador de Água
         binding.buttonWaterOptimizer.setOnClickListener {
             analytics().logEvent(
                 Category.PREMIUM,
@@ -147,63 +147,85 @@ class HomeActivity : AppCompatActivity() {
                 mapOf("feature" to "water_optimizer")
             )
             if (subscriptionManager.isPremiumActive()) {
-                // Se for premium, busca as águas salvas
                 showWaterSelectionDialog()
             } else {
-                // Se não for premium, mostra o paywall
-                PremiumBottomSheetFragment().show(supportFragmentManager, PremiumBottomSheetFragment.TAG)
+                PremiumBottomSheetFragment().show(
+                    supportFragmentManager,
+                    PremiumBottomSheetFragment.TAG
+                )
             }
         }
 
+        // Minhas Receitas (Premium)
+        binding.buttonSavedRecipes.setOnClickListener {
+            analytics().logEvent(
+                Category.PREMIUM,
+                "recipes_opened"
+            )
+            if (subscriptionManager.isPremiumActive()) {
+                startActivity(Intent(this, SavedRecipesActivity::class.java))
+            } else {
+                // Fallback de segurança (não deveria acontecer pois botão está invisível)
+                PremiumBottomSheetFragment().show(
+                    supportFragmentManager,
+                    PremiumBottomSheetFragment.TAG
+                )
+            }
+        }
+
+        // Histórico (com anúncio intersticial)
         binding.buttonViewHistory.setOnClickListener {
             analytics().logEvent(
                 Category.NAVIGATION,
-                "history_button_clicked"
+                "history_opened"
             )
-            // Mostra o intersticial
-            interstitialManager.showIfAvailable(
+
+            val isPremium = subscriptionManager.isPremiumActive()
+
+            // Premium vai direto sem anúncio
+            if (isPremium) {
+                navigateToHistory()
+                return@setOnClickListener
+            }
+
+            // Não-premium tenta mostrar anúncio
+            val adWasShown = interstitialManager?.showIfAvailable(
                 activity = this,
                 counterKey = "history_views",
                 frequency = InterstitialAdManager.HISTORY_VIEW_FREQUENCY
-            )
+            ) ?: false
+
+            // Se não mostrou anúncio, navega imediatamente
+            if (!adWasShown) {
+                navigateToHistory()
+            }
         }
     }
 
-    /**
-     * ✅ NOVA FUNÇÃO
-     * Busca águas no DB e exibe um diálogo de seleção.
-     */
     private fun showWaterSelectionDialog() {
-        // Acesso ao DAO do Room (usando o Application cast)
         val dao = (application as MyApplication).database.avaliacaoDao()
 
         lifecycleScope.launch {
-            // Coleta apenas a lista mais recente do Flow (uso de .first() requer kotlinx.coroutines.flow.first)
             val avaliacoesSalvas = dao.getAll().first()
 
             if (avaliacoesSalvas.isEmpty()) {
-                // Informa o usuário que ele precisa salvar uma água primeiro
                 Toast.makeText(
                     this@HomeActivity,
-                    "Você precisa salvar uma avaliação no Histórico primeiro.", // TODO: Use R.string
+                    R.string.error_no_saved_water_for_optimization,
                     Toast.LENGTH_LONG
                 ).show()
                 return@launch
             }
 
-            // Cria a lista de nomes para o diálogo (Nome da Água (Fonte))
             val nomesDasAguas = avaliacoesSalvas.map {
                 "${it.nomeAgua} (${it.fonteAgua})"
             }.toTypedArray()
 
-            // Exibe o diálogo de seleção
             AlertDialog.Builder(this@HomeActivity)
-                .setTitle("Otimizar Água Salva") // TODO: Use R.string
-                .setItems(nomesDasAguas) { dialog, which ->
-                    // 'which' é o índice da água selecionada
+                .setTitle(R.string.title_optimize_saved_water)
+                .setItems(nomesDasAguas) { _, which ->
                     val avaliacaoSelecionada = avaliacoesSalvas[which]
 
-                    // Navega para o Otimizador com os dados brutos como extras
                     val intent = Intent(this@HomeActivity, WaterOptimizerActivity::class.java).apply {
                         putExtra("calcio", avaliacaoSelecionada.calcio)
                         putExtra("magnesio", avaliacaoSelecionada.magnesio)
@@ -214,30 +236,32 @@ class HomeActivity : AppCompatActivity() {
                     }
                     startActivity(intent)
                 }
-                .setNegativeButton("Cancelar", null) // TODO: Use R.string
+                .setNegativeButton(R.string.button_cancelar, null)
                 .show()
         }
     }
-
 
     private fun navigateToHistory() {
         startActivity(Intent(this, HistoryActivity::class.java))
     }
 
     private fun toggleTheme() {
-        // (Sua função toggleTheme está correta)
         val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
         val isNightMode = resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK ==
                 Configuration.UI_MODE_NIGHT_YES
 
-        val newMode = if (isNightMode) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_YES
+        val newMode = if (isNightMode) {
+            AppCompatDelegate.MODE_NIGHT_NO
+        } else {
+            AppCompatDelegate.MODE_NIGHT_YES
+        }
+
         prefs.edit().putInt("key_theme", newMode).apply()
         AppCompatDelegate.setDefaultNightMode(newMode)
     }
 
     private fun updateThemeIcon() {
-        // (Sua função updateThemeIcon está correta)
         val isNightMode = resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK ==
                 Configuration.UI_MODE_NIGHT_YES
@@ -250,7 +274,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun countAppOpens() {
-        // (Sua função countAppOpens está correta)
         val prefs = getSharedPreferences("app_ratings", MODE_PRIVATE)
         prefs.edit {
             putInt("open_count", prefs.getInt("open_count", 0) + 1)

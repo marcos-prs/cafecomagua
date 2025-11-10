@@ -143,26 +143,27 @@ class ParametersFragment : Fragment() {
      * Recebe um 'EvaluationStatus' (Enum) e define o texto e a cor
      */
     private fun updateValidationView(textView: TextView, status: EvaluationStatus) {
-        if (status == EvaluationStatus.NA) {
-            textView.visibility = View.GONE
-            return
-        }
 
-        // Converte o Enum para o texto da UI
+        // 1. O TextView agora é sempre visível, não vamos mais escondê-lo.
+        textView.visibility = View.VISIBLE
+
+        // 2. O 'when' do texto agora lida com todos os 4 casos do Enum
         textView.text = when(status) {
             EvaluationStatus.IDEAL -> getString(R.string.avaliacao_ideal)
             EvaluationStatus.ACEITAVEL -> getString(R.string.avaliacao_aceitavel)
-            else -> getString(R.string.avaliacao_nao_recomendado)
+            EvaluationStatus.NAO_RECOMENDADO -> getString(R.string.avaliacao_nao_recomendado)
+            // ✅ Caso NA adicionado (presumindo que você tenha esta string):
+            EvaluationStatus.NA -> getString(R.string.avaliacao_nao_avaliado)
         }
 
-        textView.visibility = View.VISIBLE
-
-        // Converte o Enum para a cor
+        // 3. O 'when' da cor agora também lida com o NA (a cor cinza que você mencionou)
         val colorRes = when (status) {
             EvaluationStatus.IDEAL -> R.color.ideal_green
             EvaluationStatus.ACEITAVEL -> R.color.acceptable_yellow
-            else -> R.color.not_recommended_red
+            EvaluationStatus.NAO_RECOMENDADO -> R.color.not_recommended_red
+            EvaluationStatus.NA -> R.color.na_text_gray
         }
+
         textView.setTextColor(ContextCompat.getColor(requireContext(), colorRes))
     }
 

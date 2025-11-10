@@ -218,7 +218,10 @@ really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our f
     <string name="subscription_title">Become Premium</string>
     <string name="subscription_subtitle">Remove ads and unlock exclusive features</string>
     <string name="monthly_subscription">Monthly Subscription</string>
-    <string name="subscription_benefits">✓ No ads\n✓ Water Optimizer\n✓ Save unlimited recipes\n✓ Priority support</string>
+    <string name="benefit_ads_removal">No ads</string>
+    <string name="benefit_water_optimizer">Water Optimizer</string>
+    <string name="benefit_unlimited_recipes">Save unlimited recipes</string>
+    <string name="benefit_priority_support">Priority support</string>
     <string name="thank_you_premium_user">Thank you for being a Premium user!</string>
     <string name="premium_status_active">Premium Active</string>
     <string name="premium_status_legacy">Premium (Legacy)</string>
@@ -235,4 +238,45 @@ really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our f
     <string name="premium_feature_1">Water Optimizer</string>
     <string name="premium_feature_2">Ad Removal</string>
     <string name="premium_feature_3">Unlimited Recipes</string>
+
+    <string name="cafe_logo">Café com Água Logo</string>
+    <string name="premium_title">Café com Água Premium</string>
+    <string name="premium_subtitle">Better results, no distractions.</string>
+    <string name="benefits">Benefits</string>
+    <string name="special_offer">Special Offer</string>
+    <string name="monthly_plan">Monthly Plan</string>
+    <string name="restore_purchase">Restore Purchases</string>
+    <string name="continue_to_result">Continue to result</string>
+    <string name="legal_smallprint">Cancel anytime. Price may vary by region.</string>
+
+    <string name="button_save">Save</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
+
+    <string name="home_button_my_recipes">My Recipes</string>
+
+    <string name="save_recipe_title">Save Recipe</string>
+    <string name="save_recipe_message">Name this optimization recipe:</string>
+    <string name="recipe_name_hint">Ex: My V60 Recipe</string>
+    <string name="toast_recipe_name_empty">The name cannot be empty</string>
+    <string name="toast_recipe_saved_success">Recipe successfully saved!</string>
+    <string name="toast_recipe_saved_error">Error saving recipe</string>
+
+    <string name="title_saved_recipes">My Recipes</string>
+    <string name="empty_state_no_recipes">No recipes saved yet.</string>
+
+    <string name="content_desc_delete_recipe">Delete recipe</string>
+    <string name="recipe_saved_on_date">Saved on %1$s</string>
+    <string name="recipe_drops_calcium">• Calcium: %1$d drops</string>
+    <string name="recipe_drops_magnesium">• Magnesium: %1$d drops</string>
+    <string name="recipe_drops_sodium">• Sodium: %1$d drops</string>
+    <string name="recipe_drops_potassium">• Potassium: %1$d drops</string>
+    <string name="recipe_no_drops_added">No drops added</string>
+
+    <string name="delete_recipe_title">Delete Recipe</string>
+    <string name="delete_recipe_message">Are you sure you want to delete the recipe \'%1$s\'?</string>
+
+    <string name="error_no_saved_water_for_optimization">You need to save a water evaluation in History first.</string>
+    <string name="title_optimize_saved_water">Optimize Saved Water</string>
+
 </resources>

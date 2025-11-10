@@ -54,6 +54,11 @@
         <activity android:name=".ui.evaluation.ResultDetailActivity" />
         <activity android:name=".ui.wateroptimizer.WaterOptimizerActivity" />
 
+        <activity android:name=".ui.wateroptimizer.SavedRecipesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CafeComAgua" />
+
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7526020095328101~5896268395"/>

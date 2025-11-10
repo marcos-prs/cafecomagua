@@ -50,10 +50,18 @@ class ResultsFragment : Fragment() {
     private val interstitialManager: InterstitialAdManager by lazy {
         InterstitialAdManager(
             context = requireContext(),
-            adUnitId = "ca-app-pub-7526020095328101/9326848140"
+            adUnitId = "ca-app-pub-7526020095328101/9326848140" // (ID da Home, use o seu ID de Resultados)
         ).apply {
-            onAdDismissed = {}
-            onAdFailedToShow = {}
+            // ✅ ATUALIZADO:
+            // Diz ao app para fechar a tela APENAS DEPOIS que o anúncio for fechado.
+            onAdDismissed = {
+                activity?.finish() // Fecha a Activity
+            }
+            // ✅ ATUALIZADO:
+            // Se o anúncio falhar, feche a tela mesmo assim.
+            onAdFailedToShow = {
+                activity?.finish() // Fecha a Activity
+            }
             onAdShown = {
                 requireContext().analytics().logEvent(
                     AnalyticsManager.Category.USER_ACTION,
@@ -74,11 +82,12 @@ class ResultsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar() // Chamei setupToolbar aqui para garantir que a toolbar seja configurada
+        setupToolbar()
+        interstitialManager
         setupListeners()
         observeViewModel()
         requestReviewIfAppropriate()
-        setupToolbar()
+
     }
 
     private fun setupToolbar() {
@@ -168,16 +177,23 @@ class ResultsFragment : Fragment() {
             startActivity(Intent(requireContext(), SubscriptionActivity::class.java))
         }
 
+        // ✅ LÓGICA DO INTERSTICIAL CORRIGIDA
         binding.buttonNovaAvaliacao.setOnClickListener {
-            // Mostra o anúncio (se a frequência permitir)
-            interstitialManager.showIfAvailable(
+
+            // 1. Tenta mostrar o anúncio TODA VEZ (frequência = 1)
+            val adWasTriggered = interstitialManager.showIfAvailable(
                 activity = requireActivity(),
                 counterKey = "results_exit",
-                frequency = 2
+                frequency = 1 // <-- Definido como 1 para mostrar sempre
             )
+            // 2. AÇÃO 'activity?.finish()' REMOVIDA DAQUI
+            // O fechamento agora é controlado pelos callbacks (onAdDismissed/onAdFailedToShow)
 
-            // A ação de fechar acontece IMEDIATAMENTE, não espera o anúncio
-            activity?.finish() // Fecha a EvaluationHostActivity e volta para Home
+            // 3. Fallback: Se o manager falhar em iniciar (ex: sem internet),
+            // e não acionar os callbacks, feche a tela manualmente.
+            if (!adWasTriggered) {
+                activity?.finish()
+            }
         }
 
         binding.buttonVerHistorico.setOnClickListener {

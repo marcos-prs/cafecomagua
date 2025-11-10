@@ -148,22 +148,38 @@
 
     <string name="help_topic_calculator_title">Como funciona a Calculadora (PPM por Gota)</string>
     <string name="help_topic_calculator_content" formatted="false"><![CDATA[
-    <p>O Otimizador de Água (recurso Premium) permite que você crie a água ideal do zero, usando água destilada (ou de osmose reversa) e sais minerais.</p>
-    <br>
-    <p><b>O Cálculo de PPM (Partes por Milhão)</b></p>
-    <p>Nossas receitas de "gotas" são baseadas em soluções minerais concentradas, onde uma certa quantidade de sal (ex: 10g) é dissolvida em uma certa quantidade de água destilada (ex: 100ml).</p>
-    <br>
-    <p>O app usa a seguinte referência (baseada no <b>Watermodels.kt</b>):</p>
-    <ul>
-        <li><b>Cloreto de Cálcio (CaCl₂):</b> 1 gota ≈ 10 ppm de Cálcio.</li>
-        <li><b>Cloreto de Magnésio (MgCl₂):</b> 1 gota ≈ 10 ppm de Magnésio.</li>
-        <li><b>Bicarbonato de Sódio (NaHCO₃):</b> 1 gota ≈ 5.06 ppm de Sódio.</li>
-        <li><b>Bicarbonato de Potássio (KHCO₃):</b> 1 gota ≈ 5.0 ppm de Potássio.</li>
-    </ul>
-    <br>
-    <p>Quando a calculadora sugere "4 gotas de Alcalinidade (KHCO₃)", ela está calculando que 4 gotas irão adicionar aproximadamente 20 ppm de Potássio, o que por sua vez eleva a Alcalinidade da sua água para perto do alvo da SCA.</p>
-    <p>Siga as instruções de preparo de solução no app para garantir que suas soluções caseiras tenham essa concentração.</p>
-    ]]></string>
+<p>O <b>Otimizador de Água</b> (recurso Premium) calcula quantas gotas de cada mineral você precisa adicionar à sua água para atingir as faixas ideais de qualidade para café.</p>
+<br>
+<p><b>Como Funciona a Nova Filosofia</b></p>
+<p>Diferente de métodos antigos que buscavam um "número mágico", o otimizador trabalha com <b>faixas aceitáveis</b> baseadas no que realmente importa para o sabor:</p>
+<ul>
+    <li><b>Alcalinidade (30-50 ppm):</b> O fator mais importante. Controla o equilíbrio ácido da bebida.</li>
+    <li><b>Dureza Total (50-90 ppm):</b> Define o poder de extração da água. Vem do Cálcio e Magnésio.</li>
+    <li><b>Sódio (0-10 ppm) e TDS (100-180 ppm):</b> Monitorados, mas com peso menor no cálculo.</li>
+</ul>
+<br>
+<p><b>O Cálculo de Gotas</b></p>
+<p>O app busca atingir o <b>centro das faixas ideais</b>, não um valor fixo. Por exemplo:</p>
+<ul>
+    <li>Se sua água tem Dureza de 30 ppm, o app sugere gotas para chegar a ~70 ppm (centro de 50-90).</li>
+    <li>Se já está em 80 ppm, você verá a mensagem "✓ Dureza já está na faixa ideal!"</li>
+</ul>
+<br>
+<p><b>Concentração das Soluções (PPM por Gota)</b></p>
+<p>As receitas são baseadas em soluções minerais preparadas com água destilada. Valores de referência do app:</p>
+<ul>
+    <li><b>Cloreto de Cálcio (CaCl₂):</b> 1 gota ≈ 10 ppm de Ca²⁺</li>
+    <li><b>Cloreto de Magnésio (MgCl₂):</b> 1 gota ≈ 10 ppm de Mg²⁺</li>
+    <li><b>Bicarbonato de Sódio (NaHCO₃):</b> 1 gota ≈ 5.06 ppm de Na⁺</li>
+    <li><b>Bicarbonato de Potássio (KHCO₃):</b> 1 gota ≈ 5.0 ppm de K⁺</li>
+</ul>
+<br>
+<p><b>Exemplo Prático:</b> Se o app sugere "6 gotas de KHCO₃", ele está calculando que isso adicionará ~30 ppm de Potássio, o que elevará a Alcalinidade para dentro da faixa ideal (30-50 ppm).</p>
+<br>
+<p><b>Pontuação de Melhoria:</b> O score (0-100%) mostra quanto sua água melhorou em relação ao potencial máximo. Se o app mostra 75%, significa que você alcançou 75% da melhoria possível!</p>
+<br>
+<p>💡 <b>Dica:</b> Siga as instruções de preparo no app para garantir a concentração correta das suas soluções caseiras.</p>
+]]></string>
 
     <string name="button_next">Próximo</string>
     <string name="button_skip">Pular</string>
@@ -218,7 +234,10 @@
     <string name="subscription_title">Torne-se Premium</string>
     <string name="subscription_subtitle">Remova anúncios e desbloqueie recursos exclusivos</string>
     <string name="monthly_subscription">Assinatura Mensal</string>
-    <string name="subscription_benefits">✓ Sem anúncios\n✓ Otimizador de Água\n✓ Salve receitas ilimitadas\n✓ Suporte prioritário</string>
+    <string name="benefit_ads_removal">Sem anúncios</string>
+    <string name="benefit_water_optimizer">Otimizador de Água</string>
+    <string name="benefit_unlimited_recipes">Salve receitas ilimitadas</string>
+    <string name="benefit_priority_support">Suporte prioritário</string>
     <string name="thank_you_premium_user">Obrigado por ser um usuário Premium!</string>
     <string name="premium_status_active">Premium Ativo</string>
     <string name="premium_status_legacy">Premium (Vitalício)</string>
@@ -235,4 +254,49 @@
     <string name="premium_feature_1">Otimizador de Água</string>
     <string name="premium_feature_2">Remoção de Anúncios</string>
     <string name="premium_feature_3">Receitas Ilimitadas</string>
+
+
+        <string name="cafe_logo">Logo Café com Água</string>
+        <string name="premium_title">Café com Água Premium</string>
+        <string name="premium_subtitle">Resultados melhores, sem distrações.</string>
+        <string name="benefits">Benefícios</string>
+        <string name="special_offer">Oferta Especial</string>
+        <string name="monthly_plan">Assinatura Mensal</string>
+        <string name="restore_purchase">Restaurar compras</string>
+        <string name="continue_to_result">Continuar para o resultado</string>
+        <string name="legal_smallprint">Cancelamento a qualquer momento. Preço pode variar por região.</string>
+
+    <string name="button_save">Salvar</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_delete">Excluir</string>
+
+
+    <string name="home_button_my_recipes">Minhas Receitas</string>
+
+
+    <string name="save_recipe_title">Salvar Receita</string>
+    <string name="save_recipe_message">Dê um nome para esta receita de otimização:</string>
+    <string name="recipe_name_hint">Ex: Minha Receita V60</string>
+    <string name="toast_recipe_name_empty">O nome não pode estar vazio</string>
+    <string name="toast_recipe_saved_success">Receita salva com sucesso!</string>
+    <string name="toast_recipe_saved_error">Erro ao salvar receita</string>
+
+
+    <string name="title_saved_recipes">Minhas Receitas</string>
+    <string name="empty_state_no_recipes">Nenhuma receita salva ainda.</string>
+
+    <string name="content_desc_delete_recipe">Excluir receita</string>
+    <string name="recipe_saved_on_date">Salva em %1$s</string>
+    <string name="recipe_drops_calcium">• Cálcio: %1$d gotas</string>
+    <string name="recipe_drops_magnesium">• Magnésio: %1$d gotas</string>
+    <string name="recipe_drops_sodium">• Sódio: %1$d gotas</string>
+    <string name="recipe_drops_potassium">• Potássio: %1$d gotas</string>
+    <string name="recipe_no_drops_added">Nenhuma gota adicionada</string>
+
+    <string name="delete_recipe_title">Excluir Receita</string>
+    <string name="delete_recipe_message">Tem certeza que deseja excluir a receita \'%1$s\'?</string>
+
+    <string name="error_no_saved_water_for_optimization">Você precisa salvar uma avaliação no Histórico primeiro.</string>
+    <string name="title_optimize_saved_water">Otimizar Água Salva</string>
+
 </resources>

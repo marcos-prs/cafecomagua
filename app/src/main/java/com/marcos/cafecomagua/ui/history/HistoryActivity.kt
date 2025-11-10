@@ -1,40 +1,63 @@
 package com.marcos.cafecomagua.ui.history
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.marcos.cafecomagua.ui.help.HelpActivity
+import com.google.gson.Gson // Importe o Gson (adicione ao seu build.gradle)
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.MyApplication
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
+import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.databinding.ActivityHistoryBinding
 import com.marcos.cafecomagua.ui.adapters.HistoryAdapterWithAds
-import kotlinx.coroutines.launch
-import androidx.lifecycle.lifecycleScope
-import com.marcos.cafecomagua.app.model.AvaliacaoResultado
-import java.text.DecimalFormat
-import androidx.lifecycle.lifecycleScope
 import com.marcos.cafecomagua.ui.evaluation.ResultDetailActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.OutputStreamWriter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHistoryBinding
-    private var adapter: HistoryAdapterWithAds? = null // ✅ TIPO CORRIGIDO
+    private lateinit var adapter: HistoryAdapterWithAds
+
+    // ✅ Adicionado o SubscriptionManager
+    private val subscriptionManager: SubscriptionManager by lazy {
+        SubscriptionManager(this, lifecycleScope)
+    }
+
+    // ✅ Launcher para o Storage Access Framework (SAF)
+    private val createDocumentLauncher = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        uri?.let {
+            performBackup(it)
+        } ?: Toast.makeText(this, "Exportação cancelada", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ✨ CORREÇÃO: Assinatura do listener corrigida para incluir "view" e "insets".
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
@@ -48,6 +71,7 @@ class HistoryActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
+        observeHistory()
     }
 
     private fun setupToolbar() {
@@ -57,61 +81,103 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerViewHistorico.layoutManager = LinearLayoutManager(this)
-        val database = (application as MyApplication).database
-        val avaliacaoDao = database.avaliacaoDao()
-
-        // 1. Crie o adapter UMA VEZ, com uma lista vazia
-        adapter = HistoryAdapterWithAds(
-            context = this@HistoryActivity,
-            avaliacoes = emptyList(),
-            onItemClick = { avaliacaoClicada ->
-
-                // ✅ CORRIGIDO: Navega para a nova ResultDetailActivity
-                val intent = Intent(this@HistoryActivity, ResultDetailActivity::class.java).apply {
-                    putExtra("avaliacao", avaliacaoClicada) // Passa a avaliação
-                }
-                startActivity(intent)
+        adapter = HistoryAdapterWithAds(this, emptyList()) { avaliacao ->
+            // Ação de clique no item
+            val intent = Intent(this, ResultDetailActivity::class.java).apply {
+                putExtra("avaliacao", avaliacao)
             }
-        )
+            startActivity(intent)
+        }
+        binding.recyclerViewHistorico.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewHistorico.adapter = adapter
+    }
 
-        // 2. Use o lifecycleScope para OBSERVAR o banco de dados
+    private fun observeHistory() {
         lifecycleScope.launch {
-            avaliacaoDao.getAll().collect { avaliacoesSalvas ->
-                // 3. Quando os dados mudarem, apenas ATUALIZE o adapter existente
-                // (Isso chama a função 'updateData' que acabamos de adicionar)
-                adapter?.updateData(avaliacoesSalvas)
-
-                // (Opcional) Você pode adicionar uma view de "histórico vazio"
-                // binding.textViewEmpty.isVisible = avaliacoesSalvas.isEmpty()
+            val dao = (application as MyApplication).database.avaliacaoDao()
+            dao.getAll().collectLatest { avaliacoes ->
+                adapter.updateData(avaliacoes)
             }
         }
     }
-                override fun onDestroy() {
-                    super.onDestroy()
-                    adapter?.destroy()
-                }
 
+    // ✅ --- IMPLEMENTAÇÃO DO MENU DE BACKUP ---
 
-                override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-                    menuInflater.inflate(R.menu.global_menu, menu)
-                    return true
-                }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Infla o menu que criamos
+        menuInflater.inflate(R.menu.menu_history, menu)
+        return true
+    }
 
-                override fun onOptionsItemSelected(item: MenuItem): Boolean {
-                    return when (item.itemId) {
-                        android.R.id.home -> {
-                            finish()
-                            true
-                        }
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        // Mostra ou esconde o item de backup com base no status premium
+        val backupItem = menu.findItem(R.id.action_backup)
+        backupItem?.isVisible = subscriptionManager.isPremiumActive()
+        return super.onPrepareOptionsMenu(menu)
+    }
 
-                        R.id.action_help -> {
-                            startActivity(Intent(this, HelpActivity::class.java))
-                            true
-                        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.action_backup -> {
+                // Inicia o processo de backup
+                launchBackupFilePicker()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
-                        else -> super.onOptionsItemSelected(item)
+    /**
+     * Inicia o Storage Access Framework para o usuário escolher onde salvar o arquivo.
+     */
+    private fun launchBackupFilePicker() {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault()).format(Date())
+        val fileName = "cafecomagua_backup_$timeStamp.json"
+        createDocumentLauncher.launch(fileName)
+    }
+
+    /**
+     * Pega os dados, serializa e escreve no arquivo JSON escolhido pelo usuário.
+     */
+    private fun performBackup(uri: Uri) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                // 1. Obter os dados do DB (na thread IO)
+                val dao = (application as MyApplication).database.avaliacaoDao()
+                val dataToBackup = dao.getAll().first() // Pega a lista atual
+
+                // 2. Serializar para JSON
+                val gson = Gson()
+                val jsonString = gson.toJson(dataToBackup)
+
+                // 3. Escrever no arquivo
+                contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    outputStream.bufferedWriter().use { writer ->
+                        writer.write(jsonString)
                     }
                 }
+
+                // 4. Mostrar sucesso na Main thread
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@HistoryActivity, "Backup salvo com sucesso!", Toast.LENGTH_LONG).show()
+                }
+
+            } catch (e: Exception) {
+                Log.e("HistoryBackup", "Erro ao salvar o backup", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@HistoryActivity, "Erro ao salvar o backup: ${e.message}", Toast.LENGTH_LONG).show()
+                }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter.destroy() // Libera os anúncios do adapter
+        subscriptionManager.destroy() // Libera o SubscriptionManager
+    }
+}

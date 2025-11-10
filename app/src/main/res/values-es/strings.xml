@@ -217,7 +217,10 @@
     <string name="subscription_title">Hazte Premium</string>
     <string name="subscription_subtitle">Elimina anuncios y desbloquea funciones exclusivas</string>
     <string name="monthly_subscription">Suscripción Mensual</string>
-    <string name="subscription_benefits">✓ Sin anuncios\n✓ Optimizador de Agua\n✓ Guarda recetas ilimitadas\n✓ Soporte prioritario</string>
+    <string name="benefit_ads_removal">Sin anuncios</string>
+    <string name="benefit_water_optimizer">Optimizador de Agua</string>
+    <string name="benefit_unlimited_recipes">Guardar recetas ilimitadas</string>
+    <string name="benefit_priority_support">Soporte prioritario</string>
     <string name="thank_you_premium_user">¡Gracias por ser un usuario Premium!</string>
     <string name="premium_status_active">Premium Activo</string>
     <string name="premium_status_legacy">Premium (Vitalicio)</string>
@@ -234,4 +237,45 @@
     <string name="premium_feature_1">Optimizador de Agua</string>
     <string name="premium_feature_2">Eliminación de Anuncios</string>
     <string name="premium_feature_3">Recetas Ilimitadas</string>
+
+    <string name="cafe_logo">Logo de Café com Água</string>
+    <string name="premium_title">Café com Água Premium</string>
+    <string name="premium_subtitle">Mejores resultados, sin distracciones.</string>
+    <string name="benefits">Beneficios</string>
+    <string name="special_offer">Oferta Especial</string>
+    <string name="monthly_plan">Plan Mensual</string>
+    <string name="restore_purchase">Restaurar compras</string>
+    <string name="continue_to_result">Continuar al resultado</string>
+    <string name="legal_smallprint">Cancela en cualquier momento. El precio puede variar según la región.</string>
+
+    <string name="button_save">Guardar</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_delete">Eliminar</string>
+
+    <string name="home_button_my_recipes">Mis Recetas</string>
+
+    <string name="save_recipe_title">Guardar Receta</string>
+    <string name="save_recipe_message">Nombra esta receta de optimización:</string>
+    <string name="recipe_name_hint">Ej: Mi Receta V60</string>
+    <string name="toast_recipe_name_empty">El nombre no puede estar vacío</string>
+    <string name="toast_recipe_saved_success">¡Receta guardada con éxito!</string>
+    <string name="toast_recipe_saved_error">Error al guardar la receta</string>
+
+    <string name="title_saved_recipes">Mis Recetas</string>
+    <string name="empty_state_no_recipes">Aún no hay recetas guardadas.</string>
+
+    <string name="content_desc_delete_recipe">Eliminar receta</string>
+    <string name="recipe_saved_on_date">Guardada el %1$s</string>
+    <string name="recipe_drops_calcium">• Calcio: %1$d gotas</string>
+    <string name="recipe_drops_magnesium">• Magnesio: %1$d gotas</string>
+    <string name="recipe_drops_sodium">• Sodio: %1$d gotas</string>
+    <string name="recipe_drops_potassium">• Potasio: %1$d gotas</string>
+    <string name="recipe_no_drops_added">No se añadieron gotas</string>
+
+    <string name="delete_recipe_title">Eliminar Receta</string>
+    <string name="delete_recipe_message">¿Está seguro de que desea eliminar la receta \'%1$s\'?</string>
+
+    <string name="error_no_saved_water_for_optimization">Primero debe guardar una evaluación de agua en el Historial.</string>
+    <string name="title_optimize_saved_water">Optimizar Agua Guardada</string>
+
 </resources>

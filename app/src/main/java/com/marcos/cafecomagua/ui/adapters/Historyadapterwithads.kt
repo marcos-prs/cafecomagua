@@ -192,7 +192,7 @@ class HistoryAdapterWithAds(
                 EvaluationStatus.IDEAL -> context.getString(R.string.avaliacao_ideal)
                 EvaluationStatus.ACEITAVEL -> context.getString(R.string.avaliacao_aceitavel)
                 EvaluationStatus.NAO_RECOMENDADO -> context.getString(R.string.avaliacao_nao_recomendado)
-                else -> {}
+                else -> context.getString(R.string.avaliacao_nao_avaliado) // Garante que 'NA' e outros casos sejam tratados
             }
 
             binding.textViewQualidadeGeral.text = context.getString(

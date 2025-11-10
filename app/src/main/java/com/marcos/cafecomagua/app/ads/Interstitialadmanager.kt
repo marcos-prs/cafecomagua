@@ -23,7 +23,7 @@ class InterstitialAdManager(
         private const val PREFS_NAME = "ad_frequency"
 
         // Constantes de frequência
-        const val HISTORY_VIEW_FREQUENCY = 3 // Mostrar a cada 3 visualizações do histórico
+        const val HISTORY_VIEW_FREQUENCY = 2 // Mostrar a cada 2 visualizações do histórico
     }
 
     private var interstitialAd: InterstitialAd? = null
@@ -105,7 +105,7 @@ class InterstitialAdManager(
         val adsRemoved = prefs.getBoolean("ads_removed", false)
 
         if (adsRemoved) {
-            onAdDismissed?.invoke() // Continua fluxo normal
+            // ✅ CORREÇÃO: Apenas retorne 'false'. O Fragment cuidará de fechar.
             return false
         }
 
@@ -119,21 +119,24 @@ class InterstitialAdManager(
         val shouldShow = forceShow || (newCount % frequency == 0)
 
         if (!shouldShow) {
-            onAdDismissed?.invoke() // Continua fluxo normal
+            // ✅ CORREÇÃO: Apenas retorne 'false'. O Fragment cuidará de fechar.
             return false
         }
 
         // Se o anúncio estiver carregado, mostra
         if (interstitialAd != null) {
             interstitialAd?.show(activity)
-            return true
+            return true // <-- SIM, o anúncio foi disparado
         } else {
             // Se não estiver carregado, continua sem bloquear o usuário
             Log.w(TAG, "Ad not loaded, continuing without showing")
-            onAdDismissed?.invoke()
+
+            // ✅ CORREÇÃO: Não chame 'onAdDismissed'.
+            // Apenas retorne 'false'. O Fragment cuidará de fechar.
+
             // Tenta carregar para próxima vez
             loadAd()
-            return false
+            return false // <-- NÃO, o anúncio não foi disparado
         }
     }
 

@@ -1,58 +1,44 @@
 package com.marcos.cafecomagua.app.billing
 
-import android.R
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdView
-import com.marcos.cafecomagua.app.model.AvaliacaoResultado
+import androidx.lifecycle.lifecycleScope
+import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.databinding.ActivitySubscriptionBinding
-import com.marcos.cafecomagua.databinding.ItemNativeAdBinding
-import androidx.lifecycle.lifecycleScope
 
 /**
- * Activity refatorada para gerenciar assinaturas
- * Foco em conversão para assinatura premium
+ * Tela de Assinatura – alinhada ao novo design (sem anúncios).
+ * Foco em conversão, simples e direto.
  */
 class SubscriptionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySubscriptionBinding
     private lateinit var subscriptionManager: SubscriptionManager
-    private var avaliacaoAtual: AvaliacaoResultado? = null
-    private var nativeAd: NativeAd? = null
 
     companion object {
         private const val PREFS_NAME = "app_settings"
         private const val PREF_SUPPORT_VIEW_COUNT = "support_view_count"
         private const val SUPPORT_VIEW_FREQUENCY = 13
-        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/2247696110" // Test ID - substitua pelo seu
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // ❌ REMOVIDO: Bloco de recuperação do 'avaliacaoAtual'
-        // ❌ REMOVIDO: Chamada 'shouldSkipSubscriptionScreen()'
-
         enableEdgeToEdge()
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Tratamento de insets (status/nav bar)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
-            // (Lógica do EdgeToEdge)
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
                 left = systemBars.left,
@@ -63,23 +49,27 @@ class SubscriptionActivity : AppCompatActivity() {
             insets
         }
 
+        if (shouldSkipSubscriptionScreen()) {
+            finish()
+            return
+        }
+
         setupToolbar()
         setupSubscriptionManager()
         setupUI()
         setupListeners()
-        loadNativeAd()
     }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setDisplayShowTitleEnabled(false)
+            title = getString(R.string.premium_title)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.home) {
+        if (item.itemId == android.R.id.home) {
             finish()
             return true
         }
@@ -87,111 +77,110 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
     /**
-     * Verifica se deve exibir a tela baseado na frequência
+     * Frequência de exibição (opcional; mantém a lógica antiga).
      */
     private fun shouldSkipSubscriptionScreen(): Boolean {
         val prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         val adsRemoved = prefs.getBoolean("ads_removed", false)
-
-        if (!adsRemoved) {
-            return false
-        }
+        if (!adsRemoved) return false
 
         val currentCount = prefs.getInt(PREF_SUPPORT_VIEW_COUNT, 0)
         val newCount = currentCount + 1
         prefs.edit().putInt(PREF_SUPPORT_VIEW_COUNT, newCount).apply()
 
-        // Exibe na primeira vez e depois a cada 13 vezes
+        // Mostra na primeira vez e depois a cada 13 acessos
         return (newCount - 1) % SUPPORT_VIEW_FREQUENCY != 0
     }
 
     /**
-     * Configura o gerenciador de assinaturas
+     * Billing
      */
     private fun setupSubscriptionManager() {
         subscriptionManager = SubscriptionManager(this, lifecycleScope)
+
         subscriptionManager.onPurchaseSuccess = { message ->
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             updateUI()
-            // ❌ REMOVIDA: Lógica 'if (avaliacaoAtual != null)'
         }
 
-        // ✅ LINHA CORRIGIDA (PREENCHIDA)
         subscriptionManager.onPurchaseError = { error ->
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
         }
 
+        // ✅ carrega preço assim que os produtos estiverem disponíveis
         subscriptionManager.onProductsLoaded = {
             updatePrices()
         }
     }
 
+
     /**
-     * Configura UI inicial
+     * Estado inicial
      */
     private fun setupUI() {
         updateUI()
-        binding.badgePopular.visibility = View.VISIBLE
+
+        // ✅ ADICIONAR ESTE BLOCO
+        // Define o texto e o ícone para cada benefício
+        binding.benefitAdsRemoval.benefitIcon.setImageResource(R.drawable.ic_ads_off)
+        binding.benefitAdsRemoval.benefitText.text = getString(R.string.benefit_ads_removal)
+
+        binding.benefitWaterOptimizer.benefitIcon.setImageResource(R.drawable.ic_water_optimizer)
+        binding.benefitWaterOptimizer.benefitText.text = getString(R.string.benefit_water_optimizer)
+
+        binding.benefitUnlimitedRecipes.benefitIcon.setImageResource(R.drawable.ic_recipes)
+        binding.benefitUnlimitedRecipes.benefitText.text = getString(R.string.benefit_unlimited_recipes)
+
+        binding.benefitPrioritySupport.benefitIcon.setImageResource(R.drawable.ic_support)
+        binding.benefitPrioritySupport.benefitText.text = getString(R.string.benefit_priority_support)
     }
 
     /**
-     * Atualiza UI baseado no status de assinatura
+     * Atualiza a tela conforme status premium.
+     * No novo design não há “card de status”; simplificamos:
+     * - Se Premium: desabilita o botão de assinar e troca rótulo.
+     * - Se não Premium: habilita normalmente.
      */
     private fun updateUI() {
         val isPremium = subscriptionManager.isPremiumActive()
-        val isLegacy = subscriptionManager.isLegacyUser()
+        binding.btnSubscribe.isEnabled = !isPremium
 
         if (isPremium) {
-            // Esconde seção de assinatura, mostra status premium
-            binding.layoutSubscriptionSection.visibility = View.GONE
-            binding.cardPremiumStatus.visibility = View.VISIBLE
-            binding.adContainer.visibility = View.GONE
-
-            if (isLegacy) {
-                binding.textPremiumStatus.text = getString(com.marcos.cafecomagua.R.string.premium_status_legacy)
-            } else {
-                binding.textPremiumStatus.text = getString(com.marcos.cafecomagua.R.string.premium_status_active)
-            }
+            binding.btnSubscribe.text = getString(R.string.premium_status_active)
         } else {
-            // Mostra opções de assinatura
-            binding.layoutSubscriptionSection.visibility = View.VISIBLE
-            binding.cardPremiumStatus.visibility = View.GONE
+            // Garante que o texto original esteja definido se não for premium
+            binding.btnSubscribe.text = getString(R.string.subscribe_now)
         }
     }
 
     /**
-     * Atualiza preços dos produtos
+     * Preço do SKU mensal dentro do card
      */
     private fun updatePrices() {
         binding.textSubscriptionPrice.text = subscriptionManager.getProductPrice(
-            SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY
-        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
+            SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY ) ?:
+                getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
     }
 
     /**
-     * Configura listeners dos botões
+     * Ações dos botões
      */
     private fun setupListeners() {
-        // Card de assinatura (clique em qualquer lugar)
-        binding.cardSubscription.setOnClickListener {
-            launchSubscription()
+        binding.btnSubscribe.setOnClickListener {
+            if (!subscriptionManager.isPremiumActive()) {
+                launchSubscription()
+            } else {
+                Toast.makeText(this, getString(R.string.premium_status_active), Toast.LENGTH_SHORT).show()
+            }
         }
 
-        // Botão de assinar dentro do card
-        binding.buttonSubscribe.setOnClickListener {
-            launchSubscription()
-        }
+        binding.btnContinueFree.setOnClickListener { finish() }
 
-        binding.buttonContinueToResults.setOnClickListener {
-            finish()
-        }
-
-        binding.textManageSubscription.setOnClickListener { openSubscriptionManagement() }
+        // No novo layout, “Restaurar” abre a página de assinaturas do Google Play.
+        // Se você tiver um método de restore no SubscriptionManager, chame-o aqui.
+        binding.btnRestore.setOnClickListener { openSubscriptionManagement() }
     }
 
-    /**
-     * Inicia o fluxo de assinatura
-     */
     private fun launchSubscription() {
         subscriptionManager.launchPurchaseFlow(
             this,
@@ -200,81 +189,17 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
     /**
-     * Carrega anúncio nativo
-     */
-    private fun loadNativeAd() {
-        // Não carrega anúncio se for premium
-        if (subscriptionManager.isPremiumActive()) {
-            binding.adContainer.visibility = View.GONE
-            return
-        }
-
-        val adLoader = AdLoader.Builder(this, AD_UNIT_ID)
-            .forNativeAd { ad ->
-                nativeAd?.destroy()
-                nativeAd = ad
-                populateNativeAd(ad)
-            }
-            .build()
-
-        adLoader.loadAd(AdRequest.Builder().build())
-    }
-
-    /**
-     * Popula o layout do anúncio nativo
-     */
-    private fun populateNativeAd(ad: NativeAd) {
-        val adBinding = ItemNativeAdBinding.inflate(layoutInflater)
-        val nativeAdView = adBinding.root as NativeAdView
-
-        // Preenche os componentes do anúncio
-        adBinding.adHeadline.text = ad.headline
-        nativeAdView.headlineView = adBinding.adHeadline
-
-        ad.body?.let {
-            adBinding.adBody.text = it
-            adBinding.adBody.visibility = View.VISIBLE
-            nativeAdView.bodyView = adBinding.adBody
-        }
-
-        ad.icon?.let {
-            adBinding.adIcon.setImageDrawable(it.drawable)
-            adBinding.adIcon.visibility = View.VISIBLE
-            nativeAdView.iconView = adBinding.adIcon
-        }
-
-        ad.starRating?.let {
-            adBinding.adStars.rating = it.toFloat()
-            adBinding.adStars.visibility = View.VISIBLE
-            nativeAdView.starRatingView = adBinding.adStars
-        }
-
-        ad.callToAction?.let {
-            adBinding.adCallToAction.text = it
-            nativeAdView.callToActionView = adBinding.adCallToAction
-        }
-
-        nativeAdView.setNativeAd(ad)
-        binding.adContainer.removeAllViews()
-        binding.adContainer.addView(nativeAdView)
-        binding.adContainer.visibility = View.VISIBLE
-    }
-
-    /**
-     * Abre página de gerenciamento de assinaturas do Google Play
+     * Página oficial do Play para gerenciar/restaurar assinaturas
      */
     private fun openSubscriptionManagement() {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(
-                "https://play.google.com/store/account/subscriptions"
-            )
+            data = Uri.parse("https://play.google.com/store/account/subscriptions")
         }
         startActivity(intent)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        nativeAd?.destroy()
         subscriptionManager.destroy()
     }
 }
