@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.App.Title"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="28sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/onboarding_title_4" /> <TextView
+    android:id="@+id/textDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
+    android:gravity="center"
+    android:alpha="0.85"
+    android:lineSpacingExtra="3dp"
+    android:textAppearance="@style/TextAppearance.App.Body"
+    android:textColor="?attr/colorOnBackground"
+    android:textSize="16sp"
+    app:layout_constraintTop_toBottomOf="@id/textTitle"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    tools:text="@string/onboarding_message_4" />
+
+    <ImageView
+    android:id="@+id/imageMockup"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="24dp"
+    android:contentDescription="@string/water_optimizer_preview"
+    android:scaleType="fitCenter"
+
+    android:src="@drawable/ic_water_optimizer"
+
+    app:layout_constraintTop_toBottomOf="@id/textDescription"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

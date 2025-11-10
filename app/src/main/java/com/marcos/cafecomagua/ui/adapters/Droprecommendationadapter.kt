@@ -47,11 +47,18 @@ class DropRecommendationAdapter(
                 )
 
                 // Badge de status (Ideal/Aceitável/Precisa Ajuste)
+                // Em DropRecommendationAdapter.kt, dentro da função bind()
+
+// Badge de status (Ideal/Aceitável/Precisa Ajuste)
                 if (recommendation.isOptimal) {
-                    chipStatus.text = root.context.getString(R.string.status_optimal)
+                    // ✅ CORRIGIDO: Usa a string padronizada
+                    chipStatus.text = root.context.getString(R.string.avaliacao_ideal)
                     chipStatus.setChipBackgroundColorResource(R.color.ideal_green)
                 } else {
-                    chipStatus.text = root.context.getString(R.string.status_needs_adjustment)
+                    // ✅ CORRIGIDO: Usa a string padronizada
+                    // (A cor 'acceptable_yellow'
+                    // corresponde a 'avaliacao_aceitavel')
+                    chipStatus.text = root.context.getString(R.string.avaliacao_aceitavel)
                     chipStatus.setChipBackgroundColorResource(R.color.acceptable_yellow)
                 }
 

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/mainLayoutBackground"
-    tools:context=".ui.results.ResultsActivity">
+    tools:context=".ui.evaluation.ResultsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/border_container"
@@ -130,6 +130,41 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_cta_premium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/buttonSalvarAvaliacao"
+                        android:visibility="gone" > <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/results_cta_title"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+                        <TextView
+                            android:id="@+id/text_cta_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/results_cta_message_placeholder" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_cta_subscribe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/results_cta_button" />
+                    </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <Button
                         android:id="@+id/buttonSalvarAvaliacao"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/mainLayoutBackground"
-    tools:context=".ui.adapters.OnboardingAdapter">
+    tools:context=".ui.onboarding.OnboardingActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/border_view"
@@ -19,7 +19,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- ViewPager para os slides -->
+        <LinearLayout
+            android:id="@+id/indicatorLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="24dp">
+        </LinearLayout>
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="0dp"
@@ -28,54 +39,37 @@
             app:layout_constraintBottom_toTopOf="@+id/indicatorLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Indicadores de página -->
-        <LinearLayout
-            android:id="@+id/indicatorLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNext"
+        <ImageButton
+            android:id="@+id/buttonNavPrevious"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Slide anterior"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/indicatorLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="32dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="80dp"
+            android:elevation="4dp" />
 
-            <!-- Indicadores serão adicionados dinamicamente -->
-        </LinearLayout>
-
-        <!-- Botão Próximo/Começar -->
-        <Button
-            android:id="@+id/buttonNext"
-            style="@style/Widget.App.Button.Primary"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/button_next"
-            app:layout_constraintBottom_toTopOf="@+id/buttonSkip"
-            app:layout_constraintStart_toStartOf="parent"
+        <ImageButton
+            android:id="@+id/buttonNavNext"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_arrow_forward"
+            android:contentDescription="Próximo slide"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/indicatorLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintWidth_max="320dp" />
-
-        <!-- Botão Pular -->
-        <TextView
-            android:id="@+id/buttonSkip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_skip"
-            android:textSize="16sp"
-            android:textColor="@color/dourado_elegante"
-            android:padding="12dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="80dp"
+            android:elevation="4dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

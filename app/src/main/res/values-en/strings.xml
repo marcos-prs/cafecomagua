@@ -1,83 +1,59 @@
 <resources>
     <string name="app_name">Coffee with Water</string>
+    <string name="button_avancar">Next</string>
+    <string name="button_voltar">Back</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancelar">Cancel</string>
+    <string name="preco_indisponivel" translatable="false">…</string>
+    <string name="unidade_mg_l">%1$s mg/L</string>
+
+    <string name="avaliacao_ideal">Ideal</string>
+    <string name="avaliacao_aceitavel">Acceptable</string>
+    <string name="avaliacao_nao_recomendado">Not Recommended</string>
+    <string name="avaliacao_nao_avaliado">Not Evaluated</string>
+    <string name="avaliacao_nao_recomendado_abrev">Not Rec.</string>
+    <string name="qualidade_alta">High</string>
+    <string name="qualidade_aceitavel">Acceptable</string>
+    <string name="qualidade_baixa">Low</string>
+
+    <string name="error_marca_empty">Brand cannot be empty!</string>
+    <string name="error_fonte_empty">Source cannot be empty!</string>
+    <string name="error_bicarbonato_empty">Bicarbonate cannot be empty!</string>
+    <string name="error_calcio_empty">Calcium cannot be empty!</string>
+    <string name="error_magnesio_empty">Magnesium cannot be empty!</string>
+
+    <string name="toast_erro_carregar_resultados">Error loading results.</string>
+    <string name="toast_avaliacao_salva">Evaluation saved successfully!</string>
+    <string name="toast_compra_cancelada">Purchase canceled.</string>
+    <string name="toast_erro_iniciar_compra">Error starting purchase. Try again.</string>
+    <string name="warning_agua_ja_avaliada">Warning: Water already evaluated in history.</string>
+
+    <string name="logo_do_aplicativo">Coffee with Water application logo</string>
+    <string name="toggle_theme_description">Toggle theme</string>
+    <string name="onboarding_icon">Slide icon</string>
+    <string name="help_ocr_description">Help about label reading</string>
+    <string name="water_optimizer_preview">Water Optimizer Preview</string>
+    <string name="water_optimizer_icon">Water Optimizer Icon</string>
+    <string name="feature_icon">Feature icon</string>
+
+    <string name="title_welcome">COFFEE WITH WATER</string>
+    <string name="subtitle_welcome">Water Quality Evaluator for Coffee Brewing</string>
+    <string name="button_testar_nova_agua">Test New Water</string>
+    <string name="button_historico">History</string>
+    <string name="home_water_optimizer">Water Optimizer (Premium)</string>
+
+    <string name="title_dados_agua">WATER DATA</string>
     <string name="screen1_title">Water Information</string>
     <string name="label_marca">Water Brand</string>
     <string name="hint_marca">Ex: XYZ Mineral Water</string>
     <string name="label_fonte">Water Source</string>
     <string name="hint_fonte">Ex: ABC Spring</string>
-    <string name="label_pais">Country</string>
-    <string name="label_estado">State</string>
-    <string name="button_avancar">Next</string>
-    <string name="app_title_main">Water Quality for Coffee</string>
-    <string name="help_screen_title">Help and Information</string>
-    <string name="help_close_button">Close</string>
-    <string name="help_topic_1_param_qual_title">Quality Parameters</string>
-    <string name="help_topic_1_param_qual_content">The parameters used in this evaluation were inspired by the water quality standards of the SCA (Specialty Coffee Association), a world reference in the preparation of specialty coffees.</string>
-    <string name="help_topic_2_tds_title">Evaporation Residue (TDS)</string>
-    <string name="help_topic_2_tds_content">The evaporation residue, also known as TDS (Total Dissolved Solids), represents the total amount of minerals dissolved in the water. This parameter is crucial for the correct extraction of the coffee\'s flavors and aromas.</string>
-    <string name="help_topic_3_scoring_system_title">Scoring System</string>
-    <string name="help_topic_3_scoring_system_content">
-        <![CDATA[ The score serves a mere reference purpose for amateur coffee lovers, being calculated based on the proximity of the values to the known ideal standards:<br><br> • <b>5 points:</b> Value within the ideal range.<br> • <b>3.5 points:</b> Value within the acceptable range.<br> • <b>1 point:</b> Value outside the recommended/acceptable ranges.<br><br> The water quality classification is:<br><br> • <b>20 to 25:</b> High Quality<br> • <b>12 to 19.5:</b> Acceptable Quality<br> • <b>5 to 11.5:</b> Low Quality ]]>
-    </string>
-    <string name="pontuacao_total_format">Score: %.2f</string>
-    <string name="qualidade_geral_format">Overall Quality: %s</string>
-    <string-array name="array_paises">
-        <item>Select Country</item>
-        <item>Brazil</item>
-        <item>United States</item>
-        <item>Canada</item>
-        <item>Argentina</item>
-        <item>Portugal</item>
-    </string-array>
-    <string-array name="array_estados_brasil">
-        <item>Select State</item>
-        <item>Acre</item>
-        <item>Alagoas</item>
-        <item>Amapá</item>
-        <item>Amazonas</item>
-        <item>Bahia</item>
-        <item>Ceará</item>
-        <item>Distrito Federal</item>
-        <item>Espírito Santo</item>
-        <item>Goiás</item>
-        <item>Maranhão</item>
-        <item>Mato Grosso</item>
-        <item>Mato Grosso do Sul</item>
-        <item>Minas Gerais</item>
-        <item>Pará</item>
-        <item>Paraíba</item>
-        <item>Paraná</item>
-        <item>Pernambuco</item>
-        <item>Piauí</item>
-        <item>Rio de Janeiro</item>
-        <item>Rio Grande do Norte</item>
-        <item>Rio Grande do Sul</item>
-        <item>Rondônia</item>
-        <item>Roraima</item>
-        <item>Santa Catarina</item>
-        <item>São Paulo</item>
-        <item>Sergipe</item>
-        <item>Tocantins</item>
-    </string-array>
     <string name="label_bicarbonato">Bicarbonate (mg/L)</string>
     <string name="hint_bicarbonato">Ex: 12.5</string>
     <string name="label_calcio">Calcium (mg/L)</string>
     <string name="hint_calcio">Ex: 8.2</string>
     <string name="label_magnesio">Magnesium (mg/L)</string>
     <string name="hint_magnesio">Ex: 3.5</string>
-    <string name="button_voltar">Back</string>
-    <string name="unidade_mg_l">%1$s mg/L</string>
-    <string name="title_dados_agua">WATER DATA</string>
-    <string name="hint_digite">Type</string>
-    <string name="hint_insira_estado">Enter</string>
-    <string name="error_marca_empty">Brand cannot be empty!</string>
-    <string name="error_fonte_empty">Source cannot be empty!</string>
-    <string name="error_pais_empty">Country cannot be empty!</string>
-    <string name="error_estado_empty">Please select a state.</string>
-    <string name="error_estado_provincia_empty">Please enter the state/province.</string>
-    <string name="error_bicarbonato_empty">Bicarbonate cannot be empty!</string>
-    <string name="error_calcio_empty">Calcium cannot be empty!</string>
-    <string name="error_magnesio_empty">Magnesium cannot be empty!</string>
     <string name="title_parametros_avaliacao">PARAMETERS</string>
     <string name="label_sodio_unidade">Sodium (mg/L)</string>
     <string name="hint_sodio">Ex: 10.0</string>
@@ -87,124 +63,130 @@
     <string name="hint_residuo">Ex: 150.0</string>
     <string name="label_dureza_calculada">Hardness (Calculated)</string>
     <string name="label_alcalinidade_calculada">Alkalinity (Calculated)</string>
-    <string name="button_ver_resultados">View Results</string>
-    <string name="avaliacao_ideal">Ideal</string>
-    <string name="avaliacao_aceitavel">Acceptable</string>
-    <string name="avaliacao_nao_recomendado">Not Recommended</string>
-    <string name="avaliacao_nao_avaliado">Not Evaluated</string>
+    <string name="button_ver_resultados">See Results</string>
+
     <string name="title_resultados">RESULTS</string>
-    <string name="label_detalhes_parametros">Parameter Details:</string>
-    <string name="button_salvar_avaliacao">Save Evaluation</string>
-    <string name="button_nova_avaliacao">New Evaluation</string>
-    <string name="button_ver_historico">View History</string>
-    <string name="title_historico">EVALUATION HISTORY</string>
-    <string name="title_gerenciar_compra">Manage Purchase</string>
-    <string name="desc_restaurar_compra">If you have already supported us and changed your phone, you can restore your purchase here. The benefit is for life.</string>
-    <string name="button_restaurar_compra">Restore Purchase</string>
-    <string name="title_apoie_nosso_trabalho">Support our work</string>
-    <string name="desc_apoie_nosso_trabalho">Buy us a coffee and remove ads forever.</string>
-    <string name="subtitle_escolha_valor">Choose how much an ad-free app is worth to you:</string>
-    <string name="label_cafe_pequeno">Small Coffee</string>
-    <string name="label_cafe_medio">Medium Coffee</string>
-    <string name="label_cafe_grande">Large Coffee</string>
-    <string name="button_seguir_sem_apoiar">Continue to results without supporting</string>
-    <string name="title_welcome">COFFEE WITH WATER</string>
-    <string name="subtitle_welcome">Water Quality Evaluator for Coffee Brewing</string>
-    <string name="button_testar_nova_agua">Test New Water</string>
-    <string name="button_historico">History</string>
-    <string name="toast_verificando_compras">Checking purchases…</string>
-    <string name="toast_erro_conexao_loja">Error connecting to the store. Please try again.</string>
-    <string name="toast_compra_restaurada">Purchase restored! Ads removed.</string>
-    <string name="toast_nenhuma_compra_encontrada">No purchase found to restore.</string>
-    <string name="toast_erro_buscar_compras">Error fetching purchases.</string>
-    <string name="toast_erro_carregar_resultados">Error loading results.</string>
-    <string name="toast_avaliacao_salva">Evaluation saved successfully!</string>
-    <string name="toast_compra_cancelada">Purchase canceled.</string>
-    <string name="toast_erro_iniciar_compra">Error starting purchase. Please try again.</string>
-    <string name="toast_obrigado_apoio">Thanks for your support! Ads removed.</string>
-    <string name="warning_agua_ja_avaliada">Warning: Water already evaluated in history.</string>
-    <string name="label_historico_agua">Water: %1$s</string>
-    <string name="label_historico_fonte">Source: %1$s</string>
-    <string name="label_historico_pontuacao">Score: %1$s</string>
-    <string name="label_historico_qualidade">Quality: %1$s</string>
+    <string name="pontuacao_total_format">Score: %.2f</string>
     <string name="label_qualidade_geral">Quality: %1$s</string>
+    <string name="label_detalhes_parametros">Parameter Details:</string>
     <string name="param_ph_valor">pH: %1$s</string>
     <string name="param_dureza_valor">Hardness: %1$s mg/L</string>
     <string name="param_alcalinidade_valor">Alkalinity: %1$s mg/L</string>
     <string name="param_sodio_valor">Sodium: %1$s mg/L</string>
     <string name="param_residuo_valor">Evap. Res.: %1$s mg/L</string>
-    <string name="avaliacao_nao_recomendado_abrev">Not Rec.</string>
-    <string name="preco_indisponivel">…</string>
-    <string name="qualidade_alta">High</string>
-    <string name="qualidade_aceitavel">Acceptable</string>
-    <string name="qualidade_baixa">Low</string>
-    <string name="desc_remover_anuncios">For an ad-free experience, remove ads forever.</string>
-    <string name="label_remover_anuncios">Remove Ads</string>
-    <string name="desc_pagar_cafezinho">If you don\'t mind ads and want to support our work, buy us a coffee:</string>
-    <string name="agradecimento_apoio_titulo">Thank you for your support!</string>
-    <string name="agradecimento_apoio_subtitulo">The ads have already been removed. If you wish, you can still support us with a coffee:</string>
-    <string name="button_continuar_para_resultado">Continue to Results</string>
-    <string name="toast_opcao_indisponivel">Option unavailable at the moment. Please try again.</string>
-    <string name="toast_obrigado_pelo_apoio_doacao">Thank you so much for your support!</string>
-    <string name="country_name_brasil">Brazil</string>
-    <string name="ads_removed_message">You\'ve already removed the ads. Thank you!</string>
-    <string name="desc_continuar_apoiando">Your contribution is much appreciated!</string>
+    <string name="button_salvar_avaliacao">Save Evaluation</string>
+    <string name="button_nova_avaliacao">New Evaluation</string>
+    <string name="button_ver_historico">View History</string>
+    <string name="results_cta_title">Take your coffee to the ideal level</string>
+    <string name="results_cta_message">Your water was classified as \"%1$s\". Want to know exactly how to fix it? The Premium Optimizer calculates the recipe for you.</string>
+    <string name="results_cta_message_placeholder">Your water was classified as "Acceptable". Want to know exactly how to fix it? The Premium Optimizer calculates the recipe for you.</string>
+    <string name="results_cta_button">View Premium Optimizer</string>
 
-    <string name="icone_remover_anuncios">Icon for remove ads option</string>
-    <string name="icone_cafe_pequeno">Icon for small coffee support option</string>
-    <string name="icone_cafe_medio">Icon for medium coffee support option</string>
-    <string name="icone_cafe_grande">Icon for large coffee support option</string>
-    <string name="logo_do_aplicativo">Coffee with Water app logo</string>
-    <string name="scan_label_button">Try to read label</string>
-    <string name="help_ocr_description">Help reading labels</string>
+    <string name="title_historico">EVALUATION HISTORY</string>
+    <string name="label_historico_agua">Water: %1$s</string>
+    <string name="label_historico_fonte">Source: %1$s</string>
+    <string name="label_historico_pontuacao">Score: %1$s</string>
+    <string name="label_historico_qualidade">Quality: %1$s</string>
 
-    <string name="toast_permission_denied">Camera permission denied. Cannot read label.</string>
+    <string name="help_screen_title">Help and Information</string>
+    <string name="help_close_button">Close</string>
+    <string name="help_topic_1_param_qual_title">Quality Parameters</string>
+    <string name="help_topic_1_param_qual_content" formatted="false"><![CDATA[
+<p>Not all water parameters are created equal. Based on current scientific consensus (including studies from the Specialty Coffee Association - SCA - and experts like Scott Rao), water quality for coffee is primarily determined by two factors:</p>
+<br>
+<p><b>1. Alkalinity (the most important factor)</b></p>
+<p>Think of alkalinity as a "buffer" that neutralizes acids. It has the most direct impact on your coffee\'s flavor.</p>
+<ul>
+    <li><b>Very high alkalinity:</b> Over-neutralizes the bright, tasty acids in coffee, resulting in a "flat," "dull," or "lifeless" brew.</li>
+    <li><b>Very low alkalinity:</b> Offers no protection against corrosion in your machines and can result in an excessively "acidic" or "sour" coffee.</li>
+</ul>
+<br>
+<p><b>2. Total Hardness (Calcium and Magnesium)</b></p>
+<p>Hardness is crucial for extraction. Calcium and magnesium ions bind to flavor compounds in the coffee grounds and extract them into the water. Additionally, hardness is the main factor in scale (limescale) buildup in your equipment.</p>
+<ul>
+    <li><b>Very high hardness:</b> Causes rapid scale buildup, requiring constant maintenance.</li>
+    <li><b>Very low hardness:</b> The water lacks "extraction power," resulting in a "weak" or "under-extracted" coffee.</li>
+</ul>
+<br>
+<p>pH, although monitored, is considered less impactful on the final flavor than alkalinity.</p>
+]]></string>
+    <string name="help_topic_2_tds_title">The TDS (Residue) Myth</string>
+    <string name="help_topic_2_tds_content" formatted="false"><![CDATA[
+    <p>You will notice that TDS (Total Dissolved Solids) and Sodium are part of our analysis. We are being transparent about how we handle them.</p>
+<br>
+<p><b>The "Ideal" TDS Myth</b></p><p>Older standards (like the SCAA 2011 chart) popularized the idea of an "ideal" TDS of 150 mg/L. However, more recent SCA studies (like the 2018 handbook) and industry experts are clear: <b>TDS, by itself, is not a good indicator of quality.</b></p>
+<br>
+<p>Why? A TDS of 150 can be composed of ideal minerals (calcium and bicarbonate) or undesirable minerals (like table salt). The total number doesn\'t tell the whole story.</p>
+<br>
+<p><b>Our (Honest) Approach</b></p>
+<p>We include TDS and Sodium in our score because we know they are a popular concern and appear on many water reports. We use the 2011 SCAA reference ranges to evaluate them.</p>
+<p>However, to ensure your score reflects what
+really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our final calculation. They serve as "tie-breakers," but will never define whether your water is good or bad.</p>
+]]></string>
+    <string name="help_topic_3_scoring_system_title">Our Scoring System</string>
+    <string name="help_topic_3_scoring_system_content" formatted="false"><![CDATA[
+<p>There is no "magic number" or single standard for perfect water. The ideal water for espresso may be slightly different from that for filter coffee. Therefore, our system is based on <b>optimal ranges</b> and <b>importance weights</b>.</p>
+<br><p>Our scoring system synthesizes data from multiple sources (including various SCA standards and expert research) to create an "app philosophy" that prioritizes flavor and equipment safety.</p>
+<br>
+<p><b>The Weighted Calculation</b></p>
+<p>Your final score (from 0 to 100) is a weighted average. This means we prioritize what matters most:</p>
+<br>
+<ul>
+    <li><b>Alkalinity:</b> Receives the highest weight (50% of the score).</li>
+    <li><b>Total Hardness:</b> Receives a medium weight (30% of the score).</li>
+    <li><b>TDS and Sodium:</b> Receive a minimal weight (10% each).</li>
+</ul>
+<br>
+<p>This ensures that water with great alkalinity and hardness will always get a good score, even if the TDS is outside the popular "ideal". And conversely, water with a TDS of 150 will receive a low grade if the alkalinity (the most important factor) is poor.</p>
+]]></string>
+    <string name="help_topic_ocr_title">Tips for Label Reading (OCR)</string>
+    <string name="help_topic_ocr_content" formatted="false"><![CDATA[
+    The label reading function uses the camera to speed up data entry. However, capture success faces major challenges:\n\n
+    <b>• Lack of Standard:</b> Water brands do not follow a single format. Tables can be vertical or horizontal, and mineral names may be abbreviated (e.g., \'Ca\' for Calcium).\n\n
+    <b>• Image Quality:</b> Factors like bottle <b>curvature</b>, light <b>reflections</b>, <b>condensation</b>, and camera <b>focus</b> can degrade image quality and make text reading difficult.\n\n
+    Therefore, the capture should be seen as an <b>assistance tool</b>. Always <b>verify the captured values</b> before proceeding with the evaluation to ensure result accuracy.
+]]></string>
+    <string name="help_topic_calculator_title">How the Calculator Works (PPM per Drop)</string>
+    <string name="help_topic_calculator_content" formatted="false"><![CDATA[
+    <p>The Water Optimizer (Premium feature) allows you to create ideal water from scratch, using distilled water (or reverse osmosis) and mineral salts.</p>
+    <br>
+    <p><b>The PPM (Parts Per Million) Calculation</b></p>
+    <p>Our "drop" recipes are based on concentrated mineral solutions, where a certain amount of salt (e.g., 10g) is dissolved in a certain amount of distilled water (e.g., 100ml).</p>
+    <br>
+    <p>The app uses the following reference (based on <b>Watermodels.kt</b>):</p>
+    <ul>
+        <li><b>Calcium Chloride (CaCl₂):</b> 1 drop ≈ 10 ppm of Calcium.</li>
+        <li><b>Magnesium Chloride (MgCl₂):</b> 1 drop ≈ 10 ppm of Magnesium.</li>
+        <li><b>Sodium Bicarbonate (NaHCO₃):</b> 1 drop ≈ 5.06 ppm of Sodium.</li>
+        <li><b>Potassium Bicarbonate (KHCO₃):</b> 1 drop ≈ 5.0 ppm of Potassium.</li>
+    </ul>
+    <br>
+    <p>When the calculator suggests "4 drops of Alkalinity (KHCO₃)", it is calculating that 4 drops will add approximately 20 ppm of Potassium, which in turn raises your water\'s Alkalinity close to the SCA target.</p>
+    <p>Follow the solution preparation instructions in the app to ensure your homemade solutions have this concentration.</p>
+    ]]></string>
+
+    <string name="button_next">Next</string>
+    <string name="button_skip">Skip</string>
+    <string name="button_start">Start</string>
+    <string name="onboarding_title_1">Welcome to Coffee with Water</string>
+    <string name="onboarding_message_1">Discover the ideal mineral water for a perfect coffee, based on the science of extraction.</string>
+    <string name="onboarding_title_2">What really matters?</string>
+    <string name="onboarding_message_2">Coffee science is clear: Alkalinity (which controls acidity) and Hardness (which extracts flavor) are the most important factors.</string>
+    <string name="onboarding_title_3">And Sodium and TDS?</string>
+    <string name="onboarding_message_3">Popular parameters like TDS (Total Dissolved Solids) are taken into account, but with a lower weight. Our system prioritizes what affects flavor.</string>
+    <string name="onboarding_title_4">Calculate the Perfect Water</string>
+    <string name="onboarding_message_4">Use our premium calculator to know exactly how many drops of minerals to add and transform your water into the ideal SCA water.</string>
+
+    <string name="scan_label_button">Try scanning the label</string>
+    <string name="toast_permission_denied">Camera permission denied. Cannot scan label.</string>
     <string name="toast_no_image">Could not get image.</string>
     <string name="toast_no_camera_app">No camera app found.</string>
     <string name="toast_image_read_error">Error reading image file.</string>
     <string name="toast_ocr_analyzing">Analyzing label…</string>
     <string name="toast_ocr_failure">Failed to recognize text: %1$s</string>
-    <string name="toast_ocr_success">Values found! Please verify they are correct.</string>
+    <string name="toast_ocr_success">Values found! Please verify if they are correct.</string>
     <string name="toast_ocr_no_params">Could not identify parameters. Please enter manually.</string>
-    <string name="quality_high">High</string>
-    <string name="quality_acceptable">Acceptable</string>
-    <string name="quality_low">Low</string>
-    <string name="toggle_theme_description">Toggle theme</string>
 
-    <string name="drops_format">Gotas: %d</string>
-    <string name="ppm_added_format">PPM adicionado: %s</string>
-    <string name="final_value_format">Valor final: %s ppm</string>
-    <string name="status_optimal">Ideal</string>
-    <string name="status_needs_adjustment">Precisa Ajuste</string>
-    <string name="info">Informações</string>
-
-    <string name="help_topic_ocr_title">Tips for Label Reading (OCR)</string>
-    <string name="help_topic_ocr_content">
-    The label reading feature uses the camera to speed up entering chemical data. However, a successful capture faces significant challenges:\n\n
-    <b>• Lack of Standardization:</b> Water brands do not follow a single format. Tables can be vertical or horizontal, and mineral names may be abbreviated (e.g., \'Ca\' for Calcium).\n\n
-    <b>• Image Quality:</b> Factors like the bottle\'s <b>curvature</b>, light <b>reflections</b>, <b>condensation</b>, and camera <b>focus</b> can degrade image quality and make the text hard to read.\n\n
-    Therefore, the capture should be seen as an <b>assistance tool</b>. Always <b>verify the captured values</b> before proceeding with the evaluation to ensure accurate results.
-</string>
-
-    <!-- Onboarding -->
-    <string name="button_next">Next</string>
-    <string name="button_skip">Skip</string>
-    <string name="button_start">Start</string>
-    <string name="onboarding_icon">Slide icon</string>
-    <string name="onboarding_slide_1_title">Welcome to Coffee with Water</string>
-    <string name="onboarding_slide_1_description">Evaluate your water quality and discover how it affects your coffee\'s flavor</string>
-    <string name="onboarding_slide_2_title">SCA Standards-Based Analysis</string>
-    <string name="onboarding_slide_2_description">We use Specialty Coffee Association standards to evaluate your water</string>
-    <string name="onboarding_slide_3_title">Premium Optimization</string>
-    <string name="onboarding_slide_3_description">Premium subscribers have access to the optimization calculator with personalized recommendations</string>
-    <string name="onboarding_title_1">Bem-vindo ao Café com Água</string>
-    <string name="onboarding_message_1">Avalie a qualidade da sua água e descubra como ela afeta o sabor do seu café</string>
-    <string name="onboarding_title_2">Padrões SCA</string>
-    <string name="onboarding_message_2">Utilizamos os padrões da Specialty Coffee Association para análise profissional</string>
-    <string name="onboarding_title_3">Recursos Premium</string>
-    <string name="onboarding_message_3">Desbloqueie funcionalidades avançadas e otimize sua experiência</string>
-
-    <!-- Water Optimizer -->
     <string name="water_optimizer_title">Water Optimizer</string>
     <string name="water_comparison_title">Water Comparison</string>
     <string name="parameter">Parameter</string>
@@ -218,43 +200,39 @@
     <string name="button_view_guide">View Guide</string>
     <string name="share_recipe">Share recipe</string>
     <string name="value_with_unit_mg_l">%s mg/L</string>
-
-    <!-- Premium -->
+    <string name="drops_format">Drops: %d</string>
+    <string name="ppm_added_format">PPM added: %s</string>
+    <string name="final_value_format">Final value: %s ppm</string>
+    <string name="info">Information</string>
     <string name="premium_required_title">Premium Feature</string>
-    <string name="premium_required_message">The Water Optimizer is an exclusive feature for premium subscribers. Subscribe now for access!</string>
+    <string name="premium_required_message">The Water Optimizer is an exclusive feature for premium subscribers. Subscribe now to get access!</string>
     <string name="button_subscribe">Subscribe</string>
-    <string name="button_cancel">Cancel</string>
     <string name="solution_preparation_title">Solution Preparation</string>
-    <string name="button_ok">OK</string>
+    <string name="screenshot_placeholder_title">Add a Screenshot Here</string>
+    <string name="screenshot_placeholder_message">Capture the Water Optimizer screen\nand replace this placeholder</string>
 
-    <!-- Subscription Screen -->
-    <string name="subscription_title">Go Premium</string>
+    <string name="premium_badge">PREMIUM</string>
+    <string name="premium_bottom_sheet_title">Unlock the Optimizer</string>
+    <string name="premium_bottom_sheet_message">Transform your water. The Premium Calculator shows exactly how many mineral drops to add to reach the ideal coffee water profile. 7-day trial.</string>
+    <string name="premium_bottom_sheet_button">Try the Optimizer</string>
+    <string name="subscription_title">Become Premium</string>
     <string name="subscription_subtitle">Remove ads and unlock exclusive features</string>
     <string name="monthly_subscription">Monthly Subscription</string>
     <string name="subscription_benefits">✓ No ads\n✓ Water Optimizer\n✓ Save unlimited recipes\n✓ Priority support</string>
-    <string name="donation_title">Support Our Work</string>
     <string name="thank_you_premium_user">Thank you for being a Premium user!</string>
     <string name="premium_status_active">Premium Active</string>
-    <string name="premium_status_legacy">Premium (Lifetime)</string>
+    <string name="premium_status_legacy">Premium (Legacy)</string>
     <string name="manage_subscription">Manage Subscription</string>
-    <string name="subscribe_now">Assine agora</string>
+    <string name="subscribe_now">Subscribe now</string>
 
-    <!-- Onboarding - Slide 4 (Premium) -->
-    <string name="onboarding_title_4">Water Optimizer</string>
-    <string name="onboarding_message_4">Obtenha recomendações personalizadas de gotas minerais para transformar sua água em ideal para café</string>
+    <string name="title_gerenciar_compra">Manage Purchase</string>
+    <string name="desc_restaurar_compra">Already purchased Premium on another device or reinstalled the app? Restore your purchase to reactivate the features.</string>
+    <string name="button_restaurar_compra">Restore Purchases</string>
 
-    <!-- Premium Features -->
-    <string name="premium_feature">Premium</string>
-    <string name="premium_feature_1">Cálculo automático de dosagem de gotas</string>
-    <string name="premium_feature_2">Comparação detalhada com padrões SCA</string>
-    <string name="premium_feature_3">Salvar e compartilhar receitas</string>
+    <string name="button_continuar_para_resultado">Continue to Result</string>
 
-    <!-- Screenshot Placeholder -->
-    <string name="screenshot_placeholder_title">Adicione uma Screenshot Aqui</string>
-    <string name="screenshot_placeholder_message">Capture a tela do Water Optimizer\ne substitua este placeholder</string>
-    <string name="water_optimizer_preview">Prévia do Water Optimizer</string>
-    <string name="water_optimizer_icon">Ícone do Water Optimizer</string>
-    <string name="feature_icon">Ícone de recurso</string>
-
-
+    <string name="premium_feature">Premium Feature</string>
+    <string name="premium_feature_1">Water Optimizer</string>
+    <string name="premium_feature_2">Ad Removal</string>
+    <string name="premium_feature_3">Unlimited Recipes</string>
 </resources>

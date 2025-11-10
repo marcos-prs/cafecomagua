@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -13,8 +14,8 @@ android {
         applicationId = "com.marcos.cafecomagua"
         minSdk = 24
         targetSdk = 36
-        versionCode = 36
-        versionName = "1.0.0"
+        versionCode = 37
+        versionName = "1.0.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -72,9 +73,15 @@ dependencies {
     // ML Kit
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.litert.support.api)
+    implementation(libs.play.services.mlkit.text.recognition)
 
     // Testes
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.fragment.ktx)
 }

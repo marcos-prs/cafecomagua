@@ -31,8 +31,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- ✅ ADICIONE ESTA ACTIVITY -->
         <activity
             android:name="com.marcos.cafecomagua.ui.onboarding.OnboardingActivity"
             android:exported="false"
@@ -42,24 +40,6 @@
             android:name="com.marcos.cafecomagua.ui.help.HelpActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
-
-        <activity
-            android:name="com.marcos.cafecomagua.ui.waterinput.WaterInputActivity"
-            android:exported="false"
-            android:theme="@style/Theme.CafeComAgua"
-            android:windowSoftInputMode="adjustPan"/>
-
-        <activity
-            android:name="com.marcos.cafecomagua.ui.parameters.ParametersActivity"
-            android:exported="false"
-            android:theme="@style/Theme.CafeComAgua"
-            android:windowSoftInputMode="adjustPan"/>
-
-        <activity
-            android:name="com.marcos.cafecomagua.ui.results.ResultsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.CafeComAgua" />
-
         <activity
             android:name="com.marcos.cafecomagua.ui.history.HistoryActivity"
             android:exported="false"
@@ -70,10 +50,13 @@
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
 
+        <activity android:name=".ui.evaluation.EvaluationHostActivity" />
+        <activity android:name=".ui.evaluation.ResultDetailActivity" />
+        <activity android:name=".ui.wateroptimizer.WaterOptimizerActivity" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7526020095328101~5896268395"/>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

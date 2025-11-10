@@ -20,21 +20,20 @@ import com.marcos.cafecomagua.databinding.ActivityWaterOptimizerBinding
 import com.marcos.cafecomagua.app.model.MineralSolution
 import com.marcos.cafecomagua.app.model.SCAStandards
 import com.marcos.cafecomagua.app.model.WaterProfile
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import java.text.DecimalFormat
+import androidx.lifecycle.lifecycleScope
 
 class WaterOptimizerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWaterOptimizerBinding
     private lateinit var calculator: WaterOptimizationCalculator
     private lateinit var subscriptionManager: SubscriptionManager
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val df = DecimalFormat("#.##")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
+        calculator = WaterOptimizationCalculator()
+        subscriptionManager = SubscriptionManager(this, lifecycleScope)
         super.onCreate(savedInstanceState)
         binding = ActivityWaterOptimizerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -54,8 +53,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
 
         // Inicializa gerenciadores
         calculator = WaterOptimizationCalculator()
-        subscriptionManager = SubscriptionManager(this, coroutineScope)
-
+        subscriptionManager = SubscriptionManager(this, lifecycleScope)
         // Verifica se tem acesso premium
         if (!checkPremiumAccess()) {
             return
@@ -111,7 +109,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
             startActivity(Intent(this, SubscriptionActivity::class.java))
             finish()
         }
-        builder.setNegativeButton(com.marcos.cafecomagua.R.string.button_cancel) { _, _ ->
+        builder.setNegativeButton(com.marcos.cafecomagua.R.string.button_cancelar) { _, _ ->
             finish()
         }
         builder.setCancelable(false)

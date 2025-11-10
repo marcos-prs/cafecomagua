@@ -27,17 +27,17 @@
     </style>
 
     <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:fontFamily">@font/font_family</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.App.Body" parent="TextAppearance.Material3.BodyLarge">
-        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:fontFamily">@font/font_family</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="TextAppearance.App.Label" parent="TextAppearance.Material3.LabelSmall">
-        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:fontFamily">@font/font_family</item>
         <item name="android:textColor">@color/dourado_elegante</item>
         <item name="android:textSize">16sp</item>
     </style>
@@ -45,7 +45,7 @@
     <style name="Widget.App.Button.Primary" parent="Widget.Material3.Button">
         <item name="backgroundTint">@color/dourado_elegante</item>
         <item name="android:textColor">@color/marrom_avermelhado_profundo</item>
-        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:fontFamily">@font/font_family</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">14dp</item>
         <item name="android:paddingBottom">14dp</item>
@@ -58,7 +58,7 @@
         <item name="backgroundTint">@color/dourado_tonal_background</item>
         <item name="android:textColor">@color/cafe_escuro_text</item>
         <item name="iconTint">@color/cafe_escuro_text</item>
-        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:fontFamily">@font/font_family</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">14dp</item>
         <item name="android:paddingBottom">14dp</item>
@@ -70,7 +70,7 @@
     <style name="Widget.App.Button.Outline" parent="Widget.Material3.Button.OutlinedButton">
         <item name="strokeColor">@color/marrom_avermelhado_principal</item>
         <item name="android:textColor">@color/marrom_avermelhado_principal</item>
-        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:fontFamily">@font/font_family</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">14dp</item>
         <item name="android:paddingBottom">14dp</item>

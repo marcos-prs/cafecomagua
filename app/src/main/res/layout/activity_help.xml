@@ -141,6 +141,23 @@
                     android:justificationMode="inter_word"
                     tools:text="@string/help_topic_ocr_content" />
 
+                <TextView
+                    android:id="@+id/textViewTopicCalculatorTitle"
+                    style="@style/TextAppearance.App.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/help_topic_calculator_title" />
+                <TextView
+                    android:id="@+id/textViewTopicCalculatorContent"
+                    style="@style/TextAppearance.App.Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:linksClickable="true"
+                    android:autoLink="web"
+                    android:text="@string/help_topic_calculator_content" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

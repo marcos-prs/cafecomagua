@@ -4,29 +4,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
-import com.marcos.cafecomagua.app.data.AppDataSource
 import com.marcos.cafecomagua.ui.help.HelpActivity
 import com.marcos.cafecomagua.R
-import com.marcos.cafecomagua.ui.results.ResultsActivity
+import com.marcos.cafecomagua.app.MyApplication
 import com.marcos.cafecomagua.databinding.ActivityHistoryBinding
+import com.marcos.cafecomagua.ui.adapters.HistoryAdapterWithAds
+import kotlinx.coroutines.launch
+import androidx.lifecycle.lifecycleScope
+import com.marcos.cafecomagua.app.model.AvaliacaoResultado
+import java.text.DecimalFormat
+import androidx.lifecycle.lifecycleScope
+import com.marcos.cafecomagua.ui.evaluation.ResultDetailActivity
+import kotlinx.coroutines.launch
 
 class HistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHistoryBinding
-    private val AD_UNIT_ID = "ca-app-pub-7526020095328101/9525187132" // ID Nativo de Teste
-    private lateinit var adapter: HistoricoAdapter
-
+    private var adapter: HistoryAdapterWithAds? = null // ✅ TIPO CORRIGIDO
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -57,40 +58,60 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         binding.recyclerViewHistorico.layoutManager = LinearLayoutManager(this)
-        val avaliacoesSalvas = AppDataSource.getAvaliacoes()
+        val database = (application as MyApplication).database
+        val avaliacaoDao = database.avaliacaoDao()
 
-        // Inicializa o Adapter com a lista e o Ad Unit ID
-        adapter = HistoricoAdapter(
-            context = this,
-            avaliacoes = avaliacoesSalvas,
-            adUnitId = AD_UNIT_ID,
+        // 1. Crie o adapter UMA VEZ, com uma lista vazia
+        adapter = HistoryAdapterWithAds(
+            context = this@HistoryActivity,
+            avaliacoes = emptyList(),
             onItemClick = { avaliacaoClicada ->
-                val intent = Intent(this, ResultsActivity::class.java).apply {
-                    putExtra("avaliacaoAtual", avaliacaoClicada)
+
+                // ✅ CORRIGIDO: Navega para a nova ResultDetailActivity
+                val intent = Intent(this@HistoryActivity, ResultDetailActivity::class.java).apply {
+                    putExtra("avaliacao", avaliacaoClicada) // Passa a avaliação
                 }
                 startActivity(intent)
             }
         )
         binding.recyclerViewHistorico.adapter = adapter
-    }
 
+        // 2. Use o lifecycleScope para OBSERVAR o banco de dados
+        lifecycleScope.launch {
+            avaliacaoDao.getAll().collect { avaliacoesSalvas ->
+                // 3. Quando os dados mudarem, apenas ATUALIZE o adapter existente
+                // (Isso chama a função 'updateData' que acabamos de adicionar)
+                adapter?.updateData(avaliacoesSalvas)
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.global_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
+                // (Opcional) Você pode adicionar uma view de "histórico vazio"
+                // binding.textViewEmpty.isVisible = avaliacoesSalvas.isEmpty()
             }
-            R.id.action_help -> {
-                startActivity(Intent(this, HelpActivity::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
-}
+                override fun onDestroy() {
+                    super.onDestroy()
+                    adapter?.destroy()
+                }
+
+
+                override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+                    menuInflater.inflate(R.menu.global_menu, menu)
+                    return true
+                }
+
+                override fun onOptionsItemSelected(item: MenuItem): Boolean {
+                    return when (item.itemId) {
+                        android.R.id.home -> {
+                            finish()
+                            true
+                        }
+
+                        R.id.action_help -> {
+                            startActivity(Intent(this, HelpActivity::class.java))
+                            true
+                        }
+
+                        else -> super.onOptionsItemSelected(item)
+                    }
+                }
+            }

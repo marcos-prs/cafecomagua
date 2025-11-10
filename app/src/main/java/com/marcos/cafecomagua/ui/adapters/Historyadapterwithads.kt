@@ -19,28 +19,31 @@ import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.databinding.ItemHistoryBinding
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
+// ⚠️ IMPORT NECESSÁRIO (Presumindo que EvaluationStatus exista no pacote 'model')
+import com.marcos.cafecomagua.app.model.EvaluationStatus
+
 
 /**
  * Adapter para histórico de avaliações com Native Ads inseridos estrategicamente
  */
 class HistoryAdapterWithAds(
     private val context: Context,
-    private val avaliacoes: List<AvaliacaoResultado>,
+    private var avaliacoes: List<AvaliacaoResultado>,
     private val onItemClick: (AvaliacaoResultado) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_EVALUATION = 0
         private const val VIEW_TYPE_AD = 1
-        private const val AD_FREQUENCY = 5 // Native ad a cada 5 items
-
-        private const val NATIVE_AD_UNIT_ID = "ca-app-pub-7526020095328101/XXXXXX" // Substitua pelo ID real
+        private const val AD_FREQUENCY = 5
+        private const val NATIVE_AD_UNIT_ID = "ca-app-pub-7526020095328101/XXXXXX"
     }
 
     private val items = mutableListOf<Any>()
     private val nativeAds = mutableListOf<NativeAd>()
 
-    // Verifica se anúncios foram removidos
     private val adsRemoved: Boolean by lazy {
         context.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
             .getBoolean("ads_removed", false)
@@ -53,21 +56,29 @@ class HistoryAdapterWithAds(
         }
     }
 
-    /**
-     * Organiza a lista inserindo placeholders para anúncios
-     */
+    fun updateData(newAvaliacoes: List<AvaliacaoResultado>) {
+        nativeAds.forEach { it.destroy() }
+        nativeAds.clear()
+
+        avaliacoes = newAvaliacoes
+        setupItems()
+
+        if (!adsRemoved) {
+            loadNativeAds()
+        }
+
+        notifyDataSetChanged()
+    }
+
     private fun setupItems() {
         items.clear()
 
         if (adsRemoved) {
-            // Se premium, apenas adiciona as avaliações
             items.addAll(avaliacoes)
         } else {
-            // Insere placeholders de anúncios a cada AD_FREQUENCY items
             avaliacoes.forEachIndexed { index, avaliacao ->
                 items.add(avaliacao)
 
-                // Insere placeholder de anúncio após cada AD_FREQUENCY items
                 if ((index + 1) % AD_FREQUENCY == 0 && index < avaliacoes.size - 1) {
                     items.add(NativeAdPlaceholder)
                 }
@@ -75,9 +86,6 @@ class HistoryAdapterWithAds(
         }
     }
 
-    /**
-     * Carrega Native Ads antecipadamente
-     */
     private fun loadNativeAds() {
         val numberOfAds = (avaliacoes.size / AD_FREQUENCY).coerceAtLeast(1)
 
@@ -85,19 +93,17 @@ class HistoryAdapterWithAds(
             .forNativeAd { nativeAd ->
                 nativeAds.add(nativeAd)
 
-                // Atualiza a UI quando anúncios estiverem carregados
                 if (nativeAds.size <= numberOfAds) {
                     notifyDataSetChanged()
                 }
             }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    // Falha silenciosa - não impede o uso do app
+                    // Falha silenciosa
                 }
             })
             .build()
 
-        // Carrega múltiplos anúncios de uma vez
         adLoader.loadAds(AdRequest.Builder().build(), numberOfAds)
     }
 
@@ -135,7 +141,6 @@ class HistoryAdapterWithAds(
                 holder.bind(avaliacao, onItemClick)
             }
             is NativeAdViewHolder -> {
-                // Calcula qual anúncio usar
                 val adIndex = (position / (AD_FREQUENCY + 1)).coerceAtMost(nativeAds.size - 1)
                 if (adIndex >= 0 && adIndex < nativeAds.size) {
                     holder.bind(nativeAds[adIndex])
@@ -146,6 +151,8 @@ class HistoryAdapterWithAds(
 
     override fun getItemCount() = items.size
 
+    // --- EvaluationViewHolder Corrigido ---
+
     /**
      * ViewHolder para itens de avaliação
      */
@@ -153,9 +160,20 @@ class HistoryAdapterWithAds(
         private val binding: ItemHistoryBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        // ❌ Declaração duplicada do Enum removida daqui (Linha 165 anterior)
+
         fun bind(avaliacao: AvaliacaoResultado, onClick: (AvaliacaoResultado) -> Unit) {
             val df = DecimalFormat("#.##")
 
+            // 1. Configuração da Data e Hora
+            try {
+                val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                binding.textViewDataHora.text = sdf.format(avaliacao.dataAvaliacao)
+            } catch (e: Exception) {
+                binding.textViewDataHora.text = "Data indisponível"
+            }
+
+            // 2. Configuração de Nome, Fonte e Pontuação
             binding.textViewAgua.text = avaliacao.nomeAgua
             binding.textViewFonte.text = context.getString(
                 R.string.label_historico_fonte,
@@ -166,17 +184,22 @@ class HistoryAdapterWithAds(
                 df.format(avaliacao.pontuacaoTotal)
             )
 
-            val qualidadeText = when (avaliacao.qualidadeGeral) {
-                "Alta" -> context.getString(R.string.qualidade_alta)
-                "Aceitável" -> context.getString(R.string.qualidade_aceitavel)
-                "Baixa" -> context.getString(R.string.qualidade_baixa)
-                else -> avaliacao.qualidadeGeral
+            // ✅ 3. Lógica de Qualidade Simplificada e Corrigida
+            // 'avaliacao.qualidadeGeral' já é do tipo EvaluationStatus.
+            val qualidadeStatus = avaliacao.qualidadeGeral
+
+            val qualidadeText = when (qualidadeStatus) {
+                EvaluationStatus.IDEAL -> context.getString(R.string.avaliacao_ideal)
+                EvaluationStatus.ACEITAVEL -> context.getString(R.string.avaliacao_aceitavel)
+                EvaluationStatus.NAO_RECOMENDADO -> context.getString(R.string.avaliacao_nao_recomendado)
+                else -> {}
             }
 
             binding.textViewQualidadeGeral.text = context.getString(
                 R.string.label_historico_qualidade,
                 qualidadeText
             )
+            // ----------------------------------------------------
 
             binding.root.setOnClickListener {
                 onClick(avaliacao)
@@ -188,11 +211,10 @@ class HistoryAdapterWithAds(
      * ViewHolder para Native Ads
      */
     inner class NativeAdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        // ... (lógica de bind do AdViewHolder) ...
         fun bind(nativeAd: NativeAd) {
             val adView = itemView.findViewById<NativeAdView>(R.id.native_ad_view)
 
-            // Configura os componentes do Native Ad
             adView.findViewById<TextView>(R.id.ad_headline)?.let {
                 it.text = nativeAd.headline
                 adView.headlineView = it

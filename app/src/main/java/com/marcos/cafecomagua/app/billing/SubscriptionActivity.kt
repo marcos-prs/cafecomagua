@@ -21,10 +21,7 @@ import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.databinding.ActivitySubscriptionBinding
 import com.marcos.cafecomagua.databinding.ItemNativeAdBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import com.marcos.cafecomagua.ui.results.ResultsActivity
+import androidx.lifecycle.lifecycleScope
 
 /**
  * Activity refatorada para gerenciar assinaturas
@@ -34,7 +31,6 @@ class SubscriptionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySubscriptionBinding
     private lateinit var subscriptionManager: SubscriptionManager
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var avaliacaoAtual: AvaliacaoResultado? = null
     private var nativeAd: NativeAd? = null
 
@@ -48,25 +44,15 @@ class SubscriptionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Recupera avaliação se vier de fluxo de avaliação
-        @Suppress("DEPRECATION")
-        avaliacaoAtual = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra("avaliacaoAtual", AvaliacaoResultado::class.java)
-        } else {
-            intent.getSerializableExtra("avaliacaoAtual") as? AvaliacaoResultado
-        }
-
-        // Verifica se deve pular esta tela
-        if (shouldSkipSubscriptionScreen()) {
-            navigateToResults()
-            return
-        }
+        // ❌ REMOVIDO: Bloco de recuperação do 'avaliacaoAtual'
+        // ❌ REMOVIDO: Chamada 'shouldSkipSubscriptionScreen()'
 
         enableEdgeToEdge()
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            // (Lógica do EdgeToEdge)
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
                 left = systemBars.left,
@@ -119,28 +105,18 @@ class SubscriptionActivity : AppCompatActivity() {
         return (newCount - 1) % SUPPORT_VIEW_FREQUENCY != 0
     }
 
-    private fun navigateToResults() {
-        startActivity(Intent(this, ResultsActivity::class.java).apply {
-            putExtra("avaliacaoAtual", avaliacaoAtual)
-        })
-        finish()
-    }
-
     /**
      * Configura o gerenciador de assinaturas
      */
     private fun setupSubscriptionManager() {
-        subscriptionManager = SubscriptionManager(this, coroutineScope)
-
+        subscriptionManager = SubscriptionManager(this, lifecycleScope)
         subscriptionManager.onPurchaseSuccess = { message ->
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             updateUI()
-            // Se veio do fluxo de avaliação, continua
-            if (avaliacaoAtual != null) {
-                navigateToResults()
-            }
+            // ❌ REMOVIDA: Lógica 'if (avaliacaoAtual != null)'
         }
 
+        // ✅ LINHA CORRIGIDA (PREENCHIDA)
         subscriptionManager.onPurchaseError = { error ->
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
         }
@@ -206,19 +182,11 @@ class SubscriptionActivity : AppCompatActivity() {
             launchSubscription()
         }
 
-        // Botão de continuar sem assinar
         binding.buttonContinueToResults.setOnClickListener {
-            if (avaliacaoAtual != null) {
-                navigateToResults()
-            } else {
-                finish()
-            }
+            finish()
         }
 
-        // Link para gerenciar assinatura
-        binding.textManageSubscription.setOnClickListener {
-            openSubscriptionManagement()
-        }
+        binding.textManageSubscription.setOnClickListener { openSubscriptionManagement() }
     }
 
     /**

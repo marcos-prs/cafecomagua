@@ -44,11 +44,18 @@
             app:layout_constraintEnd_toStartOf="@+id/buttonHelp"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/icon_tint_selector"
-            tools:src="@drawable/ic_moon_night" /> <androidx.constraintlayout.widget.Group
-        android:id="@+id/content_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="imageViewLogo,textViewWelcomeTitle,textViewWelcomeSubtitle,buttonNewEvaluation,buttonViewHistory" />
+            tools:src="@drawable/ic_moon_night" />
+
+        <ImageView
+            android:id="@+id/image_premium_badge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_premium"
+            android:padding="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/buttonToggleTheme"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/imageViewLogo"
@@ -58,7 +65,6 @@
             android:src="@drawable/ic_launcher_icon"
             app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -91,7 +97,6 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/buttonNewEvaluation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeTitle" />
 
@@ -104,12 +109,28 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeSubtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonViewHistory"
+            app:layout_constraintBottom_toTopOf="@+id/buttonWaterOptimizer"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:layout_marginTop="48dp"
             app:layout_constraintWidth_max="320dp"
             tools:backgroundTint="@color/dourado_elegante"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonWaterOptimizer"
+            style="@style/Widget.App.Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/home_water_optimizer"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toTopOf="@+id/buttonViewHistory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonNewEvaluation"
+            app:layout_constraintWidth_max="320dp"/>
 
         <Button
             android:id="@+id/buttonViewHistory"
@@ -123,7 +144,7 @@
             app:layout_constraintBottom_toTopOf="@+id/ad_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonNewEvaluation"
+            app:layout_constraintTop_toBottomOf="@+id/buttonWaterOptimizer"
             app:layout_constraintWidth_max="320dp"
             tools:backgroundTint="@color/dourado_elegante"/>
 

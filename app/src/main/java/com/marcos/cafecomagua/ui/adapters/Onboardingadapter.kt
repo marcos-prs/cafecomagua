@@ -8,27 +8,68 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.ui.onboarding.OnboardingSlide
-
+/**
+ * ✅ REFATORADO (Ponto 10)
+ * Este adapter agora suporta múltiplos layouts:
+ * - VIEW_TYPE_STANDARD: Para os slides 1-3 (usa R.layout.item_onboarding_slide)
+ * - VIEW_TYPE_PREMIUM_SLIDE: Para o slide 4 (usa R.layout.item_onboarding_premium_slide)
+ */
 class OnboardingAdapter(
     private val slides: List<OnboardingSlide>
-) : RecyclerView.Adapter<OnboardingAdapter.SlideViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() { // Alterado para ViewHolder genérico
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlideViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_onboarding_slide, parent, false)
-        return SlideViewHolder(view)
+    companion object {
+        private const val VIEW_TYPE_STANDARD = 0
+        private const val VIEW_TYPE_PREMIUM_SLIDE = 1
     }
 
-    override fun onBindViewHolder(holder: SlideViewHolder, position: Int) {
-        holder.bind(slides[position])
+    /**
+     * Define qual layout usar com base na posição.
+     * O slide 4 (posição 3) é o único que usa o layout premium.
+     */
+    override fun getItemViewType(position: Int): Int {
+        return if (slides[position].isPremiumSlide) { // ✅ LÓGICA ATUALIZADA
+            VIEW_TYPE_PREMIUM_SLIDE
+        } else {
+            VIEW_TYPE_STANDARD
+        }
+    }
+
+    /**
+     * Infla o layout correto (standard ou premium) com base no viewType.
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_PREMIUM_SLIDE) {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_onboarding_premium_slide, parent, false)
+            PremiumSlideViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_onboarding_slide, parent, false)
+            StandardSlideViewHolder(view)
+        }
+    }
+
+    /**
+     * Vincula os dados ao ViewHolder correto.
+     */
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val slide = slides[position]
+
+        if (holder is PremiumSlideViewHolder) {
+            holder.bind(slide)
+        } else if (holder is StandardSlideViewHolder) {
+            holder.bind(slide)
+        }
     }
 
     override fun getItemCount(): Int = slides.size
 
     /**
-     * ViewHolder para slides de onboarding
+     * ViewHolder para os slides padrão (1-3)
+     * Layout: R.layout.item_onboarding_slide.xml
      */
-    class SlideViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class StandardSlideViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageIcon: ImageView = itemView.findViewById(R.id.imageIcon)
         private val textTitle: TextView = itemView.findViewById(R.id.textTitle)
         private val textDescription: TextView = itemView.findViewById(R.id.textDescription)
@@ -38,19 +79,21 @@ class OnboardingAdapter(
             textTitle.text = slide.title
             textDescription.text = slide.message
 
-            // Se for slide premium, adiciona indicador visual
-            if (slide.isPremiumFeature) {
-                // Adiciona uma estrela dourada ao título para indicar premium
-                textTitle.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_premium,
-                    0,
-                    0,
-                    0
-                )
-                textTitle.compoundDrawablePadding = 8
-            } else {
-                textTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-            }
+            // ❌ Lógica 'isPremiumFeature' removida
+        }
+    }
+
+    /**
+     * ViewHolder para o slide final (4) do Otimizador
+     * Layout: R.layout.item_onboarding_premium_slide.xml
+     */
+    class PremiumSlideViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textTitle: TextView = itemView.findViewById(R.id.textTitle)
+        private val textDescription: TextView = itemView.findViewById(R.id.textDescription)
+
+        fun bind(slide: OnboardingSlide) {
+            textTitle.text = slide.title
+            textDescription.text = slide.message
         }
     }
 }
