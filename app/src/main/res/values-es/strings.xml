@@ -40,7 +40,7 @@
     <string name="subtitle_welcome">Evaluador de Calidad del Agua para Preparar Café</string>
     <string name="button_testar_nova_agua">Analizar Nueva Agua</string>
     <string name="button_historico">Historial</string>
-    <string name="home_water_optimizer">Optimizador de Agua (Premium)</string>
+    <string name="home_water_optimizer">Optimizador de Agua</string>
 
     <string name="title_dados_agua">DATOS DEL AGUA</string>
     <string name="screen1_title">Información del Agua</string>
@@ -277,5 +277,10 @@
 
     <string name="error_no_saved_water_for_optimization">Primero debe guardar una evaluación de agua en el Historial.</string>
     <string name="title_optimize_saved_water">Optimizar Agua Guardada</string>
+
+    <string name="dialog_delete_recipe_title">Excluir Receita</string>
+    <string name="dialog_delete_recipe_message">Tem certeza que deseja excluir a receita \'%1$s\'?</string>
+    <string name="dialog_delete">Excluir</string>
+    <string name="dialog_cancel">Cancelar</string>
 
 </resources>

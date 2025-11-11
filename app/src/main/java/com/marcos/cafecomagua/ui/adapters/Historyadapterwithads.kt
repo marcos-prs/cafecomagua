@@ -38,7 +38,7 @@ class HistoryAdapterWithAds(
         private const val VIEW_TYPE_EVALUATION = 0
         private const val VIEW_TYPE_AD = 1
         private const val AD_FREQUENCY = 5
-        private const val NATIVE_AD_UNIT_ID = "ca-app-pub-7526020095328101/XXXXXX"
+        private const val NATIVE_AD_UNIT_ID = "ca-app-pub-7526020095328101/9431157132"
     }
 
     private val items = mutableListOf<Any>()

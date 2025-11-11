@@ -2,6 +2,7 @@ package com.marcos.cafecomagua.ui.wateroptimizer
 
 import RecipeDao
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -10,20 +11,26 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.MyApplication
+import com.marcos.cafecomagua.app.model.SavedRecipe
 import com.marcos.cafecomagua.databinding.ActivitySavedRecipesBinding
+import com.marcos.cafecomagua.databinding.DialogRecipeDetailBinding
 import com.marcos.cafecomagua.ui.adapters.SavedRecipeAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SavedRecipesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySavedRecipesBinding
     private lateinit var recipeDao: RecipeDao
     private lateinit var adapter: SavedRecipeAdapter
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy 'às' HH:mm", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -64,28 +71,70 @@ class SavedRecipesActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = SavedRecipeAdapter { recipe ->
-            // Ação de clique para deletar
-            AlertDialog.Builder(this)
-                .setTitle("Excluir Receita") // TODO: Use R.string
-                .setMessage("Tem certeza que deseja excluir a receita '${recipe.recipeName}'?") // TODO: Use R.string
-                .setPositiveButton("Excluir") { _, _ ->
-                    lifecycleScope.launch {
-                        recipeDao.delete(recipe)
-                    }
-                }
-                .setNegativeButton("Cancelar", null)
-                .show()
-        }
+        // ✅ CORRIGIDO: Passa os dois callbacks com tipos explícitos
+        adapter = SavedRecipeAdapter(
+            onRecipeClick = { recipe: SavedRecipe ->
+                showRecipeDetailDialog(recipe)
+            },
+            onDeleteClick = { recipe: SavedRecipe ->
+                showDeleteConfirmationDialog(recipe)
+            }
+        )
         binding.recyclerSavedRecipes.layoutManager = LinearLayoutManager(this)
         binding.recyclerSavedRecipes.adapter = adapter
+    }
+
+    /**
+     * ✅ ATUALIZADO: Dialog visual com grid de minerais
+     */
+    private fun showRecipeDetailDialog(recipe: SavedRecipe) {
+        val dialogBinding = DialogRecipeDetailBinding.inflate(LayoutInflater.from(this))
+
+        // Popula os dados básicos
+        dialogBinding.textRecipeName.text = recipe.recipeName
+        dialogBinding.textCreatedDate.text = "Salva em: ${dateFormat.format(recipe.dateSaved)}"
+
+        // ✅ Exibe as gotas de cada mineral no grid visual
+        dialogBinding.textCalciumDrops.text = recipe.calciumDrops.toString()
+        dialogBinding.textMagnesiumDrops.text = recipe.magnesiumDrops.toString()
+        dialogBinding.textSodiumDrops.text = recipe.sodiumDrops.toString()
+        dialogBinding.textPotassiumDrops.text = recipe.potassiumDrops.toString()
+
+        // Cria o dialog
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogBinding.root)
+            .create()
+
+        // Configura os botões
+        dialogBinding.buttonClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.buttonDelete.setOnClickListener {
+            dialog.dismiss()
+            showDeleteConfirmationDialog(recipe)
+        }
+
+        dialog.show()
+    }
+
+    private fun showDeleteConfirmationDialog(recipe: SavedRecipe) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Excluir Receita")
+            .setMessage("Tem certeza que deseja excluir a receita '${recipe.recipeName}'?")
+            .setPositiveButton("Excluir") { _, _ ->
+                lifecycleScope.launch {
+                    recipeDao.delete(recipe)
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     private fun observeRecipes() {
         lifecycleScope.launch {
             recipeDao.getAllRecipes().collectLatest { recipes ->
                 adapter.submitList(recipes)
-                // Mostra ou esconde o estado de vazio
                 binding.textEmptyState.isVisible = recipes.isEmpty()
                 binding.recyclerSavedRecipes.isVisible = recipes.isNotEmpty()
             }

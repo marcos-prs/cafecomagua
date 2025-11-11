@@ -50,9 +50,18 @@
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />
 
-        <activity android:name=".ui.evaluation.EvaluationHostActivity" />
-        <activity android:name=".ui.evaluation.ResultDetailActivity" />
-        <activity android:name=".ui.wateroptimizer.WaterOptimizerActivity" />
+        <activity
+            android:name=".ui.evaluation.EvaluationHostActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <activity
+            android:name=".ui.evaluation.ResultDetailActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.wateroptimizer.WaterOptimizerActivity"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity android:name=".ui.wateroptimizer.SavedRecipesActivity"
             android:exported="false"

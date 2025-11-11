@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class SavedRecipeAdapter(
+    private val onRecipeClick: (SavedRecipe) -> Unit,
     private val onDeleteClick: (SavedRecipe) -> Unit
 ) : ListAdapter<SavedRecipe, SavedRecipeAdapter.RecipeViewHolder>(RecipeDiffCallback()) {
 

@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.CafeComAgua" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="colorPrimary">@color/marrom_avermelhado_principal</item>
         <item name="colorOnPrimary">@color/creme_texto</item>
         <item name="colorSecondary">@color/dourado_elegante</item>

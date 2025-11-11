@@ -179,7 +179,7 @@ class ParametersFragment : Fragment() {
         adView = AdView(requireContext())
         adView?.apply {
             setAdSize(AdSize.BANNER)
-            adUnitId = "ca-app-pub-3940256099942544/6300978111"
+            adUnitId = "ca-app-pub-7526020095328101/2793229383"
         }
         adContainerView.removeAllViews()
         adContainerView.addView(adView)

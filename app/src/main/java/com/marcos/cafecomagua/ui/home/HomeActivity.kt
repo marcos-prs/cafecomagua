@@ -101,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
         if (!isPremium) {
             interstitialManager = InterstitialAdManager(
                 context = this,
-                adUnitId = "ca-app-pub-7526020095328101/9326848140"
+                adUnitId = "ca-app-pub-7526020095328101/8118075461"
             ).apply {
                 onAdDismissed = { navigateToHistory() }
                 onAdFailedToShow = { navigateToHistory() }
