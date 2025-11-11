@@ -21,10 +21,11 @@ import com.marcos.cafecomagua.ads.InterstitialAdManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.ui.evaluation.EvaluationHostActivity
 import com.marcos.cafecomagua.databinding.ActivityHomeBinding
-import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Category
-import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
+import com.marcos.cafecomagua.app.analytics.Category
+import com.marcos.cafecomagua.app.analytics.Event
 import com.marcos.cafecomagua.ui.onboarding.OnboardingActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.marcos.cafecomagua.app.billing.PremiumBottomSheetFragment
 import com.marcos.cafecomagua.billing.SubscriptionManager
 import com.marcos.cafecomagua.ui.wateroptimizer.WaterOptimizerActivity
@@ -208,12 +209,16 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val avaliacoesSalvas = dao.getAll().first()
 
+            // ✅ REFATORADO: Substituído Toast por MaterialAlertDialog
             if (avaliacoesSalvas.isEmpty()) {
-                Toast.makeText(
-                    this@HomeActivity,
-                    R.string.error_no_saved_water_for_optimization,
-                    Toast.LENGTH_LONG
-                ).show()
+                MaterialAlertDialogBuilder(this@HomeActivity)
+                    .setTitle("Nenhuma Água Salva")
+                    .setMessage("Você precisa primeiro avaliar e salvar uma água para poder otimizá-la.")
+                    .setPositiveButton("Avaliar Água") { _, _ ->
+                        startActivity(Intent(this@HomeActivity, EvaluationHostActivity::class.java))
+                    }
+                    .setNegativeButton(R.string.button_cancelar, null)
+                    .show()
                 return@launch
             }
 

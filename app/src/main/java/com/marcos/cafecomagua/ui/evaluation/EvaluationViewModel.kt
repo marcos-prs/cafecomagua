@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.marcos.cafecomagua.app.logic.WaterEvaluator
 import com.marcos.cafecomagua.app.model.AvaliacaoResultado
 import com.marcos.cafecomagua.app.model.EvaluationStatus
+import com.marcos.cafecomagua.app.model.WaterProfile
 import java.util.Date
 
 /**
@@ -43,9 +44,16 @@ class EvaluationViewModel : ViewModel() {
         val tds = residuoEvaporacao.value ?: 0.0
         val pHEntrada = ph.value ?: 0.0
 
-        // 2. Calcular valores-chave (Dureza e Alcalinidade)
-        val durezaCalculada = (ca * 2.497) + (mg * 4.118)
-        val alcalinidadeCalculada = (hco3 * 0.820)
+        // 2. ✅ REFATORADO: Calcular valores-chave (Dureza e Alcalinidade)
+        // Usando a lógica centralizada do WaterProfile
+        val profile = WaterProfile(
+            calcium = ca,
+            magnesium = mg,
+            bicarbonate = hco3
+        )
+        val durezaCalculada = profile.calculateHardness()
+        val alcalinidadeCalculada = profile.calculateAlkalinity()
+
 
         // 3. Chamar o WaterEvaluator
         val scoreResult = WaterEvaluator.calculateScore(

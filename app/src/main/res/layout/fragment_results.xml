@@ -156,13 +156,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="@string/results_cta_message_placeholder" />
+                            tools:text="Sua água foi classificada como... "
+                            android:text="@string/results_cta_message" />
+                        <!-- ✅ CORRIGIDO: O layout agora usa @string/results_cta_message -->
+                        <!-- O placeholder foi removido dos arquivos de strings -->
+
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_cta_subscribe"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/results_cta_button" />
+                        <!-- ✅ CORRIGIDO: A string "results_cta_button" foi re-adicionada aos arquivos de strings -->
+
                     </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 

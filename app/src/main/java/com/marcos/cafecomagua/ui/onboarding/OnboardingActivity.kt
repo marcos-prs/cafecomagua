@@ -3,7 +3,6 @@ package com.marcos.cafecomagua.ui.onboarding
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
@@ -11,20 +10,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible // ✅ Importado para os botões de seta
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.viewpager2.widget.ViewPager2
 import com.marcos.cafecomagua.R
-import com.marcos.cafecomagua.app.analytics.AnalyticsManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.ActivityOnboardingBinding
 import com.marcos.cafecomagua.ui.adapters.OnboardingAdapter
 import com.marcos.cafecomagua.ui.home.HomeActivity
+import com.marcos.cafecomagua.app.analytics.Category
 
 /**
- * ✅ REFATORADO: (Ponto de Design)
- * Usa botões de navegação laterais (setas) e remove botões inferiores.
- * ✅ CORRIGIDO: Erros de sintaxe resolvidos (código movido para setupViewPager).
+ * ✅ REFATORADO:
+ * - Remove botões de navegação laterais (setas)
+ * - Mantém navegação por swipe
+ * - Adiciona botão "Pular" que aparece em todos os slides
+ * - Muda texto para "CONCLUIR" no último slide
  */
 class OnboardingActivity : AppCompatActivity() {
 
@@ -78,38 +79,34 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     /**
-     * ✅ FUNÇÃO CORRIGIDA
-     * O conteúdo abaixo (val slides, adapter, etc.) foi movido para DENTRO
-     * desta função, corrigindo todos os erros de "Unresolved reference".
+     * Configuração do ViewPager com os slides
      */
     private fun setupViewPager() {
-
-        // (Ponto 10) Lista de slides atualizada com os novos textos e ícones
+        // Lista de slides atualizada
         val slides = listOf(
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_1),
                 message = getString(R.string.onboarding_message_1),
-                imageRes = R.drawable.ic_star // Ícone Slide 1
+                imageRes = R.drawable.ic_star
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_2),
                 message = getString(R.string.onboarding_message_2),
-                imageRes = R.drawable.ic_chemestry // Ícone Slide 2 (Alcalinidade/Dureza)
+                imageRes = R.drawable.ic_chemestry
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_3),
                 message = getString(R.string.onboarding_message_3),
-                imageRes = R.drawable.ic_water_tds // (Sugestão: ícone para TDS/Sódio)
+                imageRes = R.drawable.ic_water_tds
             ),
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_4),
                 message = getString(R.string.onboarding_message_4),
-                imageRes = R.drawable.ic_water_optimizer, // Ícone Slide 4 (Calculadora)
-                isPremiumSlide = true // ✅ ADICIONADO: Nova flag para o slide premium
+                imageRes = R.drawable.ic_water_optimizer,
+                isPremiumSlide = true
             )
         )
 
-        // (Este é o código que estava colado fora da função)
         onboardingAdapter = OnboardingAdapter(slides)
         binding.viewPager.adapter = onboardingAdapter
 
@@ -122,10 +119,13 @@ class OnboardingActivity : AppCompatActivity() {
             }
         })
 
-        // Configura botões iniciais
+        // Configura botão inicial
         updateButtonVisibility(0)
-    } // ✅ ESTA CHAVE (fechando a função) CORRIGE OS ERROS
+    }
 
+    /**
+     * Configuração dos indicadores de página (estrelinhas)
+     */
     private fun setupPageIndicators() {
         binding.indicatorLayout.removeAllViews()
         indicators.clear()
@@ -151,6 +151,9 @@ class OnboardingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Atualiza os indicadores de página
+     */
     private fun updatePageIndicators(position: Int) {
         indicators.forEachIndexed { index, indicator ->
             indicator.imageTintList = ContextCompat.getColorStateList(
@@ -162,59 +165,56 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     /**
-     * ✅ REFATORADO: Listeners atualizados para os novos botões de seta.
+     * ✅ REFATORADO: Listener do botão Pular/Concluir
      */
     private fun setupListeners() {
-        // ❌ REMOVIDO: binding.buttonSkip.setOnClickListener
-
-        // Botão Seta Direita (Próximo / Concluir)
-        binding.buttonNavNext.setOnClickListener {
+        binding.buttonSkip.setOnClickListener {
             val currentPosition = binding.viewPager.currentItem
-            if (currentPosition < onboardingAdapter.itemCount - 1) {
-                // Avança para a próxima página
-                binding.viewPager.currentItem = currentPosition + 1
-                analytics().logEvent(
-                    AnalyticsManager.Category.NAVIGATION,
-                    "onboarding_next_page",
-                    mapOf("page" to (currentPosition + 1).toString())
-                )
-            } else {
+            val isLastPage = currentPosition == onboardingAdapter.itemCount - 1
+
+            if (isLastPage) {
                 // Última página - finaliza onboarding
                 analytics().logEvent(
-                    AnalyticsManager.Category.NAVIGATION,
+                    Category.NAVIGATION,
                     "onboarding_completed"
                 )
                 finishOnboarding()
-            }
-        }
-
-        // Botão Seta Esquerda (Voltar)
-        binding.buttonNavPrevious.setOnClickListener {
-            val currentPosition = binding.viewPager.currentItem
-            if (currentPosition > 0) {
-                binding.viewPager.currentItem = currentPosition - 1
+            } else {
+                // Pula para a última página
+                analytics().logEvent(
+                    Category.NAVIGATION,
+                    "onboarding_skipped",
+                    mapOf("from_page" to currentPosition.toString())
+                )
+                binding.viewPager.currentItem = onboardingAdapter.itemCount - 1
             }
         }
     }
 
     /**
-     * ✅ REFATORADO: Atualiza a visibilidade das setas.
+     * ✅ REFATORADO: Atualiza o texto e visibilidade do botão
+     * Opção 1: Botão visível em todas as páginas (PULAR → CONCLUIR)
+     * Opção 2: Botão visível apenas na última página
      */
     private fun updateButtonVisibility(position: Int) {
         val isLastPage = position == onboardingAdapter.itemCount - 1
-        val isFirstPage = position == 0
 
-        // Esconde a seta "Voltar" na primeira página
-        binding.buttonNavPrevious.isVisible = !isFirstPage
-
-        // (Opcional) Mudar o ícone da seta "Próximo" para "Concluir" na última página
+        // OPÇÃO 1: Botão sempre visível (comentar OPÇÃO 2 abaixo)
         if (isLastPage) {
-            binding.buttonNavNext.setImageResource(R.drawable.ic_check) // (Sugestão: ícone de "check")
+            binding.buttonSkip.text = getString(R.string.onboarding_finish) // "CONCLUIR"
         } else {
-            binding.buttonNavNext.setImageResource(R.drawable.ic_arrow_forward)
+            binding.buttonSkip.text = getString(R.string.onboarding_skip) // "PULAR"
         }
+        binding.buttonSkip.isVisible = true
+
+        // OPÇÃO 2: Botão visível apenas na última página (descomentar para usar)
+        // binding.buttonSkip.text = getString(R.string.onboarding_finish) // "CONCLUIR"
+        // binding.buttonSkip.isVisible = isLastPage
     }
 
+    /**
+     * Finaliza o onboarding e vai para a Home
+     */
     private fun finishOnboarding() {
         markAsCompleted(this)
         startActivity(Intent(this, HomeActivity::class.java))
@@ -224,11 +224,10 @@ class OnboardingActivity : AppCompatActivity() {
 
 /**
  * Modelo de dados para um slide de onboarding
- * ✅ ATUALIZADO: Inclui a flag isPremiumSlide
  */
 data class OnboardingSlide(
     val title: String,
     val message: String,
     val imageRes: Int,
-    val isPremiumSlide: Boolean = false // ✅ NOVA PROPRIEDADE
+    val isPremiumSlide: Boolean = false
 )

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +23,7 @@ import androidx.core.content.FileProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -31,12 +34,9 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.MyApplication
-import com.marcos.cafecomagua.app.analytics.AnalyticsManager
-import com.marcos.cafecomagua.app.analytics.AnalyticsManager.Event
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.databinding.FragmentWaterInputBinding
 import com.marcos.cafecomagua.ui.help.HelpActivity
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,6 +45,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.marcos.cafecomagua.app.analytics.Category
+import com.marcos.cafecomagua.app.analytics.Event
 
 // --- (Helpers do WaterInputActivity) ---
 data class ParameterInfo(
@@ -69,7 +71,9 @@ class WaterInputFragment : Fragment() {
 
     private val sharedViewModel: EvaluationViewModel by activityViewModels()
 
-    // ... (Variáveis do OCR e Launchers) ...
+    // ✅ NOVO: Listener para ajuste do teclado
+    private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+
     private var adView: AdView? = null
     private lateinit var adContainerView: FrameLayout
     private var ocrData = mutableMapOf<String, String>()
@@ -98,7 +102,6 @@ class WaterInputFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -112,7 +115,7 @@ class WaterInputFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         requireContext().analytics().logEvent(
-            AnalyticsManager.Category.NAVIGATION,
+            Category.NAVIGATION,
             Event.SCREEN_VIEWED,
             mapOf("screen_name" to "water_input_fragment")
         )
@@ -121,25 +124,62 @@ class WaterInputFragment : Fragment() {
         setupListeners()
         bindViewModelToViews()
         setupToolbar()
+
+        // ✅ NOVO: Configura listener do teclado
+        setupKeyboardListener()
     }
+
     private fun setupToolbar() {
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as? AppCompatActivity)?.supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setDisplayShowTitleEnabled(false) // O título já está no XML
+            setDisplayShowTitleEnabled(false)
         }
         binding.toolbar.setNavigationOnClickListener {
-            activity?.finish() // Fecha a EvaluationHostActivity
+            activity?.finish()
         }
     }
 
+    // ✅ NOVO: Função que detecta abertura do teclado e ajusta o scroll
+    private fun setupKeyboardListener() {
+        keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+            val rect = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+
+            // Se o teclado está visível (keypadHeight > 15% da tela)
+            if (keypadHeight > screenHeight * 0.15) {
+                // Encontra qual campo está focado
+                val focusedView = activity?.currentFocus
+                if (focusedView != null) {
+                    // Aguarda um frame para garantir que o layout foi ajustado
+                    binding.scrollView.post {
+                        val scrollViewLocation = IntArray(2)
+                        binding.scrollView.getLocationOnScreen(scrollViewLocation)
+
+                        val focusedViewLocation = IntArray(2)
+                        focusedView.getLocationOnScreen(focusedViewLocation)
+
+                        // Calcula a posição ideal para scroll (campo focado + 100dp de margem)
+                        val scrollToY = focusedViewLocation[1] - scrollViewLocation[1] -
+                                (100 * resources.displayMetrics.density).toInt()
+
+                        binding.scrollView.smoothScrollTo(0, scrollToY)
+                    }
+                }
+            }
+        }
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(keyboardListener)
+    }
+
     private fun bindViewModelToViews() {
-        // ... (código do bindViewModelToViews) ...
         binding.editTextMarca.setText(sharedViewModel.nomeAgua.value)
         binding.editTextFonte.setText(sharedViewModel.fonteAgua.value)
         sharedViewModel.calcio.value?.takeIf { it > 0 }?.let { binding.editTextCalcio.setText(it.toString()) }
         sharedViewModel.magnesio.value?.takeIf { it > 0 }?.let { binding.editTextMagnesio.setText(it.toString()) }
         sharedViewModel.bicarbonato.value?.takeIf { it > 0 }?.let { binding.editTextBicarbonato.setText(it.toString()) }
+
         binding.editTextMarca.addTextChangedListener {
             sharedViewModel.nomeAgua.value = it.toString()
         }
@@ -158,7 +198,6 @@ class WaterInputFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        // (A Toolbar não está mais aqui, mas os outros botões sim)
         binding.buttonScanLabel.setOnClickListener {
             when {
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> launchCamera()
@@ -184,12 +223,11 @@ class WaterInputFragment : Fragment() {
     }
 
     private fun checkIfWaterExists() {
-        // ... (código do checkIfWaterExists) ...
         val nomeAgua = binding.editTextMarca.text.toString().trim()
         val fonteAgua = binding.editTextFonte.text.toString().trim()
 
         if (nomeAgua.isNotEmpty() && fonteAgua.isNotEmpty()) {
-            CoroutineScope(Dispatchers.Main).launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val db = (activity?.application as? MyApplication)?.database
                 val dao = db?.avaliacaoDao()
 
@@ -204,7 +242,6 @@ class WaterInputFragment : Fragment() {
         }
     }
 
-    // --- (Lógica do Anúncio e OCR - Sem alterações) ---
     private fun loadAdaptiveAd() {
         val sharedPref = requireContext().getSharedPreferences("app_settings", Context.MODE_PRIVATE)
         val adsRemoved = sharedPref.getBoolean("ads_removed", false)
@@ -262,7 +299,7 @@ class WaterInputFragment : Fragment() {
         Toast.makeText(requireContext(), getString(R.string.toast_ocr_analyzing), Toast.LENGTH_SHORT).show()
 
         requireContext().analytics().logEvent(
-            AnalyticsManager.Category.USER_ACTION,
+            Category.USER_ACTION,
             Event.OCR_ATTEMPTED
         )
 
@@ -278,7 +315,7 @@ class WaterInputFragment : Fragment() {
                 Log.e("OCR_ERROR", "Text recognition failed", e)
 
                 requireContext().analytics().logEvent(
-                    AnalyticsManager.Category.USER_ACTION,
+                    Category.USER_ACTION,
                     Event.OCR_FAILED,
                     mapOf("error" to (e.message ?: "unknown"))
                 )
@@ -330,7 +367,7 @@ class WaterInputFragment : Fragment() {
         if (ocrData.isNotEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.toast_ocr_success), Toast.LENGTH_LONG).show()
             requireContext().analytics().logEvent(
-                AnalyticsManager.Category.USER_ACTION,
+                Category.USER_ACTION,
                 Event.OCR_SUCCESS,
                 mapOf("params_found" to ocrData.size)
             )
@@ -340,9 +377,15 @@ class WaterInputFragment : Fragment() {
         Log.d("OCR_TABLE_PARSER", "--- ANÁLISE FINALIZADA ---")
     }
 
-    // --- (Ciclo de Vida) ---
     override fun onDestroyView() {
         super.onDestroyView()
+
+        // ✅ NOVO: Remove o listener do teclado
+        keyboardListener?.let {
+            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(it)
+        }
+        keyboardListener = null
+
         adView?.destroy()
         adView = null
         _binding = null

@@ -1,21 +1,30 @@
 <resources>
+    <!-- =================================================================================== -->
+    <!-- Strings Globais e Comuns -->
+    <!-- =================================================================================== -->
     <string name="app_name">Café com Água</string>
-    <string name="button_avancar">Avançar</string>
-    <string name="button_voltar">Voltar</string>
     <string name="button_ok">OK</string>
     <string name="button_cancelar">Cancelar</string>
-    <string name="preco_indisponivel" translatable="false">…</string>
+    <string name="button_save">Salvar</string>
+    <string name="button_delete">Excluir</string>
     <string name="unidade_mg_l">%1$s mg/L</string>
+    <string name="value_with_unit_mg_l">%s mg/L</string>
+    <string name="preco_indisponivel" translatable="false">…</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Status Padrão da Avaliação -->
+    <!-- =================================================================================== -->
     <string name="avaliacao_ideal">Ideal</string>
     <string name="avaliacao_aceitavel">Aceitável</string>
     <string name="avaliacao_nao_recomendado">Não Recomendado</string>
     <string name="avaliacao_nao_avaliado">Não Avaliado</string>
-    <string name="avaliacao_nao_recomendado_abrev">Não Rec.</string>
-    <string name="qualidade_alta">Alta</string>
-    <string name="qualidade_aceitavel">Aceitável</string>
-    <string name="qualidade_baixa">Baixa</string>
+    <string name="avaliacao_nao_recomendado_abrev">Não Rec.</string> <!-- Usado em ResultsFragment -->
 
+
+    <!-- =================================================================================== -->
+    <!-- Mensagens de Erro e Toasts -->
+    <!-- =================================================================================== -->
     <string name="error_marca_empty">A marca não pode estar vazia!</string>
     <string name="error_fonte_empty">A fonte não pode estar vazia!</string>
     <string name="error_bicarbonato_empty">O Bicarbonato não pode estar vazio!</string>
@@ -28,6 +37,10 @@
     <string name="toast_erro_iniciar_compra">Erro ao iniciar a compra. Tente novamente.</string>
     <string name="warning_agua_ja_avaliada">Aviso: Água já avaliada no histórico.</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Descrições de Conteúdo (Acessibilidade) -->
+    <!-- =================================================================================== -->
     <string name="logo_do_aplicativo">Logo do aplicativo Cafe com Água</string>
     <string name="toggle_theme_description">Alternar tema</string>
     <string name="onboarding_icon">Ícone do slide</string>
@@ -35,15 +48,29 @@
     <string name="water_optimizer_preview">Prévia do Water Optimizer</string>
     <string name="water_optimizer_icon">Ícone do Water Optimizer</string>
     <string name="feature_icon">Ícone de recurso</string>
+    <string name="content_desc_delete_recipe">Excluir receita</string>
+    <string name="info">Informações</string>
 
-    <string name="title_welcome">CAFÉ COM ÁGUA</string>
+
+    <!-- =================================================================================== -->
+    <!-- Tela: Home (HomeActivity) -->
+    <!-- =================================================================================== -->
+    <string name="title_welcome">CAFÉ com ÁGUA</string>
     <string name="subtitle_welcome">Avaliador de Qualidade da Água para Preparo de Café</string>
     <string name="button_testar_nova_agua">Testar Nova Água</string>
     <string name="button_historico">Histórico</string>
     <string name="home_water_optimizer">Otimizador de Água</string>
+    <string name="error_no_saved_water_for_optimization">Você precisa salvar uma avaliação no Histórico primeiro.</string>
+    <string name="title_optimize_saved_water">Otimizar Água Salva</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Fluxo de Avaliação (EvaluationHostActivity, WaterInputFragment, ParametersFragment) -->
+    <!-- =================================================================================== -->
+    <string name="button_avancar">Avançar</string>
+    <string name="button_voltar">Voltar</string>
+    <!-- WaterInputFragment -->
     <string name="title_dados_agua">Dados da Água</string>
-    <string name="screen1_title">Informações da Água</string>
     <string name="label_marca">Marca da Água</string>
     <string name="hint_marca">Ex: Água Mineral XYZ</string>
     <string name="label_fonte">Fonte da Água</string>
@@ -54,6 +81,7 @@
     <string name="hint_calcio">Ex: 8.2</string>
     <string name="label_magnesio">Magnésio (mg/L)</string>
     <string name="hint_magnesio">Ex: 3.5</string>
+    <!-- ParametersFragment -->
     <string name="title_parametros_avaliacao">PARÂMETROS</string>
     <string name="label_sodio_unidade">Sódio (mg/L)</string>
     <string name="hint_sodio">Ex: 10.0</string>
@@ -65,6 +93,10 @@
     <string name="label_alcalinidade_calculada">Alcalinidade (Calculada)</string>
     <string name="button_ver_resultados">Ver Resultados</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Tela: Resultados (ResultsFragment) -->
+    <!-- =================================================================================== -->
     <string name="title_resultados">RESULTADOS</string>
     <string name="pontuacao_total_format">Pontuação: %.2f</string>
     <string name="label_qualidade_geral">Qualidade: %1$s</string>
@@ -79,17 +111,23 @@
     <string name="button_ver_historico">Ver Histórico</string>
     <string name="results_cta_title">Leve seu café ao nível ideal</string>
     <string name="results_cta_message">Sua água foi classificada como \"%1$s\". Quer saber exatamente como corrigi-la? O Otimizador Premium calcula a receita para você.</string>
-    <string name="results_cta_message_placeholder">Sua água foi classificada como \"Aceitável\". Quer saber exatamente como corrigi-la? O Otimizador Premium calcula a receita para você.</string>
+    <!-- ✅ STRING DO BOTÃO RE-ADICIONADA -->
     <string name="results_cta_button">Ver Otimizador Premium</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Tela: Histórico (HistoryActivity) -->
+    <!-- =================================================================================== -->
     <string name="title_historico">HISTÓRICO DE AVALIAÇÕES</string>
-    <string name="label_historico_agua">Água: %1$s</string>
     <string name="label_historico_fonte">Fonte: %1$s</string>
     <string name="label_historico_pontuacao">Pontuação: %1$s</string>
     <string name="label_historico_qualidade">Qualidade: %1$s</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Tela: Ajuda (HelpActivity) -->
+    <!-- =================================================================================== -->
     <string name="help_screen_title">Ajuda e Informações</string>
-    <string name="help_close_button">Fechar</string>
     <string name="help_topic_1_param_qual_title">Parâmetros de Qualidade</string>
     <string name="help_topic_1_param_qual_content" formatted="false"><![CDATA[
 <p>Nem todos os parâmetros da água são criados iguais. Com base no consenso científico atual (incluindo estudos da Specialty Coffee Association - SCA - e de especialistas como Scott Rao), a qualidade da água para café é determinada principalmente por dois fatores:</p>
@@ -145,7 +183,6 @@
     <b>• Qualidade da Imagem:</b> Fatores como a <b>curvatura</b> da garrafa, <b>reflexos</b> de luz, <b>condensação</b> e <b>foco</b> da câmera podem degradar a qualidade da imagem e dificultar a leitura do texto.\n\n
     Por isso, a captura deve ser vista como uma <b>ferramenta de auxílio</b>. Sempre <b>verifique os valores</b> capturados antes de prosseguir com a avaliação para garantir a precisão dos resultados.
 ]]></string>
-
     <string name="help_topic_calculator_title">Como funciona a Calculadora (PPM por Gota)</string>
     <string name="help_topic_calculator_content" formatted="false"><![CDATA[
 <p>O <b>Otimizador de Água</b> (recurso Premium) calcula quantas gotas de cada mineral você precisa adicionar à sua água para atingir as faixas ideais de qualidade para café.</p>
@@ -181,9 +218,10 @@
 <p>💡 <b>Dica:</b> Siga as instruções de preparo no app para garantir a concentração correta das suas soluções caseiras.</p>
 ]]></string>
 
-    <string name="button_next">Próximo</string>
-    <string name="button_skip">Pular</string>
-    <string name="button_start">Começar</string>
+
+    <!-- =================================================================================== -->
+    <!-- Tela: Onboarding (OnboardingActivity) -->
+    <!-- =================================================================================== -->
     <string name="onboarding_title_1">Bem-vindo ao Café com Água</string>
     <string name="onboarding_message_1">Descubra a água mineral ideal para um café perfeito, baseado na ciência da extração.</string>
     <string name="onboarding_title_2">O que realmente importa?</string>
@@ -193,6 +231,10 @@
     <string name="onboarding_title_4">Calcule a Água Perfeita</string>
     <string name="onboarding_message_4">Use nossa calculadora premium para saber exatamente quantas gotas de minerais adicionar e transformar sua água na água ideal da SCA.</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Recurso: OCR (Scanner de Rótulo) -->
+    <!-- =================================================================================== -->
     <string name="scan_label_button">Tentar ler o rótulo</string>
     <string name="toast_permission_denied">Permissão da câmera negada. Não é possível ler o rótulo.</string>
     <string name="toast_no_image">Não foi possível obter a imagem.</string>
@@ -203,6 +245,10 @@
     <string name="toast_ocr_success">Valores encontrados! Verifique se estão corretos.</string>
     <string name="toast_ocr_no_params">Não foi possível identificar os parâmetros. Por favor, insira manualmente.</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Tela: Otimizador de Água (WaterOptimizerActivity) -->
+    <!-- =================================================================================== -->
     <string name="water_optimizer_title">Otimizador de Água</string>
     <string name="water_comparison_title">Comparação de Água</string>
     <string name="parameter">Parâmetro</string>
@@ -215,65 +261,46 @@
     <string name="button_share_recipe">Compartilhar Receita</string>
     <string name="button_view_guide">Ver Guia</string>
     <string name="share_recipe">Compartilhar receita</string>
-    <string name="value_with_unit_mg_l">%s mg/L</string>
     <string name="drops_format">Gotas: %d</string>
     <string name="ppm_added_format">PPM adicionado: %s</string>
     <string name="final_value_format">Valor final: %s ppm</string>
-    <string name="info">Informações</string>
-    <string name="premium_required_title">Recurso Premium</string>
-    <string name="premium_required_message">O Otimizador de Água é um recurso exclusivo para assinantes premium. Assine agora para ter acesso!</string>
-    <string name="button_subscribe">Assinar</string>
     <string name="solution_preparation_title">Preparo da Solução</string>
-    <string name="screenshot_placeholder_title">Adicione uma Screenshot Aqui</string>
-    <string name="screenshot_placeholder_message">Capture a tela do Water Optimizer\ne substitua este placeholder</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Telas: Premium e Assinatura -->
+    <!-- =================================================================================== -->
+    <!-- Premium Bottom Sheet (Fragment) -->
     <string name="premium_badge">PREMIUM</string>
     <string name="premium_bottom_sheet_title">Desbloqueie o Otimizador</string>
     <string name="premium_bottom_sheet_message">Transforme sua água. A Calculadora Premium mostra exatamente quantas gotas de minerais adicionar para atingir o perfil de água ideal para café. Teste por 7 dias.</string>
     <string name="premium_bottom_sheet_button">Testar o Otimizador</string>
-    <string name="subscription_title">Torne-se Premium</string>
-    <string name="subscription_subtitle">Remova anúncios e desbloqueie recursos exclusivos</string>
-    <string name="monthly_subscription">Assinatura Mensal</string>
+
+    <!-- Subscription Activity -->
+    <string name="premium_title">Café com Água Premium</string>
+    <string name="premium_subtitle">Resultados melhores, sem distrações.</string>
+    <string name="benefits">Benefícios</string>
     <string name="benefit_ads_removal">Sem anúncios</string>
     <string name="benefit_water_optimizer">Otimizador de Água</string>
     <string name="benefit_unlimited_recipes">Salve receitas ilimitadas</string>
     <string name="benefit_priority_support">Suporte prioritário</string>
-    <string name="thank_you_premium_user">Obrigado por ser um usuário Premium!</string>
+    <string name="special_offer">Oferta Especial</string>
+    <string name="monthly_plan">Assinatura Mensal</string>
     <string name="premium_status_active">Premium Ativo</string>
-    <string name="premium_status_legacy">Premium (Vitalício)</string>
-    <string name="manage_subscription">Gerenciar Assinatura</string>
     <string name="subscribe_now">Assine agora</string>
+    <string name="restore_purchase">Restaurar compras</string>
+    <string name="continue_to_result">Continuar para o resultado</string>
+    <string name="legal_smallprint">Cancelamento a qualquer momento. Preço pode variar por região.</string>
 
-    <string name="title_gerenciar_compra">Gerenciar Compra</string>
-    <string name="desc_restaurar_compra">Já comprou o Premium em outro dispositivo ou reinstalou o app? Restaure sua compra para reativar os recursos.</string>
-    <string name="button_restaurar_compra">Restaurar Compras</string>
-
-    <string name="button_continuar_para_resultado">Continuar para o Resultado</string>
-
-    <string name="premium_feature">Recurso Premium</string>
-    <string name="premium_feature_1">Otimizador de Água</string>
-    <string name="premium_feature_2">Remoção de Anúncios</string>
-    <string name="premium_feature_3">Receitas Ilimitadas</string>
+    <!-- Dialog Otimizador (Premium) -->
+    <string name="premium_required_title">Recurso Premium</string>
+    <string name="premium_required_message">O Otimizador de Água é um recurso exclusivo para assinantes premium. Assine agora para ter acesso!</string>
+    <string name="button_subscribe">Assinar</string>
 
 
-        <string name="cafe_logo">Logo Café com Água</string>
-        <string name="premium_title">Café com Água Premium</string>
-        <string name="premium_subtitle">Resultados melhores, sem distrações.</string>
-        <string name="benefits">Benefícios</string>
-        <string name="special_offer">Oferta Especial</string>
-        <string name="monthly_plan">Assinatura Mensal</string>
-        <string name="restore_purchase">Restaurar compras</string>
-        <string name="continue_to_result">Continuar para o resultado</string>
-        <string name="legal_smallprint">Cancelamento a qualquer momento. Preço pode variar por região.</string>
-
-    <string name="button_save">Salvar</string>
-    <string name="button_cancel">Cancelar</string>
-    <string name="button_delete">Excluir</string>
-
-
-    <string name="home_button_my_recipes">Minhas Receitas</string>
-
-
+    <!-- =================================================================================== -->
+    <!-- Tela: Receitas Salvas (SavedRecipesActivity) -->
+    <!-- =================================================================================== -->
     <string name="save_recipe_title">Salvar Receita</string>
     <string name="save_recipe_message">Dê um nome para esta receita de otimização:</string>
     <string name="recipe_name_hint">Ex: Minha Receita V60</string>
@@ -281,11 +308,6 @@
     <string name="toast_recipe_saved_success">Receita salva com sucesso!</string>
     <string name="toast_recipe_saved_error">Erro ao salvar receita</string>
 
-
-    <string name="title_saved_recipes">Minhas Receitas</string>
-    <string name="empty_state_no_recipes">Nenhuma receita salva ainda.</string>
-
-    <string name="content_desc_delete_recipe">Excluir receita</string>
     <string name="recipe_saved_on_date">Salva em %1$s</string>
     <string name="recipe_drops_calcium">• Cálcio: %1$d gotas</string>
     <string name="recipe_drops_magnesium">• Magnésio: %1$d gotas</string>
@@ -294,14 +316,8 @@
     <string name="recipe_no_drops_added">Nenhuma gota adicionada</string>
 
     <string name="delete_recipe_title">Excluir Receita</string>
-    <string name="delete_recipe_message">Tem certeza que deseja excluir a receita \'%1$s\'?</string>
+    <string name="delete_recipe_message">"Tem certeza que quer excluir a receita '%1$s'?"</string>
 
-    <string name="error_no_saved_water_for_optimization">Você precisa salvar uma avaliação no Histórico primeiro.</string>
-    <string name="title_optimize_saved_water">Otimizar Água Salva</string>
-
-    <string name="dialog_delete_recipe_title">Excluir Receita</string>
-    <string name="dialog_delete_recipe_message">Tem certeza que deseja excluir a receita \'%1$s\'?</string>
-    <string name="dialog_delete">Excluir</string>
-    <string name="dialog_cancel">Cancelar</string>
-
+    <string name="onboarding_skip">Pular</string>
+    <string name="onboarding_finish">Concluir</string>
 </resources>

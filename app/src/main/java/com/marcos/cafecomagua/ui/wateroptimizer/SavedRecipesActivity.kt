@@ -1,11 +1,10 @@
 package com.marcos.cafecomagua.ui.wateroptimizer
 
-import RecipeDao
+import com.marcos.cafecomagua.app.data.RecipeDao
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,7 +13,6 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.MyApplication
 import com.marcos.cafecomagua.app.model.SavedRecipe
 import com.marcos.cafecomagua.databinding.ActivitySavedRecipesBinding

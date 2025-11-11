@@ -1,6 +1,6 @@
 package com.marcos.cafecomagua.app.data
 
-import RecipeDao
+import com.marcos.cafecomagua.app.data.RecipeDao
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -36,11 +36,11 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "cafecomagua_database"
                 )
-                    // 4. HABILITADO o fallbackToDestructiveMigration.
+                    // 4. CORRIGIDO: fallbackToDestructiveMigration(true).
                     // Isso permite que o Room recrie o banco se o schema
                     // mudar (version++), sem a necessidade de uma migração complexa.
                     // Perfeito para desenvolvimento.
-                    .fallbackToDestructiveMigration(false)
+                    .fallbackToDestructiveMigration(true)
                     .build()
                 INSTANCE = instance
                 instance

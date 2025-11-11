@@ -1,21 +1,30 @@
 <resources>
+    <!-- =================================================================================== -->
+    <!-- Global and Common Strings -->
+    <!-- =================================================================================== -->
     <string name="app_name">Coffee with Water</string>
-    <string name="button_avancar">Next</string>
-    <string name="button_voltar">Back</string>
     <string name="button_ok">OK</string>
     <string name="button_cancelar">Cancel</string>
-    <string name="preco_indisponivel" translatable="false">…</string>
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
     <string name="unidade_mg_l">%1$s mg/L</string>
+    <string name="value_with_unit_mg_l">%s mg/L</string>
+    <string name="preco_indisponivel" translatable="false">…</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Default Evaluation Status -->
+    <!-- =================================================================================== -->
     <string name="avaliacao_ideal">Ideal</string>
     <string name="avaliacao_aceitavel">Acceptable</string>
     <string name="avaliacao_nao_recomendado">Not Recommended</string>
-    <string name="avaliacao_nao_avaliado">Not Evaluated</string>
-    <string name="avaliacao_nao_recomendado_abrev">Not Rec.</string>
-    <string name="qualidade_alta">High</string>
-    <string name="qualidade_aceitavel">Acceptable</string>
-    <string name="qualidade_baixa">Low</string>
+    <string name="avaliacao_nao_avaliado">Not Assessed</string>
+    <string name="avaliacao_nao_recomendado_abrev">Not Rec.</string> <!-- Used in ResultsFragment -->
 
+
+    <!-- =================================================================================== -->
+    <!-- Error Messages and Toasts -->
+    <!-- =================================================================================== -->
     <string name="error_marca_empty">Brand cannot be empty!</string>
     <string name="error_fonte_empty">Source cannot be empty!</string>
     <string name="error_bicarbonato_empty">Bicarbonate cannot be empty!</string>
@@ -25,25 +34,43 @@
     <string name="toast_erro_carregar_resultados">Error loading results.</string>
     <string name="toast_avaliacao_salva">Evaluation saved successfully!</string>
     <string name="toast_compra_cancelada">Purchase canceled.</string>
-    <string name="toast_erro_iniciar_compra">Error starting purchase. Try again.</string>
+    <string name="toast_erro_iniciar_compra">Error starting purchase. Please try again.</string>
     <string name="warning_agua_ja_avaliada">Warning: Water already evaluated in history.</string>
 
-    <string name="logo_do_aplicativo">Coffee with Water application logo</string>
+
+    <!-- =================================================================================== -->
+    <!-- Content Descriptions (Accessibility) -->
+    <!-- =================================================================================== -->
+    <string name="logo_do_aplicativo">Coffee with Water app logo</string>
     <string name="toggle_theme_description">Toggle theme</string>
     <string name="onboarding_icon">Slide icon</string>
-    <string name="help_ocr_description">Help about label reading</string>
+    <string name="help_ocr_description">Help about label scanning</string>
     <string name="water_optimizer_preview">Water Optimizer Preview</string>
     <string name="water_optimizer_icon">Water Optimizer Icon</string>
     <string name="feature_icon">Feature icon</string>
+    <string name="content_desc_delete_recipe">Delete recipe</string>
+    <string name="info">Information</string>
 
-    <string name="title_welcome">COFFEE WITH WATER</string>
+
+    <!-- =================================================================================== -->
+    <!-- Screen: Home (HomeActivity) -->
+    <!-- =================================================================================== -->
+    <string name="title_welcome">COFFEE with WATER</string>
     <string name="subtitle_welcome">Water Quality Evaluator for Coffee Brewing</string>
     <string name="button_testar_nova_agua">Test New Water</string>
     <string name="button_historico">History</string>
     <string name="home_water_optimizer">Water Optimizer</string>
+    <string name="error_no_saved_water_for_optimization">You need to evaluate and save a water in the History first.</string>
+    <string name="title_optimize_saved_water">Optimize Saved Water</string>
 
-    <string name="title_dados_agua">WATER DATA</string>
-    <string name="screen1_title">Water Information</string>
+
+    <!-- =================================================================================== -->
+    <!-- Evaluation Flow (EvaluationHostActivity, WaterInputFragment, ParametersFragment) -->
+    <!-- =================================================================================== -->
+    <string name="button_avancar">Next</string>
+    <string name="button_voltar">Back</string>
+    <!-- WaterInputFragment -->
+    <string name="title_dados_agua">Water Data</string>
     <string name="label_marca">Water Brand</string>
     <string name="hint_marca">Ex: XYZ Mineral Water</string>
     <string name="label_fonte">Water Source</string>
@@ -54,6 +81,7 @@
     <string name="hint_calcio">Ex: 8.2</string>
     <string name="label_magnesio">Magnesium (mg/L)</string>
     <string name="hint_magnesio">Ex: 3.5</string>
+    <!-- ParametersFragment -->
     <string name="title_parametros_avaliacao">PARAMETERS</string>
     <string name="label_sodio_unidade">Sodium (mg/L)</string>
     <string name="hint_sodio">Ex: 10.0</string>
@@ -65,6 +93,10 @@
     <string name="label_alcalinidade_calculada">Alkalinity (Calculated)</string>
     <string name="button_ver_resultados">See Results</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Screen: Results (ResultsFragment) -->
+    <!-- =================================================================================== -->
     <string name="title_resultados">RESULTS</string>
     <string name="pontuacao_total_format">Score: %.2f</string>
     <string name="label_qualidade_geral">Quality: %1$s</string>
@@ -73,55 +105,61 @@
     <string name="param_dureza_valor">Hardness: %1$s mg/L</string>
     <string name="param_alcalinidade_valor">Alkalinity: %1$s mg/L</string>
     <string name="param_sodio_valor">Sodium: %1$s mg/L</string>
-    <string name="param_residuo_valor">Evap. Res.: %1$s mg/L</string>
+    <string name="param_residuo_valor">Evap. Residue: %1$s mg/L</string>
     <string name="button_salvar_avaliacao">Save Evaluation</string>
     <string name="button_nova_avaliacao">New Evaluation</string>
     <string name="button_ver_historico">View History</string>
-    <string name="results_cta_title">Take your coffee to the ideal level</string>
-    <string name="results_cta_message">Your water was classified as \"%1$s\". Want to know exactly how to fix it? The Premium Optimizer calculates the recipe for you.</string>
-    <string name="results_cta_message_placeholder">Your water was classified as "Acceptable". Want to know exactly how to fix it? The Premium Optimizer calculates the recipe for you.</string>
-    <string name="results_cta_button">View Premium Optimizer</string>
+    <string name="results_cta_title">Bring your coffee to the ideal level</string>
+    <string name="results_cta_message">Your water was classified as "%1$s". Want to know exactly how to fix it? The Premium Optimizer calculates the recipe for you.</string>
+    <!-- ✅ STRING RE-ADDED -->
+    <string name="results_cta_button">See Premium Optimizer</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Screen: History (HistoryActivity) -->
+    <!-- =================================================================================== -->
     <string name="title_historico">EVALUATION HISTORY</string>
-    <string name="label_historico_agua">Water: %1$s</string>
     <string name="label_historico_fonte">Source: %1$s</string>
     <string name="label_historico_pontuacao">Score: %1$s</string>
     <string name="label_historico_qualidade">Quality: %1$s</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Screen: Help (HelpActivity) -->
+    <!-- =================================================================================== -->
     <string name="help_screen_title">Help and Information</string>
-    <string name="help_close_button">Close</string>
     <string name="help_topic_1_param_qual_title">Quality Parameters</string>
     <string name="help_topic_1_param_qual_content" formatted="false"><![CDATA[
 <p>Not all water parameters are created equal. Based on current scientific consensus (including studies from the Specialty Coffee Association - SCA - and experts like Scott Rao), water quality for coffee is primarily determined by two factors:</p>
 <br>
 <p><b>1. Alkalinity (the most important factor)</b></p>
-<p>Think of alkalinity as a "buffer" that neutralizes acids. It has the most direct impact on your coffee\'s flavor.</p>
+<p>Think of alkalinity as a "buffer" that neutralizes acids. It has the most direct impact on the taste of your coffee.</p>
 <ul>
-    <li><b>Very high alkalinity:</b> Over-neutralizes the bright, tasty acids in coffee, resulting in a "flat," "dull," or "lifeless" brew.</li>
-    <li><b>Very low alkalinity:</b> Offers no protection against corrosion in your machines and can result in an excessively "acidic" or "sour" coffee.</li>
+    <li><b>Very high alkalinity:</b> Over-neutralizes the bright, tasty acids in the coffee, resulting in a "flat," "dull," or "lifeless" brew.</li>
+    <li><b>Very low alkalinity:</b> Offers no protection against corrosion in your machines and can result in an overly "acidic" or "sour" coffee.</li>
 </ul>
 <br>
 <p><b>2. Total Hardness (Calcium and Magnesium)</b></p>
-<p>Hardness is crucial for extraction. Calcium and magnesium ions bind to flavor compounds in the coffee grounds and extract them into the water. Additionally, hardness is the main factor in scale (limescale) buildup in your equipment.</p>
+<p>Hardness is crucial for extraction. Calcium and magnesium ions bind to flavor compounds in the coffee grounds and pull them into the water. Additionally, hardness is the main factor in scale buildup (limescale) in your equipment.</p>
 <ul>
     <li><b>Very high hardness:</b> Causes rapid scale buildup, requiring constant maintenance.</li>
     <li><b>Very low hardness:</b> The water lacks "extraction power," resulting in a "weak" or "under-extracted" coffee.</li>
 </ul>
 <br>
-<p>pH, although monitored, is considered less impactful on the final flavor than alkalinity.</p>
+<p>pH, although monitored, is considered less impactful on the final taste than alkalinity.</p>
 ]]></string>
     <string name="help_topic_2_tds_title">The TDS (Residue) Myth</string>
     <string name="help_topic_2_tds_content" formatted="false"><![CDATA[
     <p>You will notice that TDS (Total Dissolved Solids) and Sodium are part of our analysis. We are being transparent about how we handle them.</p>
 <br>
-<p><b>The "Ideal" TDS Myth</b></p><p>Older standards (like the SCAA 2011 chart) popularized the idea of an "ideal" TDS of 150 mg/L. However, more recent SCA studies (like the 2018 handbook) and industry experts are clear: <b>TDS, by itself, is not a good indicator of quality.</b></p>
+<p><b>The "Ideal" TDS Myth</b></p><p>Older standards (like the 2011 SCAA chart) popularized the idea of an "ideal" TDS of 150 mg/L. However, more recent studies from the SCA (like the 2018 handbook) and industry experts are clear: <b>TDS, by itself, is not a good indicator of quality.</b></p>
 <br>
-<p>Why? A TDS of 150 can be composed of ideal minerals (calcium and bicarbonate) or undesirable minerals (like table salt). The total number doesn\'t tell the whole story.</p>
+<p>Why? A TDS of 150 can be composed of ideal minerals (calcium and bicarbonate) or
+unwanted minerals (like table salt). The total number doesn\'t tell the whole story.</p>
 <br>
 <p><b>Our (Honest) Approach</b></p>
 <p>We include TDS and Sodium in our score because we know they are a popular concern and appear on many water reports. We use the 2011 SCAA reference ranges to evaluate them.</p>
-<p>However, to ensure your score reflects what
-really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our final calculation. They serve as "tie-breakers," but will never define whether your water is good or bad.</p>
+<p>However, to ensure your score reflects what truly matters for taste, <b>TDS and Sodium have a very low weight</b> in our final calculation. They serve as "tie-breakers" but will never define whether your water is good or bad.</p>
 ]]></string>
     <string name="help_topic_3_scoring_system_title">Our Scoring System</string>
     <string name="help_topic_3_scoring_system_content" formatted="false"><![CDATA[
@@ -137,46 +175,67 @@ really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our f
     <li><b>TDS and Sodium:</b> Receive a minimal weight (10% each).</li>
 </ul>
 <br>
-<p>This ensures that water with great alkalinity and hardness will always get a good score, even if the TDS is outside the popular "ideal". And conversely, water with a TDS of 150 will receive a low grade if the alkalinity (the most important factor) is poor.</p>
+<p>This ensures that water with great alkalinity and hardness will always get a good score, even if the TDS is outside the popular "ideal." And conversely, water with a TDS of 150 will receive a low grade if the alkalinity (the most important factor) is poor.</p>
 ]]></string>
-    <string name="help_topic_ocr_title">Tips for Label Reading (OCR)</string>
+    <string name="help_topic_ocr_title">Tips for Label Scanning (OCR)</string>
     <string name="help_topic_ocr_content" formatted="false"><![CDATA[
-    The label reading function uses the camera to speed up data entry. However, capture success faces major challenges:\n\n
-    <b>• Lack of Standard:</b> Water brands do not follow a single format. Tables can be vertical or horizontal, and mineral names may be abbreviated (e.g., \'Ca\' for Calcium).\n\n
-    <b>• Image Quality:</b> Factors like bottle <b>curvature</b>, light <b>reflections</b>, <b>condensation</b>, and camera <b>focus</b> can degrade image quality and make text reading difficult.\n\n
-    Therefore, the capture should be seen as an <b>assistance tool</b>. Always <b>verify the captured values</b> before proceeding with the evaluation to ensure result accuracy.
+    The label scanning feature uses the camera to speed up data entry for chemical composition. However, successful capture faces significant challenges:\n\n
+    <b>• Lack of Standard:</b> Water brands do not follow a unique format. Tables can be vertical or horizontal, and mineral names can be abbreviated (e.g., \'Ca\' for Calcium).\n\n
+    <b>• Image Quality:</b> Factors like the <b>curvature</b> of the bottle, <b>light reflections</b>, <b>condensation</b>, and camera <b>focus</b> can degrade image quality and make text recognition difficult.\n\n
+    Therefore, the capture should be seen as an <b>assistance tool</b>. Always <b>verify the captured values</b> before proceeding with the evaluation to ensure accurate results.
 ]]></string>
     <string name="help_topic_calculator_title">How the Calculator Works (PPM per Drop)</string>
     <string name="help_topic_calculator_content" formatted="false"><![CDATA[
-    <p>The Water Optimizer (Premium feature) allows you to create ideal water from scratch, using distilled water (or reverse osmosis) and mineral salts.</p>
-    <br>
-    <p><b>The PPM (Parts Per Million) Calculation</b></p>
-    <p>Our "drop" recipes are based on concentrated mineral solutions, where a certain amount of salt (e.g., 10g) is dissolved in a certain amount of distilled water (e.g., 100ml).</p>
-    <br>
-    <p>The app uses the following reference (based on <b>Watermodels.kt</b>):</p>
-    <ul>
-        <li><b>Calcium Chloride (CaCl₂):</b> 1 drop ≈ 10 ppm of Calcium.</li>
-        <li><b>Magnesium Chloride (MgCl₂):</b> 1 drop ≈ 10 ppm of Magnesium.</li>
-        <li><b>Sodium Bicarbonate (NaHCO₃):</b> 1 drop ≈ 5.06 ppm of Sodium.</li>
-        <li><b>Potassium Bicarbonate (KHCO₃):</b> 1 drop ≈ 5.0 ppm of Potassium.</li>
-    </ul>
-    <br>
-    <p>When the calculator suggests "4 drops of Alkalinity (KHCO₃)", it is calculating that 4 drops will add approximately 20 ppm of Potassium, which in turn raises your water\'s Alkalinity close to the SCA target.</p>
-    <p>Follow the solution preparation instructions in the app to ensure your homemade solutions have this concentration.</p>
-    ]]></string>
+<p>The <b>Water Optimizer</b> (Premium feature) calculates how many drops of each mineral you need to add to your water to reach the ideal quality ranges for coffee.</p>
+<br>
+<p><b>How the New Philosophy Works</b></p>
+<p>Unlike old methods that sought a "magic number," the optimizer works with <b>acceptable ranges</b> based on what truly matters for taste:</p>
+<ul>
+    <li><b>Alkalinity (30-50 ppm):</b> The most important factor. Controls the beverage\'s acid balance.</li>
+    <li><b>Total Hardness (50-90 ppm):</b> Defines the water\'s extraction power. Comes from Calcium and Magnesium.</li>
+    <li><b>Sodium (0-10 ppm) & TDS (100-180 ppm):</b> Monitored, but with less weight in the calculation.</li>
+</ul>
+<br>
+<p><b>The Drop Calculation</b></p>
+<p>The app aims to hit the <b>center of the ideal ranges</b>, not a fixed value. For example:</p>
+<ul>
+    <li>If your water has 30 ppm Hardness, the app suggests drops to reach ~70 ppm (center of 50-90).</li>
+    <li>If it\'s already at 80 ppm, you will see the message "✓ Hardness is already in the ideal range!"</li>
+</ul>
+<br>
+<p><b>Solution Concentration (PPM per Drop)</b></p>
+<p>Recipes are based on mineral solutions prepared with distilled water. App reference values:</p>
+<ul>
+    <li><b>Calcium Chloride (CaCl₂):</b> 1 drop ≈ 10 ppm of Ca²⁺</li>
+    <li><b>Magnesium Chloride (MgCl₂):</b> 1 drop ≈ 10 ppm of Mg²⁺</li>
+    <li><b>Sodium Bicarbonate (NaHCO₃):</b> 1 drop ≈ 5.06 ppm of Na⁺</li>
+    <li><b>Potassium Bicarbonate (KHCO₃):</b> 1 drop ≈ 5.0 ppm of K⁺</li>
+</ul>
+<br>
+<p><b>Practical Example:</b> If the app suggests "6 drops of KHCO₃," it\'s calculating that this will add ~30 ppm of Potassium, which will raise the Alkalinity into the ideal range (30-50 ppm).</p>
+<br>
+<p><b>Improvement Score:</b> The score (0-100%) shows how much your water improved relative to its maximum potential. If the app shows 75%, it means you achieved 75% of the possible improvement!</p>
+<br>
+<p>💡 <b>Tip:</b> Follow the preparation instructions in the app to ensure the correct concentration of your homemade solutions.</p>
+]]></string>
 
-    <string name="button_next">Next</string>
-    <string name="button_skip">Skip</string>
-    <string name="button_start">Start</string>
+
+    <!-- =================================================================================== -->
+    <!-- Screen: Onboarding (OnboardingActivity) -->
+    <!-- =================================================================================== -->
     <string name="onboarding_title_1">Welcome to Coffee with Water</string>
     <string name="onboarding_message_1">Discover the ideal mineral water for a perfect coffee, based on the science of extraction.</string>
     <string name="onboarding_title_2">What really matters?</string>
-    <string name="onboarding_message_2">Coffee science is clear: Alkalinity (which controls acidity) and Hardness (which extracts flavor) are the most important factors.</string>
-    <string name="onboarding_title_3">And Sodium and TDS?</string>
-    <string name="onboarding_message_3">Popular parameters like TDS (Total Dissolved Solids) are taken into account, but with a lower weight. Our system prioritizes what affects flavor.</string>
+    <string name="onboarding_message_2">The science of coffee is clear: Alkalinity (which controls acidity) and Hardness (which extracts flavor) are the most important factors.</string>
+    <string name="onboarding_title_3">What about Sodium and TDS?</string>
+    <string name="onboarding_message_3">Popular parameters like TDS (Total Dissolved Solids) are taken into account, but with less weight. Our system prioritizes what affects the taste.</string>
     <string name="onboarding_title_4">Calculate the Perfect Water</string>
     <string name="onboarding_message_4">Use our premium calculator to know exactly how many drops of minerals to add and transform your water into the ideal SCA water.</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Feature: OCR (Label Scanner) -->
+    <!-- =================================================================================== -->
     <string name="scan_label_button">Try scanning the label</string>
     <string name="toast_permission_denied">Camera permission denied. Cannot scan label.</string>
     <string name="toast_no_image">Could not get image.</string>
@@ -184,9 +243,13 @@ really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our f
     <string name="toast_image_read_error">Error reading image file.</string>
     <string name="toast_ocr_analyzing">Analyzing label…</string>
     <string name="toast_ocr_failure">Failed to recognize text: %1$s</string>
-    <string name="toast_ocr_success">Values found! Please verify if they are correct.</string>
+    <string name="toast_ocr_success">Values found! Please verify they are correct.</string>
     <string name="toast_ocr_no_params">Could not identify parameters. Please enter manually.</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Screen: Water Optimizer (WaterOptimizerActivity) -->
+    <!-- =================================================================================== -->
     <string name="water_optimizer_title">Water Optimizer</string>
     <string name="water_comparison_title">Water Comparison</string>
     <string name="parameter">Parameter</string>
@@ -199,73 +262,53 @@ really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our f
     <string name="button_share_recipe">Share Recipe</string>
     <string name="button_view_guide">View Guide</string>
     <string name="share_recipe">Share recipe</string>
-    <string name="value_with_unit_mg_l">%s mg/L</string>
     <string name="drops_format">Drops: %d</string>
     <string name="ppm_added_format">PPM added: %s</string>
     <string name="final_value_format">Final value: %s ppm</string>
-    <string name="info">Information</string>
-    <string name="premium_required_title">Premium Feature</string>
-    <string name="premium_required_message">The Water Optimizer is an exclusive feature for premium subscribers. Subscribe now to get access!</string>
-    <string name="button_subscribe">Subscribe</string>
     <string name="solution_preparation_title">Solution Preparation</string>
-    <string name="screenshot_placeholder_title">Add a Screenshot Here</string>
-    <string name="screenshot_placeholder_message">Capture the Water Optimizer screen\nand replace this placeholder</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Screens: Premium and Subscription -->
+    <!-- =================================================================================== -->
+    <!-- Premium Bottom Sheet (Fragment) -->
     <string name="premium_badge">PREMIUM</string>
     <string name="premium_bottom_sheet_title">Unlock the Optimizer</string>
-    <string name="premium_bottom_sheet_message">Transform your water. The Premium Calculator shows exactly how many mineral drops to add to reach the ideal coffee water profile. 7-day trial.</string>
-    <string name="premium_bottom_sheet_button">Try the Optimizer</string>
-    <string name="subscription_title">Become Premium</string>
-    <string name="subscription_subtitle">Remove ads and unlock exclusive features</string>
-    <string name="monthly_subscription">Monthly Subscription</string>
+    <string name="premium_bottom_sheet_message">Transform your water. The Premium Calculator shows exactly how many drops of minerals to add to reach the ideal coffee water profile. Try it for 7 days.</string>
+    <string name="premium_bottom_sheet_button">Test the Optimizer</string>
+
+    <!-- Subscription Activity -->
+    <string name="premium_title">Coffee with Water Premium</string>
+    <string name="premium_subtitle">Better results, no distractions.</string>
+    <string name="benefits">Benefits</string>
     <string name="benefit_ads_removal">No ads</string>
     <string name="benefit_water_optimizer">Water Optimizer</string>
     <string name="benefit_unlimited_recipes">Save unlimited recipes</string>
     <string name="benefit_priority_support">Priority support</string>
-    <string name="thank_you_premium_user">Thank you for being a Premium user!</string>
-    <string name="premium_status_active">Premium Active</string>
-    <string name="premium_status_legacy">Premium (Legacy)</string>
-    <string name="manage_subscription">Manage Subscription</string>
-    <string name="subscribe_now">Subscribe now</string>
-
-    <string name="title_gerenciar_compra">Manage Purchase</string>
-    <string name="desc_restaurar_compra">Already purchased Premium on another device or reinstalled the app? Restore your purchase to reactivate the features.</string>
-    <string name="button_restaurar_compra">Restore Purchases</string>
-
-    <string name="button_continuar_para_resultado">Continue to Result</string>
-
-    <string name="premium_feature">Premium Feature</string>
-    <string name="premium_feature_1">Water Optimizer</string>
-    <string name="premium_feature_2">Ad Removal</string>
-    <string name="premium_feature_3">Unlimited Recipes</string>
-
-    <string name="cafe_logo">Café com Água Logo</string>
-    <string name="premium_title">Café com Água Premium</string>
-    <string name="premium_subtitle">Better results, no distractions.</string>
-    <string name="benefits">Benefits</string>
     <string name="special_offer">Special Offer</string>
-    <string name="monthly_plan">Monthly Plan</string>
-    <string name="restore_purchase">Restore Purchases</string>
+    <string name="monthly_plan">Monthly Subscription</string>
+    <string name="premium_status_active">Premium Active</string>
+    <string name="subscribe_now">Subscribe now</string>
+    <string name="restore_purchase">Restore purchases</string>
     <string name="continue_to_result">Continue to result</string>
     <string name="legal_smallprint">Cancel anytime. Price may vary by region.</string>
 
-    <string name="button_save">Save</string>
-    <string name="button_cancel">Cancel</string>
-    <string name="button_delete">Delete</string>
+    <!-- Optimizer Dialog (Premium) -->
+    <string name="premium_required_title">Premium Feature</string>
+    <string name="premium_required_message">The Water Optimizer is an exclusive feature for premium subscribers. Subscribe now to get access!</string>
+    <string name="button_subscribe">Subscribe</string>
 
-    <string name="home_button_my_recipes">My Recipes</string>
 
+    <!-- =================================================================================== -->
+    <!-- Screen: Saved Recipes (SavedRecipesActivity) -->
+    <!-- =================================================================================== -->
     <string name="save_recipe_title">Save Recipe</string>
-    <string name="save_recipe_message">Name this optimization recipe:</string>
+    <string name="save_recipe_message">Give this optimization recipe a name:</string>
     <string name="recipe_name_hint">Ex: My V60 Recipe</string>
-    <string name="toast_recipe_name_empty">The name cannot be empty</string>
-    <string name="toast_recipe_saved_success">Recipe successfully saved!</string>
+    <string name="toast_recipe_name_empty">Name cannot be empty</string>
+    <string name="toast_recipe_saved_success">Recipe saved successfully!</string>
     <string name="toast_recipe_saved_error">Error saving recipe</string>
 
-    <string name="title_saved_recipes">My Recipes</string>
-    <string name="empty_state_no_recipes">No recipes saved yet.</string>
-
-    <string name="content_desc_delete_recipe">Delete recipe</string>
     <string name="recipe_saved_on_date">Saved on %1$s</string>
     <string name="recipe_drops_calcium">• Calcium: %1$d drops</string>
     <string name="recipe_drops_magnesium">• Magnesium: %1$d drops</string>
@@ -274,14 +317,9 @@ really matters for flavor, <b>TDS and Sodium have a very low weight</b> in our f
     <string name="recipe_no_drops_added">No drops added</string>
 
     <string name="delete_recipe_title">Delete Recipe</string>
-    <string name="delete_recipe_message">Are you sure you want to delete the recipe \'%1$s\'?</string>
+    <string name="delete_recipe_message">"Are you sure you want to delete the recipe '%1$s'?"</string>
 
-    <string name="error_no_saved_water_for_optimization">You need to save a water evaluation in History first.</string>
-    <string name="title_optimize_saved_water">Optimize Saved Water</string>
-
-    <string name="dialog_delete_recipe_title">Excluir Receita</string>
-    <string name="dialog_delete_recipe_message">Tem certeza que deseja excluir a receita \'%1$s\'?</string>
-    <string name="dialog_delete">Excluir</string>
-    <string name="dialog_cancel">Cancelar</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_finish">Finish</string>
 
 </resources>

@@ -6,6 +6,7 @@
         android:id="@+id/action_backup"
         android:title="Exportar Backup"
         android:icon="@drawable/ic_backup"
+        app:tint="@null"
         app:showAsAction="ifRoom" />
 
 </menu>

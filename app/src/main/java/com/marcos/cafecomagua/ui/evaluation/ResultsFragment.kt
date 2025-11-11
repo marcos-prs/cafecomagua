@@ -29,7 +29,10 @@ import com.marcos.cafecomagua.app.billing.SubscriptionActivity
 import com.marcos.cafecomagua.ads.InterstitialAdManager
 import com.marcos.cafecomagua.app.analytics.analytics
 import com.marcos.cafecomagua.app.analytics.AnalyticsManager
-import com.marcos.cafecomagua.app.model.EvaluationStatus // Importação necessária
+import com.marcos.cafecomagua.app.model.EvaluationStatus
+import com.marcos.cafecomagua.app.analytics.Category
+import com.marcos.cafecomagua.app.analytics.Event
+
 
 /**
  * Fragmento para a tela final de resultados.
@@ -63,10 +66,11 @@ class ResultsFragment : Fragment() {
                 activity?.finish() // Fecha a Activity
             }
             onAdShown = {
+                // ✅ CORRETO
                 requireContext().analytics().logEvent(
-                    AnalyticsManager.Category.USER_ACTION,
-                    AnalyticsManager.Event.AD_SHOWN,
-                    mapOf("ad_type" to "interstitial", "location" to "results_exit")
+                    Category.NAVIGATION,
+                    Event.SCREEN_VIEWED,
+                    mapOf("screen_name" to "water_input_fragment")
                 )
             }
         }

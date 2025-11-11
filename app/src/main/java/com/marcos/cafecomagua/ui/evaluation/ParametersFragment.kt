@@ -20,6 +20,7 @@ import java.text.DecimalFormat
 import com.marcos.cafecomagua.app.logic.WaterEvaluator
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.model.EvaluationStatus // ✅ ADICIONADO ESTE IMPORT
+import com.marcos.cafecomagua.app.model.WaterProfile
 
 /**
  * Fragmento para a segunda tela do fluxo de avaliação (parâmetros adicionais).
@@ -114,9 +115,14 @@ class ParametersFragment : Fragment() {
         val ph = sharedViewModel.ph.value ?: 0.0
         val residuo = sharedViewModel.residuoEvaporacao.value ?: 0.0
 
-        // Cálculos
-        val durezaCalculada = (calcio * 2.497) + (magnesio * 4.118)
-        val alcalinidadeCalculada = bicarbonato * 0.820
+        // ✅ REFATORADO: Cálculos usam a fonte única (WaterProfile)
+        val profile = WaterProfile(
+            calcium = calcio,
+            magnesium = magnesio,
+            bicarbonate = bicarbonato
+        )
+        val durezaCalculada = profile.calculateHardness()
+        val alcalinidadeCalculada = profile.calculateAlkalinity()
 
         // Exibe valores calculados
         binding.textViewDurezaCalculada.setText(df.format(durezaCalculada))

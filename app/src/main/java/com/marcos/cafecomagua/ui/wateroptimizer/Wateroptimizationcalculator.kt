@@ -1,5 +1,6 @@
 package com.marcos.cafecomagua.ui.wateroptimizer
 
+import com.marcos.cafecomagua.app.logic.WaterEvaluator
 import com.marcos.cafecomagua.app.model.DropRecommendation
 import com.marcos.cafecomagua.app.model.MineralSolution
 import com.marcos.cafecomagua.app.model.SCAStandards
@@ -264,16 +265,29 @@ class WaterOptimizationCalculator {
 
     /**
      * Calcula score de melhoria (0-100) comparando antes e depois
-     * CORRIGIDO: Agora retorna sempre um valor entre 0-100
+     * ✅ REFATORADO: Usa WaterEvaluator e remove a lógica duplicada
      */
     private fun calculateImprovementScore(
         before: WaterProfile,
         after: WaterProfile,
-        target: WaterProfile
+        target: WaterProfile // target não é mais usado aqui, mas mantido por assinatura
     ): Double {
-        val beforeScore = calculateProfileScore(before)
-        val afterScore = calculateProfileScore(after)
-        val targetScore = 100.0
+        // Calcula scores usando a lógica centralizada
+        val beforeScore = WaterEvaluator.calculateScore(
+            alkalinity = before.calculateAlkalinity(),
+            hardness = before.calculateHardness(),
+            sodium = before.sodium,
+            tds = before.tds
+        ).totalPoints
+
+        val afterScore = WaterEvaluator.calculateScore(
+            alkalinity = after.calculateAlkalinity(),
+            hardness = after.calculateHardness(),
+            sodium = after.sodium,
+            tds = after.tds
+        ).totalPoints
+
+        val targetScore = 100.0 // Pontuação máxima ideal
 
         // Se a água já está no ideal ou acima, não há melhoria possível
         if (beforeScore >= targetScore) {
@@ -289,44 +303,8 @@ class WaterOptimizationCalculator {
     }
 
     /**
-     * Calcula score geral de um perfil de água (0-100)
-     * NOVA FILOSOFIA: Baseado em faixas ideais com pesos (Alk 50%, Dureza 30%, Sódio+TDS 20%)
+     * ✅ REMOVIDO: Método calculateProfileScore (lógica duplicada)
      */
-    private fun calculateProfileScore(profile: WaterProfile): Double {
-        val hardness = profile.calculateHardness()
-        val alkalinity = profile.calculateAlkalinity()
-
-        // Pontuação baseada nas faixas (0, 50 ou 100 pontos)
-        val alkPoints = when (alkalinity) {
-            in 30.0..50.0 -> 100.0
-            in 51.0..75.0 -> 50.0
-            else -> 0.0
-        }
-
-        val hardnessPoints = when (hardness) {
-            in 50.0..90.0 -> 100.0
-            in 91.0..110.0 -> 50.0
-            else -> 0.0
-        }
-
-        val sodiumPoints = when (profile.sodium) {
-            in 0.0..10.0 -> 100.0
-            in 11.0..30.0 -> 50.0
-            else -> 0.0
-        }
-
-        val tdsPoints = when (profile.tds) {
-            in 100.0..180.0 -> 100.0
-            in 75.0..99.99, in 181.0..250.0 -> 50.0
-            else -> 0.0
-        }
-
-        // Aplica pesos da nova filosofia
-        return (alkPoints * 0.50) +
-                (hardnessPoints * 0.30) +
-                (sodiumPoints * 0.10) +
-                (tdsPoints * 0.10)
-    }
 
     /**
      * Gera instruções de preparação das soluções

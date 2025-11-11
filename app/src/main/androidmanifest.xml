@@ -52,7 +52,7 @@
 
         <activity
             android:name=".ui.evaluation.EvaluationHostActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:configChanges="orientation|screenSize|keyboardHidden" />
 
         <activity

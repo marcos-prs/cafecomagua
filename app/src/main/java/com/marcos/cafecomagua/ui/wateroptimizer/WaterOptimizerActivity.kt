@@ -235,10 +235,11 @@ class WaterOptimizerActivity : AppCompatActivity() {
         )
         this.currentOptimizationResult = result
 
-        binding.textImprovementScore.text = getString(
-            R.string.improvement_score_format,
-            df.format(result.improvementScore)
-        )
+        binding.textImprovementScore.text = buildString {
+            append("⭐ Melhoria: ")
+            append(df.format(result.improvementScore))
+            append("%")
+        }
 
         binding.recyclerRecommendations.layoutManager = LinearLayoutManager(this)
         binding.recyclerRecommendations.adapter = DropRecommendationAdapter(
