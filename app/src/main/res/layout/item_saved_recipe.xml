@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- ✅ REFATORADO: Card agora tem feedback visual de clique -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="8dp"
-            android:textAppearance="@style/TextAppearance.App.Title"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textSize="18sp"
             android:maxLines="2"
             android:ellipsize="end"

@@ -1,11 +1,13 @@
 package com.marcos.cafecomagua.ui.adapters
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import com.marcos.cafecomagua.R
-import com.marcos.cafecomagua.databinding.ItemDropRecommendationBinding
 import com.marcos.cafecomagua.app.model.DropRecommendation
+import com.marcos.cafecomagua.databinding.ItemDropRecommendationBinding
 import java.text.DecimalFormat
 
 /**
@@ -24,42 +26,43 @@ class DropRecommendationAdapter(
 
         fun bind(recommendation: DropRecommendation) {
             binding.apply {
+                val context = root.context
+
                 // Nome da solução mineral
                 textSolutionName.text = recommendation.solution.name
                 textSolutionFormula.text = recommendation.solution.formula
 
                 // Número de gotas recomendadas
-                textDropsNeeded.text = root.context.getString(
+                textDropsNeeded.text = context.getString(
                     R.string.drops_format,
                     recommendation.dropsNeeded
                 )
 
                 // PPM que será adicionado
-                textPpmAdded.text = root.context.getString(
+                textPpmAdded.text = context.getString(
                     R.string.ppm_added_format,
                     df.format(recommendation.ppmAdded)
                 )
 
                 // Valor final após adicionar
-                textFinalValue.text = root.context.getString(
+                textFinalValue.text = context.getString(
                     R.string.final_value_format,
                     df.format(recommendation.finalPpm)
                 )
 
                 // Badge de status (Ideal/Aceitável/Precisa Ajuste)
-                // Em DropRecommendationAdapter.kt, dentro da função bind()
-
-// Badge de status (Ideal/Aceitável/Precisa Ajuste)
                 if (recommendation.isOptimal) {
                     // ✅ CORRIGIDO: Usa a string padronizada
-                    chipStatus.text = root.context.getString(R.string.avaliacao_ideal)
-                    chipStatus.setChipBackgroundColorResource(R.color.ideal_green)
+                    chipStatus.text = context.getString(R.string.avaliacao_ideal)
+                    // ✅ CORRIGIDO: Usa atributo do tema
+                    val idealColor = MaterialColors.getColor(context, R.attr.colorStatIdeal, "default_ideal_color")
+                    chipStatus.setChipBackgroundColor(ColorStateList.valueOf(idealColor))
                 } else {
                     // ✅ CORRIGIDO: Usa a string padronizada
-                    // (A cor 'acceptable_yellow'
-                    // corresponde a 'avaliacao_aceitavel')
-                    chipStatus.text = root.context.getString(R.string.avaliacao_aceitavel)
-                    chipStatus.setChipBackgroundColorResource(R.color.acceptable_yellow)
+                    chipStatus.text = context.getString(R.string.avaliacao_aceitavel)
+                    // ✅ CORRIGIDO: Usa atributo do tema
+                    val acceptableColor = MaterialColors.getColor(context, R.attr.colorStatAcceptable, "default_acceptable_color")
+                    chipStatus.setChipBackgroundColor(ColorStateList.valueOf(acceptableColor))
                 }
 
                 // Botão de informação

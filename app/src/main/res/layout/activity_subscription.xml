@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="Café com Água"
+            app:title="@string/app_name"
             app:titleCentered="true"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
@@ -43,8 +43,8 @@
                 android:id="@+id/headerCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:strokeColor="?attr/colorSecondary"
                 android:layout_marginTop="12dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
 
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="Melhores resultados, sem distrações."
+                        android:text="@string/premium_subtitle"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -104,7 +104,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"  android:layout_columnWeight="1" />
                 <include layout="@layout/layout_benefit_chip"
-                    android:id="@+id/benefit_priority_support"
+                    android:id="@+id/benefit_backup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"  android:layout_columnWeight="1" />
             </GridLayout>

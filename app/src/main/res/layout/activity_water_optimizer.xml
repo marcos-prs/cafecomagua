@@ -63,137 +63,166 @@
                         android:textSize="20sp"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Tabela de Comparação -->
-                    <TableLayout
+                    <!-- HorizontalScrollView para permitir scroll lateral da tabela -->
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:stretchColumns="1,2">
+                        android:scrollbars="none"
+                        android:fadeScrollbars="false">
 
-                        <!-- Cabeçalho -->
-                        <TableRow
-                            android:layout_marginBottom="8dp">
-                            <TextView
-                                android:text="@string/parameter"
-                                android:textStyle="bold"
-                                android:textColor="@color/dourado_elegante"
-                                android:padding="8dp" />
-                            <TextView
-                                android:text="@string/current_water"
-                                android:textStyle="bold"
-                                android:textColor="@color/dourado_elegante"
-                                android:padding="8dp"
-                                android:gravity="center" />
-                            <TextView
-                                android:text="@string/ideal_water"
-                                android:textStyle="bold"
-                                android:textColor="@color/dourado_elegante"
-                                android:padding="8dp"
-                                android:gravity="center" />
-                        </TableRow>
+                        <!-- Tabela de Comparação -->
+                        <TableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                        <!-- Cálcio -->
-                        <TableRow>
-                            <TextView
-                                android:text="@string/label_calcio"
-                                android:padding="8dp" />
-                            <TextView
-                                android:id="@+id/textCurrentCalcium"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="17 mg/L" />
-                            <TextView
-                                android:id="@+id/textIdealCalcium"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="51 mg/L" />
-                        </TableRow>
+                            <!-- Cabeçalho -->
+                            <TableRow
+                                android:layout_marginBottom="8dp">
+                                <TextView
+                                    android:text="@string/parameter"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dourado_elegante"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:text="@string/current_water"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dourado_elegante"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp" />
+                                <TextView
+                                    android:text="@string/ideal_water"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/dourado_elegante"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp" />
+                            </TableRow>
 
-                        <!-- Magnésio -->
-                        <TableRow>
-                            <TextView
-                                android:text="@string/label_magnesio"
-                                android:padding="8dp" />
-                            <TextView
-                                android:id="@+id/textCurrentMagnesium"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="6 mg/L" />
-                            <TextView
-                                android:id="@+id/textIdealMagnesium"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="20 mg/L" />
-                        </TableRow>
+                            <!-- Cálcio -->
+                            <TableRow>
+                                <TextView
+                                    android:text="@string/label_calcio"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:id="@+id/textCurrentCalcium"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="17 mg/L" />
+                                <TextView
+                                    android:id="@+id/textIdealCalcium"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="51 mg/L" />
+                            </TableRow>
 
-                        <!-- Sódio -->
-                        <TableRow>
-                            <TextView
-                                android:text="@string/label_sodio_unidade"
-                                android:padding="8dp" />
-                            <TextView
-                                android:id="@+id/textCurrentSodium"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="8 mg/L" />
-                            <TextView
-                                android:id="@+id/textIdealSodium"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="10 mg/L" />
-                        </TableRow>
+                            <!-- Magnésio -->
+                            <TableRow>
+                                <TextView
+                                    android:text="@string/label_magnesio"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:id="@+id/textCurrentMagnesium"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="6 mg/L" />
+                                <TextView
+                                    android:id="@+id/textIdealMagnesium"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="20 mg/L" />
+                            </TableRow>
 
-                        <!-- Bicarbonato -->
-                        <TableRow>
-                            <TextView
-                                android:text="@string/label_bicarbonato"
-                                android:padding="8dp" />
-                            <TextView
-                                android:id="@+id/textCurrentBicarbonate"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="40 mg/L" />
-                            <TextView
-                                android:id="@+id/textIdealBicarbonate"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="40 mg/L" />
-                        </TableRow>
+                            <!-- Sódio -->
+                            <TableRow>
+                                <TextView
+                                    android:text="@string/label_sodio_unidade"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:id="@+id/textCurrentSodium"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="8 mg/L" />
+                                <TextView
+                                    android:id="@+id/textIdealSodium"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="10 mg/L" />
+                            </TableRow>
 
-                        <!-- Dureza -->
-                        <TableRow>
-                            <TextView
-                                android:text="@string/label_dureza_calculada"
-                                android:padding="8dp" />
-                            <TextView
-                                android:id="@+id/textCurrentHardness"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="68 mg/L" />
-                            <TextView
-                                android:id="@+id/textIdealHardness"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="68 mg/L" />
-                        </TableRow>
+                            <!-- Bicarbonato -->
+                            <TableRow>
+                                <TextView
+                                    android:text="@string/label_bicarbonato"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:id="@+id/textCurrentBicarbonate"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="40 mg/L" />
+                                <TextView
+                                    android:id="@+id/textIdealBicarbonate"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="40 mg/L" />
+                            </TableRow>
 
-                        <!-- Alcalinidade -->
-                        <TableRow>
-                            <TextView
-                                android:text="@string/label_alcalinidade_calculada"
-                                android:padding="8dp" />
-                            <TextView
-                                android:id="@+id/textCurrentAlkalinity"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="40 mg/L" />
-                            <TextView
-                                android:id="@+id/textIdealAlkalinity"
-                                android:padding="8dp"
-                                android:gravity="center"
-                                tools:text="40 mg/L" />
-                        </TableRow>
+                            <!-- Dureza -->
+                            <TableRow>
+                                <TextView
+                                    android:text="@string/label_dureza_calculada"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:id="@+id/textCurrentHardness"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="68 mg/L" />
+                                <TextView
+                                    android:id="@+id/textIdealHardness"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="68 mg/L" />
+                            </TableRow>
 
-                    </TableLayout>
+                            <!-- Alcalinidade -->
+                            <TableRow>
+                                <TextView
+                                    android:text="@string/label_alcalinidade_calculada"
+                                    android:padding="8dp"
+                                    android:minWidth="140dp" />
+                                <TextView
+                                    android:id="@+id/textCurrentAlkalinity"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="40 mg/L" />
+                                <TextView
+                                    android:id="@+id/textIdealAlkalinity"
+                                    android:padding="8dp"
+                                    android:gravity="center"
+                                    android:minWidth="90dp"
+                                    tools:text="40 mg/L" />
+                            </TableRow>
+
+                        </TableLayout>
+
+                    </HorizontalScrollView>
 
                 </LinearLayout>
 
@@ -264,8 +293,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardScore"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp" />
 
             <!-- RecyclerView com Recomendações -->
             <androidx.recyclerview.widget.RecyclerView

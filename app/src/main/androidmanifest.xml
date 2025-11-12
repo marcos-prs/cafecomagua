@@ -46,6 +46,10 @@
             android:theme="@style/Theme.CafeComAgua" />
 
         <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+
+        <activity
             android:name="com.marcos.cafecomagua.app.billing.SubscriptionActivity"
             android:exported="false"
             android:theme="@style/Theme.CafeComAgua" />

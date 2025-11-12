@@ -47,4 +47,17 @@
     <color name="not_recommended_red">#F44336</color>
     <color name="na_text_gray">#888888</color>
 
+    <color name="mineral_calcium_bg">#FFF3E0</color>
+    <color name="mineral_magnesium_bg">#E8F5E9</color>
+    <color name="mineral_sodium_bg">#E3F2FD</color>
+    <color name="mineral_potassium_bg">#F3E5F5</color>
+    <color name="dark_mineral_calcium_bg">#4A3A2C</color>
+    <color name="dark_mineral_magnesium_bg">#2E4230</color>
+    <color name="dark_mineral_sodium_bg">#2C3E4A</color>
+    <color name="dark_mineral_potassium_bg">#46344E</color>
+
+    <color name="dark_ideal_green">#388E3C</color>
+    <color name="dark_acceptable_yellow">#FFA000</color>
+    <color name="dark_not_recommended_red">#D32F2F</color>
+
 </resources>

@@ -284,7 +284,7 @@ unwanted minerals (like table salt). The total number doesn\'t tell the whole st
     <string name="benefit_ads_removal">No ads</string>
     <string name="benefit_water_optimizer">Water Optimizer</string>
     <string name="benefit_unlimited_recipes">Save unlimited recipes</string>
-    <string name="benefit_priority_support">Priority support</string>
+    <string name="benefit_backup">Your data protected</string>
     <string name="special_offer">Special Offer</string>
     <string name="monthly_plan">Monthly Subscription</string>
     <string name="premium_status_active">Premium Active</string>
@@ -321,5 +321,9 @@ unwanted minerals (like table salt). The total number doesn\'t tell the whole st
 
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_finish">Finish</string>
+
+    <string name="recipe_notes_hint">Notes (optional)</string>
+    <string name="recipe_notes_helper">Ex: Filtered tap water - V60 profile</string>
+
 
 </resources>

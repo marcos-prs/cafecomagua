@@ -20,7 +20,7 @@ kotlinxCoroutines = "1.10.2"
 kotlin = "2.2.20"
 
 # Build Tools
-androidApplication = "8.13.0"
+androidApplication = "8.13.1"
 kotlinAndroid = "2.2.21"
 
 # AndroidX

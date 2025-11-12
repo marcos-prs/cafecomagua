@@ -283,7 +283,7 @@
     <string name="benefit_ads_removal">Sin anuncios</string>
     <string name="benefit_water_optimizer">Optimizador de Agua</string>
     <string name="benefit_unlimited_recipes">Guarda recetas ilimitadas</string>
-    <string name="benefit_priority_support">Soporte prioritario</string>
+    <string name="benefit_backup">Tus datos protegidos</string>
     <string name="special_offer">Oferta Especial</string>
     <string name="monthly_plan">Suscripción Mensual</string>
     <string name="premium_status_active">Premium Activo</string>
@@ -320,5 +320,8 @@
 
     <string name="onboarding_skip">SALTAR</string>
     <string name="onboarding_finish">FINALIZAR</string>
+
+    <string name="recipe_notes_hint">Notas (opcional)</string>
+    <string name="recipe_notes_helper">Ej: Agua del grifo filtrada - perfil para V60</string>
 
 </resources>

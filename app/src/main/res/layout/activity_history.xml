@@ -13,8 +13,7 @@
         android:id="@+id/border_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/border_gold"
-        android:layout_margin="16dp"
+        android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +33,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                style="@style/Widget.App.Toolbar"
-                app:menu="@menu/menu_history">
+                style="@style/Widget.App.Toolbar">
 
                 <TextView
                     android:layout_width="wrap_content"

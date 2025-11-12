@@ -95,8 +95,10 @@ data class WaterOptimizationResult(
     val targetProfile: WaterProfile,
     val recommendations: List<DropRecommendation>,
     val achievableProfile: WaterProfile,
-    val improvementScore: Double, // 0-100 (porcentagem)
-    val warnings: List<String> = emptyList()
+    val improvementScore: Double,
+    val warnings: List<String>,
+    val originalScore: Double = 0.0,
+    val optimizedScore: Double = 0.0
 ) : Serializable
 
 /**

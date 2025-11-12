@@ -130,6 +130,10 @@ class HomeActivity : AppCompatActivity() {
         binding.buttonToggleTheme.setOnClickListener {
             toggleTheme()
         }
+        binding.buttonSettings.setOnClickListener {
+            // Você precisará criar esta Activity (passo 5)
+            startActivity(Intent(this, com.marcos.cafecomagua.ui.settings.SettingsActivity::class.java))
+        }
 
         // Botões de Ação
         binding.buttonNewEvaluation.setOnClickListener {

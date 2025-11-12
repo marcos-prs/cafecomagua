@@ -18,4 +18,12 @@ interface RecipeDao {
 
     @Delete
     suspend fun delete(recipe: SavedRecipe)
+
+    // --- ADICIONAR ESTES MÉTODOS ---
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(recipes: List<SavedRecipe>)
+
+    @Query("DELETE FROM saved_recipes")
+    suspend fun clearAll()
+    // --- FIM DA ADIÇÃO ---
 }

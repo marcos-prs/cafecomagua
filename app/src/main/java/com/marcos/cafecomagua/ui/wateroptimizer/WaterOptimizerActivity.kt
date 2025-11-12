@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.MyApplication
 import com.marcos.cafecomagua.ui.help.HelpActivity
@@ -40,6 +41,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
     private val df = DecimalFormat("#.##")
 
     private var currentOptimizationResult: WaterOptimizationResult? = null
+    private var currentWaterProfile: WaterProfile? = null // ✨ NOVO: Guarda o perfil original
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -71,6 +73,7 @@ class WaterOptimizerActivity : AppCompatActivity() {
         val currentWater = extractWaterProfileFromIntent()
 
         if (currentWater != null) {
+            this.currentWaterProfile = currentWater // ✨ NOVO: Salva o perfil
             displayWaterComparison(currentWater)
             calculateAndDisplayRecommendations(currentWater)
         } else {
@@ -272,8 +275,10 @@ class WaterOptimizerActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.buttonSaveRecipe.setOnClickListener {
-            currentOptimizationResult?.let {
-                promptForRecipeName(it)
+            currentOptimizationResult?.let { result ->
+                currentWaterProfile?.let { water ->
+                    promptForRecipeNameAndNotes(result, water)
+                }
             } ?: Toast.makeText(
                 this,
                 R.string.toast_recipe_saved_error,
@@ -293,20 +298,23 @@ class WaterOptimizerActivity : AppCompatActivity() {
         }
     }
 
-    private fun promptForRecipeName(result: WaterOptimizationResult) {
-        val input = EditText(this).apply {
-            hint = getString(R.string.recipe_name_hint)
-            setSingleLine()
-        }
+    /**
+     * ✨ REFATORADO: Agora solicita nome E notas da receita
+     */
+    private fun promptForRecipeNameAndNotes(result: WaterOptimizationResult, water: WaterProfile) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_save_recipe, null)
+        val inputName = dialogView.findViewById<TextInputEditText>(R.id.input_recipe_name)
+        val inputNotes = dialogView.findViewById<TextInputEditText>(R.id.input_recipe_notes)
 
         AlertDialog.Builder(this)
             .setTitle(R.string.save_recipe_title)
-            .setMessage(R.string.save_recipe_message)
-            .setView(input)
+            .setView(dialogView)
             .setPositiveButton(R.string.button_save) { _, _ ->
-                val recipeName = input.text.toString().trim()
+                val recipeName = inputName.text.toString().trim()
+                val recipeNotes = inputNotes.text.toString().trim().ifBlank { null }
+
                 if (recipeName.isNotBlank()) {
-                    saveRecipeToDatabase(recipeName, result)
+                    saveRecipeToDatabase(recipeName, recipeNotes, result, water)
                 } else {
                     Toast.makeText(
                         this,
@@ -319,10 +327,21 @@ class WaterOptimizerActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun saveRecipeToDatabase(name: String, result: WaterOptimizationResult) {
+    /**
+     * ✨ REFATORADO: Agora salva água otimizada e scores completos
+     */
+    private fun saveRecipeToDatabase(
+        name: String,
+        notes: String?,
+        result: WaterOptimizationResult,
+        originalWater: WaterProfile
+    ) {
         val dropsMap = result.recommendations.associate {
             it.solution.elementType to it.dropsNeeded
         }
+
+        // Água otimizada (achievableProfile)
+        val optimizedWater = result.achievableProfile
 
         val recipe = SavedRecipe(
             recipeName = name,
@@ -330,7 +349,31 @@ class WaterOptimizerActivity : AppCompatActivity() {
             calciumDrops = dropsMap[MineralSolution.ElementType.CALCIUM] ?: 0,
             magnesiumDrops = dropsMap[MineralSolution.ElementType.MAGNESIUM] ?: 0,
             sodiumDrops = dropsMap[MineralSolution.ElementType.SODIUM] ?: 0,
-            potassiumDrops = dropsMap[MineralSolution.ElementType.POTASSIUM] ?: 0
+            potassiumDrops = dropsMap[MineralSolution.ElementType.POTASSIUM] ?: 0,
+            // Volume de água (1L = volume base mais prático)
+            waterVolumeMl = 1000,
+            // Parâmetros originais
+            originalCalcium = originalWater.calcium,
+            originalMagnesium = originalWater.magnesium,
+            originalSodium = originalWater.sodium,
+            originalBicarbonate = originalWater.bicarbonate,
+            originalHardness = originalWater.calculateHardness(),
+            originalAlkalinity = originalWater.calculateAlkalinity(),
+            originalTds = originalWater.tds,
+            // ✨ NOVO: Parâmetros otimizados
+            optimizedCalcium = optimizedWater.calcium,
+            optimizedMagnesium = optimizedWater.magnesium,
+            optimizedSodium = optimizedWater.sodium,
+            optimizedBicarbonate = optimizedWater.bicarbonate,
+            optimizedHardness = optimizedWater.calculateHardness(),
+            optimizedAlkalinity = optimizedWater.calculateAlkalinity(),
+            optimizedTds = optimizedWater.tds,
+            // ✨ NOVO: Scores
+            originalScore = result.originalScore,
+            optimizedScore = result.optimizedScore,
+            improvementPercent = result.improvementScore,
+            // Notas
+            notes = notes
         )
 
         lifecycleScope.launch {

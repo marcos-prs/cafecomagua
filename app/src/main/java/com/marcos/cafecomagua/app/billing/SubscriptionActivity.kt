@@ -131,8 +131,8 @@ class SubscriptionActivity : AppCompatActivity() {
         binding.benefitUnlimitedRecipes.benefitIcon.setImageResource(R.drawable.ic_recipes)
         binding.benefitUnlimitedRecipes.benefitText.text = getString(R.string.benefit_unlimited_recipes)
 
-        binding.benefitPrioritySupport.benefitIcon.setImageResource(R.drawable.ic_support)
-        binding.benefitPrioritySupport.benefitText.text = getString(R.string.benefit_priority_support)
+        binding.benefitBackup.benefitIcon.setImageResource(R.drawable.ic_backup)
+        binding.benefitBackup.benefitText.text = getString(R.string.benefit_backup)
     }
 
     /**

@@ -16,6 +16,15 @@
         <item name="iconTint">@color/dourado_elegante</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <item name="colorMineralCalciumBg">@color/mineral_calcium_bg</item>
+        <item name="colorMineralMagnesiumBg">@color/mineral_magnesium_bg</item>
+        <item name="colorMineralSodiumBg">@color/mineral_sodium_bg</item>
+        <item name="colorMineralPotassiumBg">@color/mineral_potassium_bg</item>
+
+        <item name="colorStatIdeal">@color/ideal_green</item>
+        <item name="colorStatAcceptable">@color/acceptable_yellow</item>
+        <item name="colorStatNotRecommended">@color/not_recommended_red</item>
     </style>
 
     <style name="Theme.AppSplash" parent="Theme.SplashScreen">

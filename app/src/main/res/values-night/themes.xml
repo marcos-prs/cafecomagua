@@ -18,6 +18,15 @@
 
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+
+        <item name="colorMineralCalciumBg">@color/dark_mineral_calcium_bg</item>
+        <item name="colorMineralMagnesiumBg">@color/dark_mineral_magnesium_bg</item>
+        <item name="colorMineralSodiumBg">@color/dark_mineral_sodium_bg</item>
+        <item name="colorMineralPotassiumBg">@color/dark_mineral_potassium_bg</item>
+
+        <item name="colorStatIdeal">@color/dark_ideal_green</item>
+        <item name="colorStatAcceptable">@color/dark_acceptable_yellow</item>
+        <item name="colorStatNotRecommended">@color/dark_not_recommended_red</item>
     </style>
 
     <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton">

@@ -283,7 +283,7 @@
     <string name="benefit_ads_removal">Sem anúncios</string>
     <string name="benefit_water_optimizer">Otimizador de Água</string>
     <string name="benefit_unlimited_recipes">Salve receitas ilimitadas</string>
-    <string name="benefit_priority_support">Suporte prioritário</string>
+    <string name="benefit_backup">Seus dados protegidos</string>
     <string name="special_offer">Oferta Especial</string>
     <string name="monthly_plan">Assinatura Mensal</string>
     <string name="premium_status_active">Premium Ativo</string>
@@ -320,4 +320,9 @@
 
     <string name="onboarding_skip">Pular</string>
     <string name="onboarding_finish">Concluir</string>
+
+    <string name="recipe_notes_hint">Notas (opcional)</string>
+    <string name="recipe_notes_helper">Ex: Água da torneira filtrada - perfil para V60</string>
+
+
 </resources>

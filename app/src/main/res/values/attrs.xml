@@ -4,4 +4,12 @@
         <attr name="mainLayoutBackground" format="reference|color" />
         <attr name="iconTint" format="reference|color" />
     </declare-styleable>
+
+    <attr name="colorMineralCalciumBg" format="color" />
+    <attr name="colorMineralMagnesiumBg" format="color" />
+    <attr name="colorMineralSodiumBg" format="color" />
+    <attr name="colorMineralPotassiumBg" format="color" />
+    <attr name="colorStatIdeal" format="color" />
+    <attr name="colorStatAcceptable" format="color" />
+    <attr name="colorStatNotRecommended" format="color" />
 </resources>

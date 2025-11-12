@@ -102,7 +102,7 @@ class OnboardingActivity : AppCompatActivity() {
             OnboardingSlide(
                 title = getString(R.string.onboarding_title_4),
                 message = getString(R.string.onboarding_message_4),
-                imageRes = R.drawable.ic_water_optimizer,
+                imageRes = R.drawable.ic_calculator,
                 isPremiumSlide = true
             )
         )
