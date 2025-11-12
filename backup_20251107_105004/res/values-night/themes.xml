@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.CafeComAgua" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/marrom_avermelhado_principal</item>
+        <item name="colorOnPrimary">@color/creme_texto</item>
+
+        <item name="android:colorBackground">@color/night_gradient_end</item>
+        <item name="mainLayoutBackground">@drawable/background_gradient_night</item>
+        <item name="colorOnBackground">@color/creme_texto</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+
+        <item name="colorSurfaceContainer">@color/marrom_avermelhado_profundo</item>
+        <item name="colorOnSurface">@color/creme_texto</item>
+        <item name="colorSecondaryContainer">@color/dourado_tonal_background</item>
+        <item name="colorOnSecondaryContainer">@color/dourado_elegante</item>
+        <item name="iconTint">@color/dourado_elegante</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">@color/dourado_tonal_background</item>
+        <item name="android:textColor">@color/dourado_elegante</item>
+        <item name="iconTint">@color/dourado_elegante</item>
+        <item name="android:fontFamily">@font/roboto_mono_family</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+</resources>

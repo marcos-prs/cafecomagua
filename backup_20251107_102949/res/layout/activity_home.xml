@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_home_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/mainLayoutBackground"
+    tools:context=".ui.home.HomeActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/border_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/border_gold"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/buttonHelp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_help_outline"
+            android:contentDescription="@string/help_screen_title"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/dourado_elegante" />
+
+        <ImageButton
+            android:id="@+id/buttonToggleTheme"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/toggle_theme_description"
+            android:padding="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonHelp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/icon_tint_selector"
+            tools:src="@drawable/ic_moon_night" /> <androidx.constraintlayout.widget.Group
+        android:id="@+id/content_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="imageViewLogo,textViewWelcomeTitle,textViewWelcomeSubtitle,buttonNewEvaluation,buttonViewHistory" />
+
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="117dp"
+            android:layout_height="105dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_launcher_icon"
+            app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:contentDescription="@string/logo_do_aplicativo"/>
+
+        <TextView
+            android:id="@+id/textViewWelcomeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_welcome"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.App.Title"
+            android:textSize="32sp"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeSubtitle"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewWelcomeSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/subtitle_welcome"
+            android:textAppearance="@style/TextAppearance.App.Body"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonNewEvaluation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeTitle" />
+
+        <Button
+            android:id="@+id/buttonNewEvaluation"
+            style="@style/Widget.App.Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_testar_nova_agua"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeSubtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonViewHistory"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginTop="48dp"
+            app:layout_constraintWidth_max="320dp"
+            tools:backgroundTint="@color/dourado_elegante"/>
+
+        <Button
+            android:id="@+id/buttonViewHistory"
+            style="@style/Widget.App.Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/button_historico"
+            app:layout_constraintBottom_toTopOf="@+id/ad_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonNewEvaluation"
+            app:layout_constraintWidth_max="320dp"
+            tools:backgroundTint="@color/dourado_elegante"/>
+
+        <FrameLayout
+            android:id="@+id/ad_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

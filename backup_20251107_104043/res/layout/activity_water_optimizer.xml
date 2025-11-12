@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/mainLayoutBackground"
+    tools:context=".ui.wateroptimizer.WaterOptimizerActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/water_optimizer_title"
+            app:titleTextColor="?attr/colorOnBackground" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Card de Comparação -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardComparison"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/water_comparison_title"
+                        android:textAppearance="@style/TextAppearance.App.Title"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Tabela de Comparação -->
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="1,2">
+
+                        <!-- Cabeçalho -->
+                        <TableRow
+                            android:layout_marginBottom="8dp">
+                            <TextView
+                                android:text="@string/parameter"
+                                android:textStyle="bold"
+                                android:textColor="@color/dourado_elegante"
+                                android:padding="8dp" />
+                            <TextView
+                                android:text="@string/current_water"
+                                android:textStyle="bold"
+                                android:textColor="@color/dourado_elegante"
+                                android:padding="8dp"
+                                android:gravity="center" />
+                            <TextView
+                                android:text="@string/ideal_water"
+                                android:textStyle="bold"
+                                android:textColor="@color/dourado_elegante"
+                                android:padding="8dp"
+                                android:gravity="center" />
+                        </TableRow>
+
+                        <!-- Cálcio -->
+                        <TableRow>
+                            <TextView
+                                android:text="@string/label_calcio"
+                                android:padding="8dp" />
+                            <TextView
+                                android:id="@+id/textCurrentCalcium"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="17 mg/L" />
+                            <TextView
+                                android:id="@+id/textIdealCalcium"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="51 mg/L" />
+                        </TableRow>
+
+                        <!-- Magnésio -->
+                        <TableRow>
+                            <TextView
+                                android:text="@string/label_magnesio"
+                                android:padding="8dp" />
+                            <TextView
+                                android:id="@+id/textCurrentMagnesium"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="6 mg/L" />
+                            <TextView
+                                android:id="@+id/textIdealMagnesium"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="20 mg/L" />
+                        </TableRow>
+
+                        <!-- Sódio -->
+                        <TableRow>
+                            <TextView
+                                android:text="@string/label_sodio_unidade"
+                                android:padding="8dp" />
+                            <TextView
+                                android:id="@+id/textCurrentSodium"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="8 mg/L" />
+                            <TextView
+                                android:id="@+id/textIdealSodium"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="10 mg/L" />
+                        </TableRow>
+
+                        <!-- Bicarbonato -->
+                        <TableRow>
+                            <TextView
+                                android:text="@string/label_bicarbonato"
+                                android:padding="8dp" />
+                            <TextView
+                                android:id="@+id/textCurrentBicarbonate"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="40 mg/L" />
+                            <TextView
+                                android:id="@+id/textIdealBicarbonate"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="40 mg/L" />
+                        </TableRow>
+
+                        <!-- Dureza -->
+                        <TableRow>
+                            <TextView
+                                android:text="@string/label_dureza_calculada"
+                                android:padding="8dp" />
+                            <TextView
+                                android:id="@+id/textCurrentHardness"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="68 mg/L" />
+                            <TextView
+                                android:id="@+id/textIdealHardness"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="68 mg/L" />
+                        </TableRow>
+
+                        <!-- Alcalinidade -->
+                        <TableRow>
+                            <TextView
+                                android:text="@string/label_alcalinidade_calculada"
+                                android:padding="8dp" />
+                            <TextView
+                                android:id="@+id/textCurrentAlkalinity"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="40 mg/L" />
+                            <TextView
+                                android:id="@+id/textIdealAlkalinity"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                tools:text="40 mg/L" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card de Score de Melhoria -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardScore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:layout_constraintTop_toBottomOf="@+id/cardComparison"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/improvement_potential"
+                        android:textAppearance="@style/TextAppearance.App.Body"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/textImprovementScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.App.Title"
+                        android:textSize="32sp"
+                        android:textColor="@color/dourado_elegante"
+                        tools:text="8.5/10" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Progress Indicator -->
+            <ProgressBar
+                android:id="@+id/progressCalculating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/cardScore"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                tools:visibility="visible" />
+
+            <!-- Título das Recomendações -->
+            <TextView
+                android:id="@+id/textRecommendationsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/drop_recommendations_title"
+                android:textAppearance="@style/TextAppearance.App.Title"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/cardScore"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- RecyclerView com Recomendações -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRecommendations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/textRecommendationsTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:listitem="@layout/item_drop_recommendation"
+                tools:itemCount="3"
+                tools:visibility="visible" />
+
+            <!-- Avisos -->
+            <TextView
+                android:id="@+id/textWarnings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/background_box_not_recommended"
+                android:padding="12dp"
+                android:textColor="?attr/colorOnBackground"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerRecommendations"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                tools:text="• Atenção: Valores muito elevados de cálcio\n• pH fora da faixa ideal"
+                tools:visibility="visible" />
+
+            <!-- Botões de Ação -->
+            <LinearLayout
+                android:id="@+id/layoutActions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/textWarnings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp">
+
+                <Button
+                    android:id="@+id/buttonSaveRecipe"
+                    style="@style/Widget.App.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_save_recipe"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/buttonShareRecipe"
+                    style="@style/Widget.App.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_share_recipe"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/buttonViewGuide"
+                    style="@style/Widget.App.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_view_guide" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

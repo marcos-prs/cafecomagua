@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AÇÃO: Adicionada a borda (stroke) e ajustado o padding -->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:strokeColor="@color/dourado_elegante"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewDataHora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data/Hora: DD/MM/AAAA HH:mm"
+            android:textStyle="italic"
+            android:textAppearance="@style/TextAppearance.App.Body"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/textViewAgua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Água: Nome da Água"
+            android:textAppearance="@style/TextAppearance.App.Title"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/textViewFonte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Fonte: Origem da Água"
+            android:textAppearance="@style/TextAppearance.App.Body"/>
+
+        <TextView
+            android:id="@+id/textViewPontuacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pontuação: 0.0"
+            android:textAppearance="@style/TextAppearance.App.Body"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textViewQualidadeGeral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Qualidade: Aceitável"
+            android:textAppearance="@style/TextAppearance.App.Body"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
