@@ -14,8 +14,8 @@ android {
         applicationId = "com.marcos.cafecomagua"
         minSdk = 24
         targetSdk = 36
-        versionCode = 46
-        versionName = "1.0.10"
+        versionCode = 48
+        versionName = "1.0.12"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

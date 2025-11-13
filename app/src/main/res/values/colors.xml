@@ -60,4 +60,28 @@
     <color name="dark_acceptable_yellow">#FFA000</color>
     <color name="dark_not_recommended_red">#D32F2F</color>
 
+    <!-- Cores Principais -->
+    <color name="agua_azul">#1E88E5</color>
+    <color name="crema">#F5F5DC</color>
+
+    <!-- Cores Secundárias -->
+    <color name="verde_ideal">#4CAF50</color>
+    <color name="amarelo_bom">#FFC107</color>
+    <color name="laranja_regular">#FF9800</color>
+    <color name="vermelho_ruim">#F44336</color>
+
+    <!-- Cores do Sistema -->
+    <color name="background_light">#FFFFFF</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface_light">#FAFAFA</color>
+    <color name="surface_dark">#1E1E1E</color>
+
+    <!-- ✅ ADICIONADO: Cor Premium -->
+    <color name="premium_gold">#FFD700</color>
+    <color name="premium_gold_dark">#B8860B</color>
+
+    <!-- Transparências -->
+    <color name="overlay_dark">#80000000</color>
+    <color name="overlay_light">#4DFFFFFF</color>
+
 </resources>

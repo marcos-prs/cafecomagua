@@ -11,20 +11,19 @@ import kotlin.math.roundToInt
 
 /**
  * Calculadora de otimização de água para café
- * NOVA FILOSOFIA: Trabalha com faixas ideais, não números fixos
- * ✨ ATUALIZADO: Agora calcula scores antes/depois
+ * FILOSOFIA: Aceita QUALQUER input e calcula. Nunca crasha.
+ * O sistema de scores já lida com valores extremos naturalmente.
  */
 class WaterOptimizationCalculator {
 
     companion object {
         private const val MAX_DROPS_PER_MINERAL = 20
-        private const val WATER_VOLUME_ML = 1000.0 // ✨ ATUALIZADO: 1L ao invés de 450ml
+        private const val WATER_VOLUME_ML = 1000.0
     }
 
     /**
-     * Calcula quantas gotas de cada mineral são necessárias para otimizar a água
-     * NOVA FILOSOFIA: Busca atingir o CENTRO da faixa ideal, não um número fixo
-     * ✨ ATUALIZADO: Retorna scores e água otimizada
+     * Calcula otimização para QUALQUER perfil de água
+     * Aceita valores extremos, negativos, absurdos - e calcula mesmo assim
      */
     fun calculateOptimization(
         currentWater: WaterProfile,
@@ -32,28 +31,23 @@ class WaterOptimizationCalculator {
         availableSolutions: List<MineralSolution> = MineralSolution.getDefaultSolutions()
     ): WaterOptimizationResult {
 
-        // ✨ CORREÇÃO: Validação de Entrada
-        require(validateWaterProfile(currentWater)) {
-            "Invalid water profile: negative values or pH out of range"
-        }
-
         val recommendations = mutableListOf<DropRecommendation>()
         val warnings = mutableListOf<String>()
 
-        // Calcula dureza e alcalinidade atuais
+        // Calcula dureza e alcalinidade atuais (funciona com QUALQUER valor)
         val currentHardness = currentWater.calculateHardness()
         val currentAlkalinity = currentWater.calculateAlkalinity()
 
-        // Alvos baseados no CENTRO das faixas ideais (usando WaterEvaluator)
+        // Alvos baseados no CENTRO das faixas ideais
         val targetHardness = (WaterEvaluator.HARDNESS_IDEAL_RANGE.start + WaterEvaluator.HARDNESS_IDEAL_RANGE.endInclusive) / 2
         val targetAlkalinity = (WaterEvaluator.ALKALINITY_IDEAL_RANGE.start + WaterEvaluator.ALKALINITY_IDEAL_RANGE.endInclusive) / 2
         val targetSodium = (WaterEvaluator.SODIUM_IDEAL_RANGE.start + WaterEvaluator.SODIUM_IDEAL_RANGE.endInclusive) / 2
 
-        // ✨ CORREÇÃO: Adicionar logs estruturados
         Log.d("WaterOptimization", """
             Input: 
             - Ca: ${currentWater.calcium}
             - Mg: ${currentWater.magnesium}
+            - pH: ${currentWater.ph}
             - Current Hardness: $currentHardness
             - Target Hardness: $targetHardness
         """.trimIndent())
@@ -68,7 +62,6 @@ class WaterOptimizationCalculator {
             when (solution.elementType) {
                 MineralSolution.ElementType.CALCIUM -> {
                     if (hardnessDiff > 0) {
-                        // 70% da dureza vem do cálcio
                         val calciumTarget = (hardnessDiff * 0.70) / 2.497
                         val recommendation = calculateDropsForHardness(
                             solution = solution,
@@ -80,7 +73,6 @@ class WaterOptimizationCalculator {
                 }
                 MineralSolution.ElementType.MAGNESIUM -> {
                     if (hardnessDiff > 0) {
-                        // 30% da dureza vem do magnésio
                         val magnesiumTarget = (hardnessDiff * 0.30) / 4.118
                         val recommendation = calculateDropsForHardness(
                             solution = solution,
@@ -102,7 +94,6 @@ class WaterOptimizationCalculator {
                 }
                 MineralSolution.ElementType.POTASSIUM -> {
                     if (alkalinityDiff > 0) {
-                        // Converte alcalinidade → bicarbonato
                         val bicarbonateTarget = alkalinityDiff / 0.820
                         val recommendation = calculateDropsForBicarbonate(
                             solution = solution,
@@ -123,7 +114,7 @@ class WaterOptimizationCalculator {
         val finalHardness = achievableProfile.calculateHardness()
         val finalAlkalinity = achievableProfile.calculateAlkalinity()
 
-        // ✨ NOVO: Calcula scores antes e depois
+        // Calcula scores (funciona com QUALQUER valor - dará nota baixa se for ruim)
         val originalScore = WaterEvaluator.calculateScore(
             alkalinity = currentAlkalinity,
             hardness = currentHardness,
@@ -138,7 +129,7 @@ class WaterOptimizationCalculator {
             tds = achievableProfile.tds
         ).totalPoints
 
-        // Gera avisos baseados em FAIXAS (usando WaterEvaluator)
+        // Gera avisos baseados em faixas
         if (WaterEvaluator.isInIdealRange("hardness", currentHardness)) {
             warnings.add("✓ Dureza já está na faixa ideal!")
         } else if (WaterEvaluator.isInIdealRange("hardness", finalHardness)) {
@@ -158,7 +149,6 @@ class WaterOptimizationCalculator {
         // Calcula score de melhoria
         val improvementScore = calculateImprovementScore(currentWater, achievableProfile, targetWater)
 
-        // ✨ CORREÇÃO: Adicionar logs estruturados (antes do return)
         val result = WaterOptimizationResult(
             currentProfile = currentWater,
             targetProfile = targetWater,
@@ -166,7 +156,6 @@ class WaterOptimizationCalculator {
             achievableProfile = achievableProfile,
             improvementScore = improvementScore,
             warnings = warnings,
-            // ✨ NOVO: Adiciona scores
             originalScore = originalScore,
             optimizedScore = optimizedScore
         )
@@ -175,14 +164,13 @@ class WaterOptimizationCalculator {
             Output:
             - Recommendations: ${recommendations.size}
             - Improvement Score: $improvementScore
+            - Original Score: $originalScore
+            - Optimized Score: $optimizedScore
         """.trimIndent())
 
         return result
     }
 
-    /**
-     * Calcula gotas para atingir dureza ideal (considera conversão Ca/Mg → Dureza)
-     */
     private fun calculateDropsForHardness(
         solution: MineralSolution,
         targetIncrease: Double,
@@ -194,7 +182,6 @@ class WaterOptimizationCalculator {
         val ppmAdded = dropsNeeded * solution.ppmPerDrop
         val finalPpm = currentValue + ppmAdded
 
-        // Verifica se a dureza ficará na faixa ideal
         val isOptimal = when (solution.elementType) {
             MineralSolution.ElementType.CALCIUM ->
                 WaterEvaluator.isInIdealRange("hardness", finalPpm * 2.497)
@@ -212,9 +199,6 @@ class WaterOptimizationCalculator {
         )
     }
 
-    /**
-     * Calcula quantas gotas são necessárias para atingir um aumento alvo
-     */
     private fun calculateDrops(
         solution: MineralSolution,
         targetIncrease: Double,
@@ -245,9 +229,6 @@ class WaterOptimizationCalculator {
         )
     }
 
-    /**
-     * Calcula gotas para ajustar bicarbonato via KHCO3 ou NaHCO3
-     */
     private fun calculateDropsForBicarbonate(
         solution: MineralSolution,
         targetIncrease: Double,
@@ -272,9 +253,6 @@ class WaterOptimizationCalculator {
         )
     }
 
-    /**
-     * Calcula o perfil de água alcançável com as recomendações
-     */
     private fun calculateAchievableProfile(
         current: WaterProfile,
         recommendations: List<DropRecommendation>
@@ -305,24 +283,14 @@ class WaterOptimizationCalculator {
     }
 
     /**
-     * ✨ CORREÇÃO: Documentação Inline
-     *
-     * Calcula o score de melhoria comparando água antes e depois
-     *
-     * @param before Perfil de água original
-     * @param after Perfil de água após otimização
-     * @param target Perfil de água ideal (não usado, mantido para compatibilidade)
-     * @return Score de 0-100 indicando % de melhoria alcançada
-     *
-     * @note Retorna 0.0 se a água já está no ideal (beforeScore >= 100)
-     * @note A divisão por possibleImprovement é segura pois há checagem de <= 0
+     * Calcula score de melhoria
+     * Funciona com QUALQUER valor - se água for absurda, score será baixo
      */
     private fun calculateImprovementScore(
         before: WaterProfile,
         after: WaterProfile,
         target: WaterProfile
     ): Double {
-        // Calcula scores usando a lógica centralizada
         val beforeScore = WaterEvaluator.calculateScore(
             alkalinity = before.calculateAlkalinity(),
             hardness = before.calculateHardness(),
@@ -337,36 +305,18 @@ class WaterOptimizationCalculator {
             tds = after.tds
         ).totalPoints
 
-        val targetScore = 100.0 // Pontuação máxima ideal
-
-        // ✨ CORREÇÃO: BUG #1 - Divisão por Zero
+        val targetScore = 100.0
         val possibleImprovement = targetScore - beforeScore
-        if (possibleImprovement <= 0) {
-            return 0.0  // Água já está no ideal ou acima
+
+        // ✅ Única checagem necessária: evita divisão por zero
+        if (possibleImprovement <= 0.0) {
+            return 0.0
         }
 
-        // Calcula quanto da distância até o ideal foi percorrida
         val actualImprovement = (afterScore - beforeScore).coerceAtLeast(0.0)
-
-        // Retorna porcentagem de melhoria alcançada (0-100)
         return ((actualImprovement / possibleImprovement) * 100.0).coerceIn(0.0, 100.0)
     }
 
-    /**
-     * ✨ CORREÇÃO: Função de Validação de Entrada
-     */
-    private fun validateWaterProfile(profile: WaterProfile): Boolean {
-        return profile.calcium >= 0 &&
-                profile.magnesium >= 0 &&
-                profile.sodium >= 0 &&
-                profile.bicarbonate >= 0 &&
-                profile.ph in 5.0..9.0 &&
-                profile.tds >= 0
-    }
-
-    /**
-     * Gera instruções de preparação das soluções
-     */
     fun generateSolutionPreparationInstructions(
         solution: MineralSolution,
         dropsPerMl: Int = 20

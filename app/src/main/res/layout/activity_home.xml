@@ -21,11 +21,11 @@
 
         <ImageView
             android:id="@+id/buttonHelp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_help_outline"
             android:contentDescription="@string/help_screen_title"
-            android:padding="12dp"
+            android:padding="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
@@ -33,70 +33,90 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/dourado_elegante" />
 
-
-
-        <ImageButton
-            android:id="@+id/buttonToggleTheme"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/toggle_theme_description"
-            android:padding="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/buttonHelp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_moon_night"
-            app:tint="@color/icon_tint_selector" />
-
         <ImageButton
             android:id="@+id/buttonSettings"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Configurações"
-            android:padding="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/buttonToggleTheme"
-            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/settings_title"
+            android:padding="8dp"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_settings"
-            app:tint="@color/icon_tint_selector" />
-
-        <ImageView
-            android:id="@+id/image_premium_badge"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_premium"
-            android:padding="12dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/buttonToggleTheme"
+            app:layout_constraintEnd_toStartOf="@+id/buttonHelp"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible"
-            app:tint="@null" />
+            app:tint="@color/icon_tint_selector" />
 
         <ImageView
             android:id="@+id/imageViewLogo"
             android:layout_width="117dp"
             android:layout_height="105dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/logo_do_aplicativo"
             android:src="@drawable/ic_launcher_icon"
-            app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeTitle"
+            app:layout_constraintBottom_toTopOf="@+id/premium_badge_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:contentDescription="@string/logo_do_aplicativo"/>
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/premium_badge_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/dourado_tonal_background"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+            app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeTitle"
+
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_premium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/premium_badge_text"
+                    android:textColor="@color/creme_texto"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/textViewWelcomeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_welcome"
+            android:layout_marginTop="12dp"
             android:gravity="center_horizontal"
+            android:text="@string/title_welcome"
             android:textAppearance="@style/TextAppearance.App.Title"
             android:textSize="32sp"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/textViewWelcomeSubtitle"
-            android:layout_marginTop="16dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/premium_badge_container" />
 
         <TextView
             android:id="@+id/textViewWelcomeSubtitle"
@@ -119,16 +139,16 @@
             style="@style/Widget.App.Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/button_testar_nova_agua"
-            app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeSubtitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonWaterOptimizer"
             android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
             android:layout_marginTop="48dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/button_testar_nova_agua"
+            app:layout_constraintBottom_toTopOf="@+id/buttonWaterOptimizer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewWelcomeSubtitle"
             app:layout_constraintWidth_max="320dp"
-            tools:backgroundTint="@color/dourado_elegante"/>
+            tools:backgroundTint="@color/dourado_elegante" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonWaterOptimizer"
@@ -144,7 +164,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonNewEvaluation"
-            app:layout_constraintWidth_max="320dp"/>
+            app:layout_constraintWidth_max="320dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSavedRecipes"
@@ -154,7 +174,7 @@
             android:layout_marginStart="36dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="36dp"
-            android:text="Minhas Receitas"
+            android:text="@string/saved_recipes_title"
             android:visibility="gone"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toTopOf="@+id/buttonViewHistory"
@@ -163,6 +183,7 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonWaterOptimizer"
             app:layout_constraintWidth_max="320dp"
             tools:visibility="visible" />
+
         <Button
             android:id="@+id/buttonViewHistory"
             style="@style/Widget.App.Button.Primary"
@@ -177,15 +198,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonSavedRecipes"
             app:layout_constraintWidth_max="320dp"
-            tools:backgroundTint="@color/dourado_elegante"/>
+            tools:backgroundTint="@color/dourado_elegante" />
 
         <FrameLayout
             android:id="@+id/ad_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -195,10 +216,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

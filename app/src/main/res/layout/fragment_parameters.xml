@@ -65,6 +65,7 @@
                 android:paddingEnd="24dp"
                 android:paddingTop="16dp">
 
+                <!-- ✅ CAMPO 1: SÓDIO -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutSodio"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -81,7 +82,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
-                        android:imeOptions="actionNext"/>
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/editTextPH"
+                        android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -95,6 +98,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layoutSodio"
                     app:layout_constraintEnd_toEndOf="@id/layoutSodio"/>
 
+                <!-- ✅ CAMPO 2: PH -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutPH"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -112,7 +116,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
-                        android:imeOptions="actionNext"/>
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/editTextResiduoEvaporacao"
+                        android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -125,6 +131,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layoutPH"
                     app:layout_constraintEnd_toEndOf="@id/layoutPH"/>
 
+                <!-- ✅ CAMPO 3: RESÍDUO DE EVAPORAÇÃO -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutResiduo"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -142,7 +149,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
-                        android:imeOptions="actionDone"/>
+                        android:imeOptions="actionDone"
+                        android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -155,6 +163,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layoutResiduo"
                     app:layout_constraintEnd_toEndOf="@id/layoutResiduo"/>
 
+                <!-- ✅ CAMPO CALCULADO: DUREZA (READ-ONLY) -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutDureza"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -172,6 +181,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="70.5 mg/L"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -186,6 +197,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layoutDureza"
                     app:layout_constraintEnd_toEndOf="@id/layoutDureza"/>
 
+                <!-- ✅ CAMPO CALCULADO: ALCALINIDADE (READ-ONLY) -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutAlcalinidade"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -203,6 +215,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="40.0 mg/L"/>
                 </com.google.android.material.textfield.TextInputLayout>

@@ -19,12 +19,13 @@ import com.marcos.cafecomagua.databinding.FragmentParametersBinding
 import java.text.DecimalFormat
 import com.marcos.cafecomagua.app.logic.WaterEvaluator
 import com.marcos.cafecomagua.R
-import com.marcos.cafecomagua.app.model.EvaluationStatus // ✅ ADICIONADO ESTE IMPORT
+import com.marcos.cafecomagua.app.model.EvaluationStatus
 import com.marcos.cafecomagua.app.model.WaterProfile
 
 /**
  * Fragmento para a segunda tela do fluxo de avaliação (parâmetros adicionais).
  * ✅ REFATORADO: Botão de navegação removido.
+ * ✅ CORRIGIDO: Perda de foco nos campos resolvida
  */
 class ParametersFragment : Fragment() {
 
@@ -36,6 +37,9 @@ class ParametersFragment : Fragment() {
     private var adView: AdView? = null
     private lateinit var adContainerView: FrameLayout
     private val df = DecimalFormat("#.##")
+
+    // ✅ NOVO: Flag para evitar loops infinitos de atualização
+    private var isUpdatingFromViewModel = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,62 +54,103 @@ class ParametersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAdBanner()
-        setupListeners()
-        bindViewModelToViews()
-        calculateDisplayValues()
         setupToolbar()
+        bindViewModelToViews()
+        observeViewModelChanges() // ✅ NOVO: Observadores separados
+        calculateDisplayValues() // Cálculo inicial
     }
+
     private fun setupToolbar() {
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
         (activity as? AppCompatActivity)?.supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setDisplayShowTitleEnabled(false) // O título já está no XML
+            setDisplayShowTitleEnabled(false)
         }
         binding.toolbar.setNavigationOnClickListener {
-            activity?.finish() // Fecha a EvaluationHostActivity
+            activity?.finish()
         }
-    }
-
-    private fun bindViewModelToViews() {
-        // --- 1. Atualiza a UI se o ViewModel já tiver dados ---
-        sharedViewModel.sodio.value?.takeIf { it > 0 }?.let { binding.editTextSodio.setText(it.toString()) }
-        sharedViewModel.ph.value?.takeIf { it > 0 }?.let { binding.editTextPH.setText(it.toString()) }
-        sharedViewModel.residuoEvaporacao.value?.takeIf { it > 0 }?.let { binding.editTextResiduoEvaporacao.setText(it.toString()) }
-
-        // --- 2. Atualiza o ViewModel quando a UI muda ---
-        binding.editTextSodio.addTextChangedListener {
-            sharedViewModel.sodio.value = it.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
-            calculateDisplayValues() // ✅ Chama o cálculo em tempo real
-        }
-        binding.editTextPH.addTextChangedListener {
-            sharedViewModel.ph.value = it.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
-            calculateDisplayValues() // ✅ Chama o cálculo em tempo real
-        }
-        binding.editTextResiduoEvaporacao.addTextChangedListener {
-            sharedViewModel.residuoEvaporacao.value = it.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
-            calculateDisplayValues() // ✅ Chama o cálculo em tempo real
-        }
-
-        // --- 3. Observa mudanças nos valores de Dureza/Alcalinidade (que vêm do fragmento anterior) ---
-        sharedViewModel.calcio.observe(viewLifecycleOwner) { calculateDisplayValues() }
-        sharedViewModel.magnesio.observe(viewLifecycleOwner) { calculateDisplayValues() }
-        sharedViewModel.bicarbonato.observe(viewLifecycleOwner) { calculateDisplayValues() }
     }
 
     /**
-     * ✅ ATUALIZADO
-     * Liga os botões "fantasmas"
+     * ✅ CORRIGIDO: Separado a inicialização dos listeners
+     * Agora não chama calculateDisplayValues() dentro do listener
      */
-    private fun setupListeners() {
-        // A navegação (e o cálculo) agora é feita pela EvaluationHostActivity
+    private fun bindViewModelToViews() {
+        // --- 1. Atualiza a UI se o ViewModel já tiver dados ---
+        isUpdatingFromViewModel = true
+        sharedViewModel.sodio.value?.takeIf { it > 0 }?.let {
+            binding.editTextSodio.setText(it.toString())
+        }
+        sharedViewModel.ph.value?.takeIf { it > 0 }?.let {
+            binding.editTextPH.setText(it.toString())
+        }
+        sharedViewModel.residuoEvaporacao.value?.takeIf { it > 0 }?.let {
+            binding.editTextResiduoEvaporacao.setText(it.toString())
+        }
+        isUpdatingFromViewModel = false
+
+        // --- 2. Atualiza o ViewModel quando a UI muda ---
+        // ✅ CORRIGIDO: Não chama calculateDisplayValues() imediatamente
+        // Apenas atualiza o ViewModel
+        binding.editTextSodio.addTextChangedListener { editable ->
+            if (!isUpdatingFromViewModel) {
+                val value = editable.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
+                sharedViewModel.sodio.value = value
+                // calculateDisplayValues() será chamado pelo observer
+            }
+        }
+
+        binding.editTextPH.addTextChangedListener { editable ->
+            if (!isUpdatingFromViewModel) {
+                val value = editable.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
+                sharedViewModel.ph.value = value
+                // calculateDisplayValues() será chamado pelo observer
+            }
+        }
+
+        binding.editTextResiduoEvaporacao.addTextChangedListener { editable ->
+            if (!isUpdatingFromViewModel) {
+                val value = editable.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
+                sharedViewModel.residuoEvaporacao.value = value
+                // calculateDisplayValues() será chamado pelo observer
+            }
+        }
+
+        // ✅ NOVO: Botão de resultados
         binding.buttonResultados.setOnClickListener {
             (activity as? EvaluationHostActivity)?.navigateToNextPage()
         }
     }
 
     /**
-     * ✅ ATUALIZADO
-     * Agora exibe o feedback visual em tempo real
+     * ✅ NOVO: Observadores separados que chamam calculateDisplayValues()
+     * Isso evita chamadas múltiplas e perda de foco
+     */
+    private fun observeViewModelChanges() {
+        // Observa mudanças nos valores e recalcula
+        sharedViewModel.calcio.observe(viewLifecycleOwner) {
+            calculateDisplayValues()
+        }
+        sharedViewModel.magnesio.observe(viewLifecycleOwner) {
+            calculateDisplayValues()
+        }
+        sharedViewModel.bicarbonato.observe(viewLifecycleOwner) {
+            calculateDisplayValues()
+        }
+        sharedViewModel.sodio.observe(viewLifecycleOwner) {
+            calculateDisplayValues()
+        }
+        sharedViewModel.ph.observe(viewLifecycleOwner) {
+            calculateDisplayValues()
+        }
+        sharedViewModel.residuoEvaporacao.observe(viewLifecycleOwner) {
+            calculateDisplayValues()
+        }
+    }
+
+    /**
+     * ✅ OTIMIZADO
+     * Agora é chamado apenas pelos observers, não pelos text listeners
      */
     private fun calculateDisplayValues() {
         val calcio = sharedViewModel.calcio.value ?: 0.0
@@ -115,7 +160,7 @@ class ParametersFragment : Fragment() {
         val ph = sharedViewModel.ph.value ?: 0.0
         val residuo = sharedViewModel.residuoEvaporacao.value ?: 0.0
 
-        // ✅ REFATORADO: Cálculos usam a fonte única (WaterProfile)
+        // Cálculos usando a fonte única (WaterProfile)
         val profile = WaterProfile(
             calcium = calcio,
             magnesium = magnesio,
@@ -124,17 +169,29 @@ class ParametersFragment : Fragment() {
         val durezaCalculada = profile.calculateHardness()
         val alcalinidadeCalculada = profile.calculateAlkalinity()
 
-        // Exibe valores calculados
+        // ✅ CORRIGIDO: Usar a flag para evitar loop
+        isUpdatingFromViewModel = true
+
+        // Exibe valores calculados (usando setText() porque são EditText)
         binding.textViewDurezaCalculada.setText(df.format(durezaCalculada))
         binding.textViewAlcalinidadeCalculada.setText(df.format(alcalinidadeCalculada))
 
-        // ✅ APLICAR AVALIAÇÕES EM TEMPO REAL
-        // Chama as NOVAS funções do ViewModel que retornam Enums
-        val durezaStatus = sharedViewModel.mapPointsToStatus(WaterEvaluator.getHardnessPoints(durezaCalculada))
-        val alcalinidadeStatus = sharedViewModel.mapPointsToStatus(WaterEvaluator.getAlkalinityPoints(alcalinidadeCalculada))
-        val sodioStatus = sharedViewModel.mapPointsToStatus(WaterEvaluator.getSodiumPoints(sodio))
+        isUpdatingFromViewModel = false
+
+        // Aplicar avaliações em tempo real
+        val durezaStatus = sharedViewModel.mapPointsToStatus(
+            WaterEvaluator.getHardnessPoints(durezaCalculada)
+        )
+        val alcalinidadeStatus = sharedViewModel.mapPointsToStatus(
+            WaterEvaluator.getAlkalinityPoints(alcalinidadeCalculada)
+        )
+        val sodioStatus = sharedViewModel.mapPointsToStatus(
+            WaterEvaluator.getSodiumPoints(sodio)
+        )
         val phStatus = sharedViewModel.getPhEvaluationStatus(ph)
-        val residuoStatus = sharedViewModel.mapPointsToStatus(WaterEvaluator.getTdsPoints(residuo))
+        val residuoStatus = sharedViewModel.mapPointsToStatus(
+            WaterEvaluator.getTdsPoints(residuo)
+        )
 
         // Aplica o feedback visual
         updateValidationView(binding.textViewDurezaAvaliacao, durezaStatus)
@@ -149,20 +206,15 @@ class ParametersFragment : Fragment() {
      * Recebe um 'EvaluationStatus' (Enum) e define o texto e a cor
      */
     private fun updateValidationView(textView: TextView, status: EvaluationStatus) {
-
-        // 1. O TextView agora é sempre visível, não vamos mais escondê-lo.
         textView.visibility = View.VISIBLE
 
-        // 2. O 'when' do texto agora lida com todos os 4 casos do Enum
         textView.text = when(status) {
             EvaluationStatus.IDEAL -> getString(R.string.avaliacao_ideal)
             EvaluationStatus.ACEITAVEL -> getString(R.string.avaliacao_aceitavel)
             EvaluationStatus.NAO_RECOMENDADO -> getString(R.string.avaliacao_nao_recomendado)
-            // ✅ Caso NA adicionado (presumindo que você tenha esta string):
             EvaluationStatus.NA -> getString(R.string.avaliacao_nao_avaliado)
         }
 
-        // 3. O 'when' da cor agora também lida com o NA (a cor cinza que você mencionou)
         val colorRes = when (status) {
             EvaluationStatus.IDEAL -> R.color.ideal_green
             EvaluationStatus.ACEITAVEL -> R.color.acceptable_yellow

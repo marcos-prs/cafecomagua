@@ -1,7 +1,4 @@
 <resources>
-    <!-- =================================================================================== -->
-    <!-- Strings Globais e Comuns -->
-    <!-- =================================================================================== -->
     <string name="app_name">Café com Água</string>
     <string name="button_ok">OK</string>
     <string name="button_cancelar">Cancelar</string>
@@ -12,20 +9,11 @@
     <string name="preco_indisponivel" translatable="false">…</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Status Padrão da Avaliação -->
-    <!-- =================================================================================== -->
     <string name="avaliacao_ideal">Ideal</string>
     <string name="avaliacao_aceitavel">Aceitável</string>
     <string name="avaliacao_nao_recomendado">Não Recomendado</string>
     <string name="avaliacao_nao_avaliado">Não Avaliado</string>
-    <string name="avaliacao_nao_recomendado_abrev">Não Rec.</string> <!-- Usado em ResultsFragment -->
-
-
-    <!-- =================================================================================== -->
-    <!-- Mensagens de Erro e Toasts -->
-    <!-- =================================================================================== -->
-    <string name="error_marca_empty">A marca não pode estar vazia!</string>
+    <string name="avaliacao_nao_recomendado_abrev">Não Rec.</string> <string name="error_marca_empty">A marca não pode estar vazia!</string>
     <string name="error_fonte_empty">A fonte não pode estar vazia!</string>
     <string name="error_bicarbonato_empty">O Bicarbonato não pode estar vazio!</string>
     <string name="error_calcio_empty">O Cálcio não pode estar vazio!</string>
@@ -38,9 +26,6 @@
     <string name="warning_agua_ja_avaliada">Aviso: Água já avaliada no histórico.</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Descrições de Conteúdo (Acessibilidade) -->
-    <!-- =================================================================================== -->
     <string name="logo_do_aplicativo">Logo do aplicativo Cafe com Água</string>
     <string name="toggle_theme_description">Alternar tema</string>
     <string name="onboarding_icon">Ícone do slide</string>
@@ -52,24 +37,16 @@
     <string name="info">Informações</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Home (HomeActivity) -->
-    <!-- =================================================================================== -->
     <string name="title_welcome">CAFÉ com ÁGUA</string>
     <string name="subtitle_welcome">Avaliador de Qualidade da Água para Preparo de Café</string>
     <string name="button_testar_nova_agua">Testar Nova Água</string>
     <string name="button_historico">Histórico</string>
     <string name="home_water_optimizer">Otimizador de Água</string>
-    <string name="error_no_saved_water_for_optimization">Você precisa salvar uma avaliação no Histórico primeiro.</string>
     <string name="title_optimize_saved_water">Otimizar Água Salva</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Fluxo de Avaliação (EvaluationHostActivity, WaterInputFragment, ParametersFragment) -->
-    <!-- =================================================================================== -->
     <string name="button_avancar">Avançar</string>
     <string name="button_voltar">Voltar</string>
-    <!-- WaterInputFragment -->
     <string name="title_dados_agua">Dados da Água</string>
     <string name="label_marca">Marca da Água</string>
     <string name="hint_marca">Ex: Água Mineral XYZ</string>
@@ -81,7 +58,6 @@
     <string name="hint_calcio">Ex: 8.2</string>
     <string name="label_magnesio">Magnésio (mg/L)</string>
     <string name="hint_magnesio">Ex: 3.5</string>
-    <!-- ParametersFragment -->
     <string name="title_parametros_avaliacao">PARÂMETROS</string>
     <string name="label_sodio_unidade">Sódio (mg/L)</string>
     <string name="hint_sodio">Ex: 10.0</string>
@@ -94,9 +70,6 @@
     <string name="button_ver_resultados">Ver Resultados</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Resultados (ResultsFragment) -->
-    <!-- =================================================================================== -->
     <string name="title_resultados">RESULTADOS</string>
     <string name="pontuacao_total_format">Pontuação: %.2f</string>
     <string name="label_qualidade_geral">Qualidade: %1$s</string>
@@ -111,22 +84,15 @@
     <string name="button_ver_historico">Ver Histórico</string>
     <string name="results_cta_title">Leve seu café ao nível ideal</string>
     <string name="results_cta_message">Sua água foi classificada como \"%1$s\". Quer saber exatamente como corrigi-la? O Otimizador Premium calcula a receita para você.</string>
-    <!-- ✅ STRING DO BOTÃO RE-ADICIONADA -->
     <string name="results_cta_button">Ver Otimizador Premium</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Histórico (HistoryActivity) -->
-    <!-- =================================================================================== -->
     <string name="title_historico">HISTÓRICO DE AVALIAÇÕES</string>
     <string name="label_historico_fonte">Fonte: %1$s</string>
     <string name="label_historico_pontuacao">Pontuação: %1$s</string>
     <string name="label_historico_qualidade">Qualidade: %1$s</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Ajuda (HelpActivity) -->
-    <!-- =================================================================================== -->
     <string name="help_screen_title">Ajuda e Informações</string>
     <string name="help_topic_1_param_qual_title">Parâmetros de Qualidade</string>
     <string name="help_topic_1_param_qual_content" formatted="false"><![CDATA[
@@ -183,45 +149,8 @@
     <b>• Qualidade da Imagem:</b> Fatores como a <b>curvatura</b> da garrafa, <b>reflexos</b> de luz, <b>condensação</b> e <b>foco</b> da câmera podem degradar a qualidade da imagem e dificultar a leitura do texto.\n\n
     Por isso, a captura deve ser vista como uma <b>ferramenta de auxílio</b>. Sempre <b>verifique os valores</b> capturados antes de prosseguir com a avaliação para garantir a precisão dos resultados.
 ]]></string>
-    <string name="help_topic_calculator_title">Como funciona a Calculadora (PPM por Gota)</string>
-    <string name="help_topic_calculator_content" formatted="false"><![CDATA[
-<p>O <b>Otimizador de Água</b> (recurso Premium) calcula quantas gotas de cada mineral você precisa adicionar à sua água para atingir as faixas ideais de qualidade para café.</p>
-<br>
-<p><b>Como Funciona a Nova Filosofia</b></p>
-<p>Diferente de métodos antigos que buscavam um "número mágico", o otimizador trabalha com <b>faixas aceitáveis</b> baseadas no que realmente importa para o sabor:</p>
-<ul>
-    <li><b>Alcalinidade (30-50 ppm):</b> O fator mais importante. Controla o equilíbrio ácido da bebida.</li>
-    <li><b>Dureza Total (50-90 ppm):</b> Define o poder de extração da água. Vem do Cálcio e Magnésio.</li>
-    <li><b>Sódio (0-10 ppm) e TDS (100-180 ppm):</b> Monitorados, mas com peso menor no cálculo.</li>
-</ul>
-<br>
-<p><b>O Cálculo de Gotas</b></p>
-<p>O app busca atingir o <b>centro das faixas ideais</b>, não um valor fixo. Por exemplo:</p>
-<ul>
-    <li>Se sua água tem Dureza de 30 ppm, o app sugere gotas para chegar a ~70 ppm (centro de 50-90).</li>
-    <li>Se já está em 80 ppm, você verá a mensagem "✓ Dureza já está na faixa ideal!"</li>
-</ul>
-<br>
-<p><b>Concentração das Soluções (PPM por Gota)</b></p>
-<p>As receitas são baseadas em soluções minerais preparadas com água destilada. Valores de referência do app:</p>
-<ul>
-    <li><b>Cloreto de Cálcio (CaCl₂):</b> 1 gota ≈ 10 ppm de Ca²⁺</li>
-    <li><b>Cloreto de Magnésio (MgCl₂):</b> 1 gota ≈ 10 ppm de Mg²⁺</li>
-    <li><b>Bicarbonato de Sódio (NaHCO₃):</b> 1 gota ≈ 5.06 ppm de Na⁺</li>
-    <li><b>Bicarbonato de Potássio (KHCO₃):</b> 1 gota ≈ 5.0 ppm de K⁺</li>
-</ul>
-<br>
-<p><b>Exemplo Prático:</b> Se o app sugere "6 gotas de KHCO₃", ele está calculando que isso adicionará ~30 ppm de Potássio, o que elevará a Alcalinidade para dentro da faixa ideal (30-50 ppm).</p>
-<br>
-<p><b>Pontuação de Melhoria:</b> O score (0-100%) mostra quanto sua água melhorou em relação ao potencial máximo. Se o app mostra 75%, significa que você alcançou 75% da melhoria possível!</p>
-<br>
-<p>💡 <b>Dica:</b> Siga as instruções de preparo no app para garantir a concentração correta das suas soluções caseiras.</p>
-]]></string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Onboarding (OnboardingActivity) -->
-    <!-- =================================================================================== -->
     <string name="onboarding_title_1">Bem-vindo ao Café com Água</string>
     <string name="onboarding_message_1">Descubra a água mineral ideal para um café perfeito, baseado na ciência da extração.</string>
     <string name="onboarding_title_2">O que realmente importa?</string>
@@ -232,9 +161,6 @@
     <string name="onboarding_message_4">Use nossa calculadora premium para saber exatamente quantas gotas de minerais adicionar e transformar sua água na água ideal da SCA.</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Recurso: OCR (Scanner de Rótulo) -->
-    <!-- =================================================================================== -->
     <string name="scan_label_button">Tentar ler o rótulo</string>
     <string name="toast_permission_denied">Permissão da câmera negada. Não é possível ler o rótulo.</string>
     <string name="toast_no_image">Não foi possível obter a imagem.</string>
@@ -243,12 +169,9 @@
     <string name="toast_ocr_analyzing">Analisando rótulo…</string>
     <string name="toast_ocr_failure">Falha ao reconhecer o texto: %1$s</string>
     <string name="toast_ocr_success">Valores encontrados! Verifique se estão corretos.</string>
-    <string name="toast_ocr_no_params">Não foi possível identificar os parâmetros. Por favor, insira manualmente.</string>
+    <string name="toast_ocr_no_params">Não foi possível identificar os parâmetros. Por favor, insira manually.</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Otimizador de Água (WaterOptimizerActivity) -->
-    <!-- =================================================================================== -->
     <string name="water_optimizer_title">Otimizador de Água</string>
     <string name="water_comparison_title">Comparação de Água</string>
     <string name="parameter">Parâmetro</string>
@@ -267,40 +190,32 @@
     <string name="solution_preparation_title">Preparo da Solução</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Telas: Premium e Assinatura -->
-    <!-- =================================================================================== -->
-    <!-- Premium Bottom Sheet (Fragment) -->
-    <string name="premium_badge">PREMIUM</string>
     <string name="premium_bottom_sheet_title">Desbloqueie o Otimizador</string>
     <string name="premium_bottom_sheet_message">Transforme sua água. A Calculadora Premium mostra exatamente quantas gotas de minerais adicionar para atingir o perfil de água ideal para café. Teste por 7 dias.</string>
     <string name="premium_bottom_sheet_button">Testar o Otimizador</string>
 
-    <!-- Subscription Activity -->
     <string name="premium_title">Café com Água Premium</string>
     <string name="premium_subtitle">Resultados melhores, sem distrações.</string>
     <string name="benefits">Benefícios</string>
     <string name="benefit_ads_removal">Sem anúncios</string>
     <string name="benefit_water_optimizer">Otimizador de Água</string>
     <string name="benefit_unlimited_recipes">Salve receitas ilimitadas</string>
-    <string name="benefit_backup">Seus dados protegidos</string>
+    <string name="benefit_backup">Backup dos seus dados</string>
+    <string name="benefit_blend"> Calcule a mistura perfeita</string>
+    <string name="benefit_diy">DIY - Em breve</string>
+
     <string name="special_offer">Oferta Especial</string>
     <string name="monthly_plan">Assinatura Mensal</string>
     <string name="premium_status_active">Premium Ativo</string>
     <string name="subscribe_now">Assine agora</string>
-    <string name="restore_purchase">Restaurar compras</string>
     <string name="continue_to_result">Continuar para o resultado</string>
     <string name="legal_smallprint">Cancelamento a qualquer momento. Preço pode variar por região.</string>
 
-    <!-- Dialog Otimizador (Premium) -->
     <string name="premium_required_title">Recurso Premium</string>
     <string name="premium_required_message">O Otimizador de Água é um recurso exclusivo para assinantes premium. Assine agora para ter acesso!</string>
     <string name="button_subscribe">Assinar</string>
 
 
-    <!-- =================================================================================== -->
-    <!-- Tela: Receitas Salvas (SavedRecipesActivity) -->
-    <!-- =================================================================================== -->
     <string name="save_recipe_title">Salvar Receita</string>
     <string name="save_recipe_message">Dê um nome para esta receita de otimização:</string>
     <string name="recipe_name_hint">Ex: Minha Receita V60</string>
@@ -323,6 +238,222 @@
 
     <string name="recipe_notes_hint">Notas (opcional)</string>
     <string name="recipe_notes_helper">Ex: Água da torneira filtrada - perfil para V60</string>
+
+    //NOVAS STRINGS - REFATORAR AS ANTIGAS PARA DESFAZER DUPLICIDADE
+
+    <string name="premium_badge_text">Premium</string>
+
+    <string name="settings_title">Configurações</string>
+
+    <string name="settings_category_appearance">Aparência</string>
+    <string name="settings_category_data">Seus Dados</string>
+    <string name="settings_category_account">Conta</string>
+    <string name="settings_category_help">Ajuda e Suporte</string>
+
+    <string name="settings_theme_title">Tema Escuro</string>
+    <string name="settings_theme_subtitle">Alterne entre modo claro e escuro</string>
+
+    <string name="settings_backup_export">Exportar Backup</string>
+    <string name="settings_backup_export_description">Salve seus dados em arquivo JSON</string>
+    <string name="settings_backup_import">Restaurar Backup</string>
+    <string name="settings_backup_import_description">Importe dados salvos anteriormente</string>
+
+    <string name="settings_restore_purchase">Restaurar Compras</string>
+    <string name="settings_restore_purchases_description">Recupere sua assinatura Premium</string>
+
+    <string name="settings_help_description">Aprenda a usar todas as funcionalidades</string>
+
+    <string name="dialog_no_saved_water_title">Nenhuma Água Salva</string>
+    <string name="dialog_no_saved_water_message">Você precisa primeiro avaliar e salvar uma água para poder otimizá-la.</string>
+    <string name="button_evaluate_water">Avaliar Água</string>
+
+    <string name="dialog_restore_title">Restaurar Backup?</string>
+    <string name="dialog_restore_message">Restaurar um backup substituirá TODOS os históricos e receitas salvos atualmente. Esta ação não pode ser desfeita.</string>
+    <string name="button_restore">Restaurar</string>
+
+    <string name="toast_export_cancelled">Exportação cancelada</string>
+    <string name="toast_restore_cancelled">Restauração cancelada</string>
+    <string name="toast_backup_success">Backup salvo com sucesso!</string>
+    <string name="toast_backup_error">Erro ao salvar o backup: %s</string>
+    <string name="toast_restore_success">Restauração concluída com sucesso!</string>
+    <string name="toast_restore_error">Falha na restauração: %s</string>
+    <string name="toast_restore_purchases_pending">Lógica de restauração de compras pendente</string>
+
+    <string name="error_empty_backup">Arquivo de backup vazio ou inválido</string>
+    <string name="error_invalid_backup">Formato de backup inválido</string>
+
+    <string name="saved_recipes_title">Minhas Receitas</string>
+
+    <string name="help_topic_storage_title">Onde seus dados são salvos?</string>
+    <string name="help_topic_storage_content"><![CDATA[
+        <h3>Armazenamento Local</h3>
+        <p><b>Todos os seus dados ficam armazenados localmente no seu dispositivo</b>,
+        não em nuvem. Isso significa:</p>
+
+        <ul>
+            <li><b>Privacidade Total:</b> Suas avaliações e receitas nunca saem do seu celular</li>
+            <li><b>Funciona Offline:</b> Não precisa de internet para usar o app</li>
+            <li><b>Seus Dados, Seu Controle:</b> Você decide quando fazer backup ou compartilhar</li>
+        </ul>
+
+        <h3>⚠️ Importante</h3>
+        <p>Como os dados são locais:</p>
+        <ul>
+            <li>Se você desinstalar o app, <b>perderá todos os dados</b></li>
+            <li>Se trocar de celular, precisará <b>fazer backup manualmente</b></li>
+            <li>Recomendamos fazer backup regularmente em <b>Configurações</b></li>
+        </ul>
+
+        <h3>Como Fazer Backup</h3>
+        <ol>
+            <li>Vá em <b>Configurações</b> (ícone de engrenagem na tela inicial)</li>
+            <li>Toque em <b>Exportar Backup</b></li>
+            <li>Escolha onde salvar o arquivo (Drive, WhatsApp, etc)</li>
+            <li>Para restaurar, use <b>Restaurar Backup</b></li>
+        </ol>
+    ]]></string>
+
+    <string name="help_topic_calculator_title">Como usar a Calculadora de Otimização</string>
+    <string name="help_topic_calculator_content"><![CDATA[
+        <h3>🧪 Otimizando sua Água</h3>
+        <p>A <b>Calculadora de Otimização</b> é um recurso Premium que calcula exatamente
+        quantas gotas de cada mineral adicionar à sua água para deixá-la ideal para café.</p>
+
+        <h3>Como Funciona</h3>
+        <ol>
+            <li><b>Avalie sua água:</b> Primeiro, faça uma avaliação da sua água atual</li>
+            <li><b>Salve o resultado:</b> Guarde a avaliação no histórico</li>
+            <li><b>Acesse o Otimizador:</b> Na tela inicial, toque em "Otimizar Água"</li>
+            <li><b>Escolha a água:</b> Selecione qual água você quer otimizar</li>
+            <li><b>Veja as recomendações:</b> O app mostra quantas gotas adicionar</li>
+        </ol>
+
+        <h3>📊 Entendendo os Resultados</h3>
+        <p>O otimizador mostra:</p>
+        <ul>
+            <li><b>Gotas necessárias:</b> Quantidade exata de cada solução mineral</li>
+            <li><b>Score antes/depois:</b> Como sua água melhorará</li>
+            <li><b>Perfil alcançável:</b> Os valores finais após adicionar os minerais</li>
+            <li><b>Avisos:</b> Alertas se algo já está ideal</li>
+        </ul>
+
+        <h3>⚗️ Preparando as Soluções</h3>
+        <p>Você precisará de:</p>
+        <ul>
+            <li>Cloreto de Cálcio (CaCl₂)</li>
+            <li>Sulfato de Magnésio (MgSO₄)</li>
+            <li>Bicarbonato de Potássio (KHCO₃)</li>
+        </ul>
+
+        <p><b>Importante:</b> As soluções devem ser preparadas em concentrações específicas.
+        O app fornece as instruções de preparo.</p>
+
+        <h3>💡 Dicas</h3>
+        <ul>
+            <li>Comece com águas minerais conhecidas para testar</li>
+            <li>Anote suas receitas favoritas</li>
+            <li>Experimente e compare diferentes águas</li>
+            <li>Sempre adicione minerais gradualmente</li>
+        </ul>
+    ]]></string>
+
+    <string name="help_topic_new_philosophy_title">Nossa Nova Filosofia</string>
+    <string name="help_topic_new_philosophy_content"><![CDATA[
+        <h3>🎯 Faixas ao invés de Números Fixos</h3>
+        <p>A nova filosofia do app trabalha com <b>faixas ideais</b> ao invés de valores fixos.</p>
+
+        <h3>Por quê?</h3>
+        <ul>
+            <li><b>Mais Flexível:</b> Aceita variações naturais da água</li>
+            <li><b>Mais Realista:</b> Reflete melhor o mundo real</li>
+            <li><b>Menos Estresse:</b> Você não precisa acertar um número exato</li>
+        </ul>
+
+        <h3>📊 Sistema de Pontuação</h3>
+        <p>Cada parâmetro tem uma faixa ideal:</p>
+        <ul>
+            <li><b>Dureza:</b> 17-85 ppm (ideal: ~51 ppm)</li>
+            <li><b>Alcalinidade:</b> 0-75 ppm (ideal: ~37 ppm)</li>
+            <li><b>Sódio:</b> 0-30 ppm (ideal: ~15 ppm)</li>
+        </ul>
+
+        <p>Quanto mais perto do centro da faixa, melhor o score!</p>
+
+        <string name="help_topic_blend_title">Como usar a Calculadora de Blend</string>
+    <string name="help_topic_blend_content"><![CDATA[
+        <h3>💧 O que é o Blend?</h3>
+        <p>A <b>Calculadora de Blend</b> é um recurso que permite simular a mistura de duas águas diferentes que você já salvou (sejam elas do seu <b>Histórico</b> ou das suas <b>Receitas Salvas</b>).</p>
+        <p>O app calcula o perfil químico exato e o score resultante da mistura, baseado nas proporções que você definir.</p>
+
+        <h3>🤔 Por que fazer um Blend?</h3>
+        <p>O blend é uma técnica poderosa para:</p>
+        <ul>
+            <li><b>Diluir:</b> Pegar uma água muito "dura" (ex: 200 ppm de Dureza) e misturá-la com uma água "mole" (como destilada ou de osmose reversa, que você pode salvar como receita com "0" em tudo) para atingir a faixa ideal.</li>
+            <li><b>Corrigir:</b> Tentar "consertar" uma água com um parâmetro ruim (ex: alcalinidade muito alta) misturando-a com outra que tenha o parâmetro oposto (alcalinidade baixa).</li>
+            <li><b>Experimentar:</b> Simplesmente ver o que acontece ao combinar os perfis de duas águas minerais diferentes que você avaliou.</li>
+        </ul>
+
+        <h3>📋 Como Usar</h3>
+        <ol>
+            <li>Vá para <b>Minhas Receitas</b> (na tela inicial).</li>
+            <li>Selecione a aba <b>"Blend"</b> no topo da tela.</li>
+            <li>Toque em "Selecionar Água A" e escolha uma água do seu Histórico ou das suas Receitas Salvas.</li>
+            <li>Toque em "Selecionar Água B" e escolha a segunda água.</li>
+            <li>Insira os volumes (ex: 700ml de A e 300ml de B).</li>
+            <li>Toque em <b>Calcular Blend</b>.</li>
+        </ol>
+
+        <h3>📊 Entendendo os Resultados</h3>
+        <p>O app mostrará o perfil químico final da mistura, o novo score, e se a mistura resultou em <b>✨ Melhorias</b> (ex: a dureza entrou na faixa ideal) ou <b>⚠️ Avisos</b> (ex: o sódio ficou alto demais).</p>
+        <p>Se você gostar do resultado, pode <b>Salvar</b> o blend. Ele aparecerá na sua lista de "Receitas" para consulta futura ou até mesmo para ser usado em novos blends!</p>
+    ]]></string>
+
+    <string name="premium_feature_title">Recurso Premium</string>
+    <string name="premium_feature_backup_message">O backup e restauração de dados é um recurso exclusivo para assinantes Premium. Assine agora para ter acesso a este e outros benefícios!</string>
+    <string name="view_premium">Ver Premium</string>
+
+    <!-- Erro ao abrir Play Store -->
+    <string name="error_open_playstore">Não foi possível abrir a Play Store. Tente novamente.</string>
+
+    <!-- Blend Feature Strings -->
+    <string name="blend_title">Mistura de Águas (Blend)</string>
+    <string name="blend_description">Calcule a composição química resultante da mistura de duas águas em proporções personalizadas.</string>
+
+    <string name="blend_water_a_label">Água A</string>
+    <string name="blend_water_b_label">Água B</string>
+    <string name="blend_water_a_short">Água A</string>
+    <string name="blend_water_b_short">Água B</string>
+
+    <string name="blend_select_water">Selecionar Água</string>
+    <string name="blend_volume_hint">Volume</string>
+    <string name="blend_volume_prefix">Vol:</string>
+
+    <string name="blend_calculate_button">Calcular Blend</string>
+
+    <string name="blend_result_title">Resultado do Blend</string>
+    <string name="blend_score_label">Score</string>
+    <string name="blend_status_label">Status</string>
+    <string name="blend_parameters_title">Parâmetros Químicos</string>
+    <string name="blend_improvements_label">✨ Melhorias</string>
+    <string name="blend_warnings_label">⚠️ Avisos</string>
+
+    <string name="blend_save_button">Salvar</string>
+    <string name="blend_share_button">Compartilhar</string>
+
+    <!-- Mensagens e Toasts do Blend -->
+    <string name="blend_no_recipes">Nenhuma receita salva. Salve receitas primeiro!</string>
+    <string name="blend_need_two_recipes">Você precisa de pelo menos 2 receitas diferentes!</string>
+    <string name="blend_select_water_a_title">Selecionar Água A</string>
+    <string name="blend_select_water_b_title">Selecionar Água B</string>
+    <string name="blend_calculation_error">Erro ao calcular blend: %s</string>
+    <string name="blend_save_success">Blend salvo com sucesso!</string>
+    <string name="blend_save_error">Erro ao salvar: %s</string>
+    <string name="blend_name_empty">Nome não pode estar vazio</string>
+    <string name="blend_save_dialog_title">Salvar Blend</string>
+
+    <!-- Tab Titles -->
+    <string name="tab_recipes">Receitas</string>
+    <string name="tab_blend">Blend</string>
 
 
 </resources>

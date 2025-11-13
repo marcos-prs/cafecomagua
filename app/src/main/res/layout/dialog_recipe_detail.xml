@@ -99,7 +99,7 @@
             android:text="💧 Água Analisada (PPM)"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/dourado_elegante"
             app:layout_constraintTop_toBottomOf="@id/divider1"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -236,7 +236,7 @@
             android:text="🧪 Adicionar à Água"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/dourado_elegante"
             app:layout_constraintTop_toBottomOf="@id/divider2"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -333,7 +333,7 @@
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/dourado_elegante"
                         tools:text="0" />
 
                     <TextView
@@ -376,7 +376,7 @@
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/dourado_elegante"
                         tools:text="0" />
 
                     <TextView
@@ -419,7 +419,7 @@
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/dourado_elegante"
                         tools:text="0" />
 
                     <TextView
@@ -462,7 +462,7 @@
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textSize="32sp"
                         android:textStyle="bold"
-                        android:textColor="?attr/colorOnSurface"
+                        android:textColor="@color/dourado_elegante"
                         tools:text="10" />
 
                     <TextView
@@ -514,7 +514,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Excluir"
-                    android:textColor="?attr/colorError"
+                    android:textColor="@color/dourado_elegante"
                     app:icon="@drawable/ic_delete"
                     app:iconTint="?attr/colorError" />
 

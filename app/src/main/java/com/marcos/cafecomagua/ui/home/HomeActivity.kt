@@ -1,14 +1,11 @@
 package com.marcos.cafecomagua.ui.home
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -33,6 +30,7 @@ import com.marcos.cafecomagua.app.MyApplication
 import com.marcos.cafecomagua.ui.wateroptimizer.SavedRecipesActivity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
+import androidx.core.content.edit
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -81,7 +79,6 @@ class HomeActivity : AppCompatActivity() {
         // Configurar premium UI e interstitial
         setupPremiumFeatures()
         setupListeners()
-        updateThemeIcon()
         countAppOpens()
     }
 
@@ -94,9 +91,11 @@ class HomeActivity : AppCompatActivity() {
     private fun setupPremiumFeatures() {
         val isPremium = subscriptionManager.isPremiumActive()
 
+        // ✅ NOVO: Controla visibilidade do badge premium moderno
+        binding.premiumBadgeContainer.isVisible = isPremium
+
         // Controla visibilidade dos recursos premium
         binding.buttonSavedRecipes.isVisible = isPremium
-        binding.imagePremiumBadge.isVisible = isPremium
 
         // Inicializa anúncios apenas para usuários não-premium
         if (!isPremium) {
@@ -118,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        // Botões do topo
+        // ✅ ATUALIZADO: Botões do topo
         binding.buttonHelp.setOnClickListener {
             analytics().logEvent(
                 Category.NAVIGATION,
@@ -127,13 +126,16 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, HelpActivity::class.java))
         }
 
-        binding.buttonToggleTheme.setOnClickListener {
-            toggleTheme()
-        }
+        // ✅ NOVO: Settings
         binding.buttonSettings.setOnClickListener {
-            // Você precisará criar esta Activity (passo 5)
+            analytics().logEvent(
+                Category.NAVIGATION,
+                "settings_opened"
+            )
             startActivity(Intent(this, com.marcos.cafecomagua.ui.settings.SettingsActivity::class.java))
         }
+
+        // ❌ REMOVIDO: buttonToggleTheme (agora está em Settings)
 
         // Botões de Ação
         binding.buttonNewEvaluation.setOnClickListener {
@@ -213,12 +215,11 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val avaliacoesSalvas = dao.getAll().first()
 
-            // ✅ REFATORADO: Substituído Toast por MaterialAlertDialog
             if (avaliacoesSalvas.isEmpty()) {
                 MaterialAlertDialogBuilder(this@HomeActivity)
-                    .setTitle("Nenhuma Água Salva")
-                    .setMessage("Você precisa primeiro avaliar e salvar uma água para poder otimizá-la.")
-                    .setPositiveButton("Avaliar Água") { _, _ ->
+                    .setTitle(R.string.dialog_no_saved_water_title)
+                    .setMessage(R.string.dialog_no_saved_water_message)
+                    .setPositiveButton(R.string.button_evaluate_water) { _, _ ->
                         startActivity(Intent(this@HomeActivity, EvaluationHostActivity::class.java))
                     }
                     .setNegativeButton(R.string.button_cancelar, null)
@@ -252,34 +253,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun navigateToHistory() {
         startActivity(Intent(this, HistoryActivity::class.java))
-    }
-
-    private fun toggleTheme() {
-        val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
-        val isNightMode = resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK ==
-                Configuration.UI_MODE_NIGHT_YES
-
-        val newMode = if (isNightMode) {
-            AppCompatDelegate.MODE_NIGHT_NO
-        } else {
-            AppCompatDelegate.MODE_NIGHT_YES
-        }
-
-        prefs.edit().putInt("key_theme", newMode).apply()
-        AppCompatDelegate.setDefaultNightMode(newMode)
-    }
-
-    private fun updateThemeIcon() {
-        val isNightMode = resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK ==
-                Configuration.UI_MODE_NIGHT_YES
-
-        if (isNightMode) {
-            binding.buttonToggleTheme.setImageResource(R.drawable.ic_sun_day)
-        } else {
-            binding.buttonToggleTheme.setImageResource(R.drawable.ic_moon_night)
-        }
     }
 
     private fun countAppOpens() {

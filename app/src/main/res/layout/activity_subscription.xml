@@ -94,19 +94,38 @@
                 <include layout="@layout/layout_benefit_chip"
                     android:id="@+id/benefit_ads_removal"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1" />
+
                 <include layout="@layout/layout_benefit_chip"
                     android:id="@+id/benefit_water_optimizer"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1" />
+
                 <include layout="@layout/layout_benefit_chip"
                     android:id="@+id/benefit_unlimited_recipes"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1" />
+
                 <include layout="@layout/layout_benefit_chip"
                     android:id="@+id/benefit_backup"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"  android:layout_columnWeight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1" />
+
+                <include layout="@layout/layout_benefit_chip"
+                    android:id="@+id/benefit_blend_calculator"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1" />
+
+                <include layout="@layout/layout_benefit_chip"
+                    android:id="@+id/benefit_diy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1" />
             </GridLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -142,7 +161,7 @@
                         android:id="@+id/text_subscription_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="R$ 3,89/mês"
+                        android:text="@string/preco_indisponivel"
                         android:textSize="28sp"
                         android:textStyle="bold"
                         android:textColor="@color/ideal_green"
@@ -165,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/restore_purchase"/>
+                android:text="@string/settings_restore_purchase"/>
 
             <TextView
                 android:id="@+id/tos"

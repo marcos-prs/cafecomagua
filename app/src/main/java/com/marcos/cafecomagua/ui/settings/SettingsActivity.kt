@@ -1,5 +1,7 @@
 package com.marcos.cafecomagua.ui.settings
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,17 +10,20 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
-import androidx.room.withTransaction // 👈 IMPORT CORRETO
+import androidx.room.withTransaction
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.marcos.cafecomagua.R
 import com.marcos.cafecomagua.app.MyApplication
 import com.marcos.cafecomagua.app.model.AppBackup
 import com.marcos.cafecomagua.databinding.ActivitySettingsBinding
+import com.marcos.cafecomagua.ui.help.HelpActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -38,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
     ) { uri ->
         uri?.let {
             performBackup(it)
-        } ?: showToast("Exportação cancelada") // ✅ CORRIGIDO (agora é non-suspend)
+        } ?: showToast(getString(R.string.toast_export_cancelled))
     }
 
     // Launcher para IMPORTAR (Abrir Arquivo)
@@ -47,7 +52,7 @@ class SettingsActivity : AppCompatActivity() {
     ) { uri ->
         uri?.let {
             confirmRestore(it)
-        } ?: showToast("Restauração cancelada") // ✅ CORRIGIDO (agora é non-suspend)
+        } ?: showToast(getString(R.string.toast_restore_cancelled))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +73,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         setupToolbar()
+        setupThemeSwitch()
         setupListeners()
+        updateThemeIcon()
     }
 
     private fun setupToolbar() {
@@ -84,16 +91,127 @@ class SettingsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // ✅ NOVO: Configuração do Switch de Tema
+    private fun setupThemeSwitch() {
+        val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
+        val currentNightMode = prefs.getInt(
+            "key_theme",
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        )
+
+        // Define estado inicial do switch
+        binding.switchDarkMode.isChecked = when (currentNightMode) {
+            AppCompatDelegate.MODE_NIGHT_YES -> true
+            AppCompatDelegate.MODE_NIGHT_NO -> false
+            else -> {
+                // Modo sistema - verifica configuração atual
+                resources.configuration.uiMode and
+                        Configuration.UI_MODE_NIGHT_MASK ==
+                        Configuration.UI_MODE_NIGHT_YES
+            }
+        }
+
+        // ✅ NOVO: Configurar cores customizadas do switch programaticamente
+        configureSwitchColors()
+
+        updateThemeIcon()
+
+        // ✅ CORRIGIDO: Listener do switch
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            toggleTheme(isChecked)
+        }
+    }
+
+    // ✅ NOVO: Toggle de Tema (movido da HomeActivity)
+    private fun toggleTheme(enableDarkMode: Boolean) {
+        val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
+
+        val newMode = if (enableDarkMode) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+
+        prefs.edit().putInt("key_theme", newMode).apply()
+        AppCompatDelegate.setDefaultNightMode(newMode)
+
+        // ✅ IMPORTANTE: Atualiza o ícone após a mudança
+        updateThemeIcon()
+    }
+
+    // ✅ NOVO: Atualiza ícone do tema
+    private fun updateThemeIcon() {
+        val isNightMode = resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK ==
+                Configuration.UI_MODE_NIGHT_YES
+
+        if (isNightMode) {
+            binding.iconTheme.setImageResource(R.drawable.ic_sun_day)
+        } else {
+            binding.iconTheme.setImageResource(R.drawable.ic_moon_night)
+        }
+    }
+
+    // ✅ NOVO: Configura cores customizadas do switch
+    private fun configureSwitchColors() {
+        val douradoElegante = ContextCompat.getColor(this, R.color.marrom_avermelhado_principal)
+        val surfaceVariant = ContextCompat.getColor(this, R.color.marrom_avermelhado_claro_escuro)
+
+        // ColorStateList para o thumb (bolinha)
+        val thumbStates = arrayOf(
+            intArrayOf(android.R.attr.state_checked),  // Ligado
+            intArrayOf(-android.R.attr.state_checked)  // Desligado
+        )
+        val thumbColors = intArrayOf(
+            douradoElegante,     // Ligado = dourado
+            surfaceVariant       // Desligado = cinza
+        )
+        binding.switchDarkMode.thumbTintList = android.content.res.ColorStateList(thumbStates, thumbColors)
+
+        // ColorStateList para o track (trilho) com opacidade
+        val trackColors = intArrayOf(
+            adjustAlpha(douradoElegante, 0.38f),  // Ligado = dourado 38%
+            adjustAlpha(surfaceVariant, 0.38f)     // Desligado = cinza 38%
+        )
+        binding.switchDarkMode.trackTintList = android.content.res.ColorStateList(thumbStates, trackColors)
+    }
+
+    // ✅ HELPER: Ajusta alpha de uma cor
+    private fun adjustAlpha(color: Int, factor: Float): Int {
+        val alpha = (android.graphics.Color.alpha(color) * factor).toInt()
+        val red = android.graphics.Color.red(color)
+        val green = android.graphics.Color.green(color)
+        val blue = android.graphics.Color.blue(color)
+        return android.graphics.Color.argb(alpha, red, green, blue)
+    }
+
     private fun setupListeners() {
-        binding.buttonExportBackup.setOnClickListener {
+        // ✅ CORRIGIDO: Listener no container do tema para permitir clique em toda a área
+        // Encontra o LinearLayout pai do switch usando findViewById
+        binding.root.findViewById<android.widget.LinearLayout>(R.id.themeContainer)?.setOnClickListener {
+            // Toggle programático do switch
+            binding.switchDarkMode.toggle()
+        }
+
+        // Exportar Backup
+        binding.itemExportBackup.setOnClickListener {
             launchBackupFilePicker()
         }
-        binding.buttonImportBackup.setOnClickListener {
+
+        // Importar Backup
+        binding.itemImportBackup.setOnClickListener {
             openDocumentLauncher.launch(arrayOf("application/json", "application/txt", "text/plain"))
         }
-        binding.buttonRestorePurchases.setOnClickListener {
-            // TODO: Mover a lógica de restauração do SubscriptionManager para cá
-            showToast("Lógica de restauração de compras pendente") // ✅ CORRIGIDO (agora é non-suspend)
+
+        // Restaurar Compras
+        binding.itemRestorePurchase.setOnClickListener {
+            // TODO: Implementar lógica de restauração
+            showToast(getString(R.string.toast_restore_purchases_pending))
+        }
+
+        // ✅ NOVO: Item de Ajuda
+        binding.itemHelp.setOnClickListener {
+            startActivity(Intent(this, HelpActivity::class.java))
         }
     }
 
@@ -123,16 +241,14 @@ class SettingsActivity : AppCompatActivity() {
                     }
                 }
 
-                // ✅ CORRIGIDO: Envolvido com withContext(Main)
                 withContext(Dispatchers.Main) {
-                    showToast("Backup salvo com sucesso!")
+                    showToast(getString(R.string.toast_backup_success))
                 }
 
             } catch (e: Exception) {
                 Log.e("SettingsBackup", "Erro ao salvar o backup", e)
-                // ✅ CORRIGIDO: Envolvido com withContext(Main)
                 withContext(Dispatchers.Main) {
-                    showToast("Erro ao salvar o backup: ${e.message}")
+                    showToast(getString(R.string.toast_backup_error, e.message ?: ""))
                 }
             }
         }
@@ -140,10 +256,10 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun confirmRestore(uri: Uri) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Restaurar Backup?")
-            .setMessage("Restaurar um backup substituirá TODOS os históricos e receitas salvos atualmente. Esta ação não pode ser desfeita.")
-            .setNegativeButton("Cancelar", null)
-            .setPositiveButton("Restaurar") { _, _ ->
+            .setTitle(R.string.dialog_restore_title)
+            .setMessage(R.string.dialog_restore_message)
+            .setNegativeButton(R.string.button_cancelar, null)
+            .setPositiveButton(R.string.button_restore) { _, _ ->
                 performRestore(uri)
             }
             .show()
@@ -159,14 +275,14 @@ class SettingsActivity : AppCompatActivity() {
                 }
 
                 if (jsonString.isNullOrBlank()) {
-                    throw Exception("Arquivo de backup vazio ou inválido")
+                    throw Exception(getString(R.string.error_empty_backup))
                 }
 
                 val backupData = gson.fromJson(jsonString, AppBackup::class.java)
 
                 // Validação básica
                 if (backupData.evaluations == null || backupData.recipes == null) {
-                    throw Exception("Formato de backup inválido")
+                    throw Exception(getString(R.string.error_invalid_backup))
                 }
 
                 // Resetar IDs para 0 para que o Room os gere novamente
@@ -175,7 +291,6 @@ class SettingsActivity : AppCompatActivity() {
 
                 val db = (application as MyApplication).database
 
-                // ✅ CORRIGIDO: Trocado 'runInTransaction' por 'withTransaction' (que é suspend)
                 db.withTransaction {
                     // 1. LIMPA o banco de dados atual
                     db.avaliacaoDao().clearAll()
@@ -186,22 +301,19 @@ class SettingsActivity : AppCompatActivity() {
                     db.recipeDao().insertAll(recipes)
                 }
 
-                // ✅ CORRIGIDO: Envolvido com withContext(Main)
                 withContext(Dispatchers.Main) {
-                    showToast("Restauração concluída com sucesso!")
+                    showToast(getString(R.string.toast_restore_success))
                 }
 
             } catch (e: Exception) {
                 Log.e("SettingsRestore", "Falha na restauração", e)
-                // ✅ CORRIGIDO: Envolvido com withContext(Main)
                 withContext(Dispatchers.Main) {
-                    showToast("Falha na restauração: ${e.message}")
+                    showToast(getString(R.string.toast_restore_error, e.message ?: ""))
                 }
             }
         }
     }
 
-    // ✅ CORRIGIDO: A função não é mais 'suspend'
     private fun showToast(message: String) {
         Toast.makeText(this@SettingsActivity, message, Toast.LENGTH_LONG).show()
     }

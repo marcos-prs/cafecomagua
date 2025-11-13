@@ -20,13 +20,6 @@ import com.marcos.cafecomagua.ui.adapters.OnboardingAdapter
 import com.marcos.cafecomagua.ui.home.HomeActivity
 import com.marcos.cafecomagua.app.analytics.Category
 
-/**
- * ✅ REFATORADO:
- * - Remove botões de navegação laterais (setas)
- * - Mantém navegação por swipe
- * - Adiciona botão "Pular" que aparece em todos os slides
- * - Muda texto para "CONCLUIR" no último slide
- */
 class OnboardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOnboardingBinding
@@ -191,11 +184,6 @@ class OnboardingActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * ✅ REFATORADO: Atualiza o texto e visibilidade do botão
-     * Opção 1: Botão visível em todas as páginas (PULAR → CONCLUIR)
-     * Opção 2: Botão visível apenas na última página
-     */
     private fun updateButtonVisibility(position: Int) {
         val isLastPage = position == onboardingAdapter.itemCount - 1
 
@@ -206,10 +194,6 @@ class OnboardingActivity : AppCompatActivity() {
             binding.buttonSkip.text = getString(R.string.onboarding_skip) // "PULAR"
         }
         binding.buttonSkip.isVisible = true
-
-        // OPÇÃO 2: Botão visível apenas na última página (descomentar para usar)
-        // binding.buttonSkip.text = getString(R.string.onboarding_finish) // "CONCLUIR"
-        // binding.buttonSkip.isVisible = isLastPage
     }
 
     /**

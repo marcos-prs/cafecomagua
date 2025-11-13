@@ -129,10 +129,16 @@ class SubscriptionActivity : AppCompatActivity() {
         binding.benefitWaterOptimizer.benefitText.text = getString(R.string.benefit_water_optimizer)
 
         binding.benefitUnlimitedRecipes.benefitIcon.setImageResource(R.drawable.ic_recipes)
-        binding.benefitUnlimitedRecipes.benefitText.text = getString(R.string.benefit_unlimited_recipes)
+        binding.benefitUnlimitedRecipes.benefitText.text =
+            getString(R.string.benefit_unlimited_recipes)
 
         binding.benefitBackup.benefitIcon.setImageResource(R.drawable.ic_backup)
         binding.benefitBackup.benefitText.text = getString(R.string.benefit_backup)
+
+        binding.benefitBlendCalculator.benefitIcon.setImageResource(R.drawable.ic_blend)
+        binding.benefitBlendCalculator.benefitText.text = getString(R.string.benefit_blend)
+        binding.benefitDiy.benefitIcon.setImageResource(R.drawable.ic_diy)
+        binding.benefitDiy.benefitText.text = getString(R.string.benefit_diy)
     }
 
     /**
@@ -158,8 +164,8 @@ class SubscriptionActivity : AppCompatActivity() {
      */
     private fun updatePrices() {
         binding.textSubscriptionPrice.text = subscriptionManager.getProductPrice(
-            SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY ) ?:
-                getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
+            SubscriptionManager.SKU_SUBSCRIPTION_MONTHLY
+        ) ?: getString(com.marcos.cafecomagua.R.string.preco_indisponivel)
     }
 
     /**
@@ -170,7 +176,8 @@ class SubscriptionActivity : AppCompatActivity() {
             if (!subscriptionManager.isPremiumActive()) {
                 launchSubscription()
             } else {
-                Toast.makeText(this, getString(R.string.premium_status_active), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.premium_status_active), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -200,6 +207,9 @@ class SubscriptionActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        subscriptionManager.destroy()
+        // Verifica se subscriptionManager foi inicializado antes de chamar destroy()
+        if (::subscriptionManager.isInitialized) {
+            subscriptionManager.destroy()
+        }
     }
 }

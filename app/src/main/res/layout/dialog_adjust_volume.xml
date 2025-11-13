@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/dourado_elegante"
             tools:text="1L" />
     </LinearLayout>
 
@@ -128,7 +128,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:imeOptions="actionDone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Resultado calculado -->
@@ -138,78 +139,100 @@
         android:background="?attr/colorOutlineVariant"
         android:layout_marginBottom="16dp" />
 
+    <!-- ✅ CORREÇÃO 1: TextView agora aceita texto dinâmico -->
     <TextView
         android:id="@+id/labelAdjustedRecipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="💧 Gotas para [volume]:"
+        android:text="💧 Gotas para o novo volume:"
         android:textAppearance="?attr/textAppearanceTitleMedium"
         android:textStyle="bold"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/dourado_elegante"
         android:layout_marginBottom="12dp"
         android:visibility="gone"
         tools:visibility="visible"
         tools:text="💧 Gotas para 2L:" />
 
+    <!-- ✅ CORREÇÃO 2: ScrollView para evitar compressão em telas pequenas -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:maxHeight="200dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/layoutAdjustedDrops"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/textAdjustedCalcium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="🟦 Cálcio: 8 gotas" />
+
+            <TextView
+                android:id="@+id/textAdjustedMagnesium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="🟩 Magnésio: 4 gotas" />
+
+            <TextView
+                android:id="@+id/textAdjustedSodium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="🟨 Sódio: 2 gotas" />
+
+            <TextView
+                android:id="@+id/textAdjustedPotassium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:paddingVertical="4dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="🟪 Potássio: 6 gotas" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ✅ CORREÇÃO 3: Botões com altura mínima garantida -->
     <LinearLayout
-        android:id="@+id/layoutAdjustedDrops"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textAdjustedCalcium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:paddingVertical="4dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textAdjustedMagnesium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:paddingVertical="4dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textAdjustedSodium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:paddingVertical="4dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textAdjustedPotassium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:paddingVertical="4dp"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <!-- Botões de ação -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:orientation="horizontal"
-        android:gravity="end"
-        android:layout_marginTop="24dp">
+        android:gravity="end|center_vertical"
+        android:layout_marginTop="16dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonCancel"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:text="Fechar" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSaveAdjusted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_marginStart="8dp"
             android:text="Salvar Ajuste"
             android:enabled="false" />
