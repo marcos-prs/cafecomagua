@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -132,7 +133,9 @@ class SettingsActivity : AppCompatActivity() {
             AppCompatDelegate.MODE_NIGHT_NO
         }
 
-        prefs.edit().putInt("key_theme", newMode).apply()
+        prefs.edit {
+            putInt("key_theme", newMode)
+        }
         AppCompatDelegate.setDefaultNightMode(newMode)
 
         // ✅ IMPORTANTE: Atualiza o ícone após a mudança
@@ -170,15 +173,15 @@ class SettingsActivity : AppCompatActivity() {
 
         // ColorStateList para o track (trilho) com opacidade
         val trackColors = intArrayOf(
-            adjustAlpha(douradoElegante, 0.38f),  // Ligado = dourado 38%
-            adjustAlpha(surfaceVariant, 0.38f)     // Desligado = cinza 38%
+            adjustAlpha(douradoElegante),
+            adjustAlpha(surfaceVariant)
         )
         binding.switchDarkMode.trackTintList = android.content.res.ColorStateList(thumbStates, trackColors)
     }
 
     // ✅ HELPER: Ajusta alpha de uma cor
-    private fun adjustAlpha(color: Int, factor: Float): Int {
-        val alpha = (android.graphics.Color.alpha(color) * factor).toInt()
+    private fun adjustAlpha(color: Int): Int {
+        val alpha = (android.graphics.Color.alpha(color) * 0.38f).toInt()
         val red = android.graphics.Color.red(color)
         val green = android.graphics.Color.green(color)
         val blue = android.graphics.Color.blue(color)
@@ -186,8 +189,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        // ✅ CORRIGIDO: Listener no container do tema para permitir clique em toda a área
-        // Encontra o LinearLayout pai do switch usando findViewById
         binding.root.findViewById<android.widget.LinearLayout>(R.id.themeContainer)?.setOnClickListener {
             // Toggle programático do switch
             binding.switchDarkMode.toggle()
@@ -281,8 +282,9 @@ class SettingsActivity : AppCompatActivity() {
                 val backupData = gson.fromJson(jsonString, AppBackup::class.java)
 
                 // Validação básica
-                if (backupData.evaluations == null || backupData.recipes == null) {
-                    throw Exception(getString(R.string.error_invalid_backup))
+                // Valida se as listas estão vazias E se o backup tem dados válidos
+                if (backupData.evaluations.isEmpty() && backupData.recipes.isEmpty()) {
+                    throw Exception(getString(R.string.error_empty_backup))
                 }
 
                 // Resetar IDs para 0 para que o Room os gere novamente

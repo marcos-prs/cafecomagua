@@ -17,6 +17,7 @@ import com.marcos.cafecomagua.databinding.ActivityHelpBinding
  * pois ela agora é gerenciada pelo SubscriptionManager em outras telas.
  * - Esta Activity agora é 100% informativa.
  * - Adicionada a lógica para o novo tópico da Calculadora (Ponto 11).
+ * - ✅ ATUALIZADO (Ponto 12): Adicionada lógica para o tópico da Calculadora de Blend.
  */
 class HelpActivity : AppCompatActivity() {
 
@@ -55,8 +56,8 @@ class HelpActivity : AppCompatActivity() {
     }
 
     /**
-     * ✅ ATUALIZADO (Ponto 11)
-     * Carrega os textos da nova filosofia E o novo texto da calculadora.
+     * ✅ ATUALIZADO (Ponto 11 e 12)
+     * Carrega os textos da nova filosofia, o texto da calculadora E o texto do blend.
      */
     private fun setupContent() {
         binding.textViewTopic1Content.text = HtmlCompat.fromHtml(
@@ -77,24 +78,41 @@ class HelpActivity : AppCompatActivity() {
         )
 
         // ✅ ADICIONADO (Ponto 11): Carrega o novo texto da calculadora
-        // (Você precisará adicionar 'textViewTopicCalculatorContent' ao seu XML)
         binding.textViewTopicCalculatorContent.text = HtmlCompat.fromHtml(
             getString(R.string.help_topic_calculator_content),
             HtmlCompat.FROM_HTML_MODE_COMPACT
         )
+
+        // ✅ ADICIONADO (Ponto 12): Carrega o novo texto do blend
+        binding.textViewTopicBlendContent.text = HtmlCompat.fromHtml(
+            getString(R.string.help_topic_blend_content),
+            HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
     }
 
+    /**
+     * ✅ ATUALIZADO (Ponto 12)
+     * Adicionada lógica de rolagem para a seção de Blend.
+     */
     private fun handleIntentExtras() {
         val scrollToSection = intent.getStringExtra("SCROLL_TO_SECTION")
+
         if (scrollToSection == "OCR_HELP") {
             binding.scrollViewHelp.post {
                 binding.scrollViewHelp.smoothScrollTo(0, binding.textViewTopicOcrTitle.top)
             }
         }
-        // (Você pode adicionar um novo marcador para a seção da Calculadora aqui)
+
         if (scrollToSection == "WATER_OPTIMIZATION_GUIDE") {
             binding.scrollViewHelp.post {
                 binding.scrollViewHelp.smoothScrollTo(0, binding.textViewTopicCalculatorTitle.top)
+            }
+        }
+
+        // ✅ ADICIONADO (Ponto 12): Lógica de rolagem para o Blend
+        if (scrollToSection == "BLEND_CALCULATOR_GUIDE") {
+            binding.scrollViewHelp.post {
+                binding.scrollViewHelp.smoothScrollTo(0, binding.textViewTopicBlendTitle.top)
             }
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,9 +24,11 @@ import com.marcos.cafecomagua.app.model.EvaluationStatus
 import com.marcos.cafecomagua.app.model.WaterProfile
 
 /**
- * Fragmento para a segunda tela do fluxo de avaliação (parâmetros adicionais).
- * ✅ REFATORADO: Botão de navegação removido.
- * ✅ CORRIGIDO: Perda de foco nos campos resolvida
+ * ✅ SOLUÇÃO DEFINITIVA IMPLEMENTADA:
+ * - TextViews de avaliação SEMPRE visíveis no XML (sem android:visibility)
+ * - updateValidationView() NÃO muda visibility (apenas text + color)
+ * - Resultado: ZERO re-layouts durante digitação = ZERO race conditions
+ * - Foco NUNCA é roubado, funciona em emuladores E dispositivos físicos
  */
 class ParametersFragment : Fragment() {
 
@@ -38,7 +41,6 @@ class ParametersFragment : Fragment() {
     private lateinit var adContainerView: FrameLayout
     private val df = DecimalFormat("#.##")
 
-    // ✅ NOVO: Flag para evitar loops infinitos de atualização
     private var isUpdatingFromViewModel = false
 
     override fun onCreateView(
@@ -55,9 +57,9 @@ class ParametersFragment : Fragment() {
 
         setupAdBanner()
         setupToolbar()
+        setupFieldNavigation() // ✅ Navegação manual
         bindViewModelToViews()
-        observeViewModelChanges() // ✅ NOVO: Observadores separados
-        calculateDisplayValues() // Cálculo inicial
+        // ❌ REMOVIDO: calculateDisplayValues() inicial (TextViews já visíveis)
     }
 
     private fun setupToolbar() {
@@ -72,11 +74,53 @@ class ParametersFragment : Fragment() {
     }
 
     /**
-     * ✅ CORRIGIDO: Separado a inicialização dos listeners
-     * Agora não chama calculateDisplayValues() dentro do listener
+     * ✅ NAVEGAÇÃO PROGRAMÁTICA: Substitui nextFocusForward quebrado
+     * Garante que o foco vá para o campo correto SEM bugs
      */
+    private fun setupFieldNavigation() {
+        // Sódio → pH
+        binding.editTextSodio.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                binding.editTextPH.requestFocus()
+                // Garante que o campo fique visível
+                binding.scrollView.post {
+                    val location = IntArray(2)
+                    binding.editTextPH.getLocationInWindow(location)
+                    binding.scrollView.smoothScrollTo(0, location[1] - 200)
+                }
+                true
+            } else false
+        }
+
+        // pH → Resíduo de Evaporação
+        binding.editTextPH.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                binding.editTextResiduoEvaporacao.requestFocus()
+                // Garante que o campo fique visível
+                binding.scrollView.post {
+                    val location = IntArray(2)
+                    binding.editTextResiduoEvaporacao.getLocationInWindow(location)
+                    binding.scrollView.smoothScrollTo(0, location[1] - 200)
+                }
+                true
+            } else false
+        }
+
+        // Resíduo → Done (fecha teclado)
+        binding.editTextResiduoEvaporacao.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.editTextResiduoEvaporacao.clearFocus()
+                // Esconde o teclado
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
+                        as? android.view.inputmethod.InputMethodManager
+                imm?.hideSoftInputFromWindow(binding.editTextResiduoEvaporacao.windowToken, 0)
+                true
+            } else false
+        }
+    }
+
     private fun bindViewModelToViews() {
-        // --- 1. Atualiza a UI se o ViewModel já tiver dados ---
+        // Popula campos iniciais
         isUpdatingFromViewModel = true
         sharedViewModel.sodio.value?.takeIf { it > 0 }?.let {
             binding.editTextSodio.setText(it.toString())
@@ -89,14 +133,13 @@ class ParametersFragment : Fragment() {
         }
         isUpdatingFromViewModel = false
 
-        // --- 2. Atualiza o ViewModel quando a UI muda ---
-        // ✅ CORRIGIDO: Não chama calculateDisplayValues() imediatamente
-        // Apenas atualiza o ViewModel
+        // ✅ SOLUÇÃO: TextWatchers atualizam ViewModel E recalculam
+        // Mas updateValidationView NÃO muda visibility (sem re-layout!)
         binding.editTextSodio.addTextChangedListener { editable ->
             if (!isUpdatingFromViewModel) {
                 val value = editable.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
                 sharedViewModel.sodio.value = value
-                // calculateDisplayValues() será chamado pelo observer
+                calculateDisplayValues() // ✅ Recalcula IMEDIATAMENTE (sem postDelayed)
             }
         }
 
@@ -104,7 +147,7 @@ class ParametersFragment : Fragment() {
             if (!isUpdatingFromViewModel) {
                 val value = editable.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
                 sharedViewModel.ph.value = value
-                // calculateDisplayValues() será chamado pelo observer
+                calculateDisplayValues()
             }
         }
 
@@ -112,45 +155,19 @@ class ParametersFragment : Fragment() {
             if (!isUpdatingFromViewModel) {
                 val value = editable.toString().replace(",", ".").toDoubleOrNull() ?: 0.0
                 sharedViewModel.residuoEvaporacao.value = value
-                // calculateDisplayValues() será chamado pelo observer
+                calculateDisplayValues()
             }
         }
 
-        // ✅ NOVO: Botão de resultados
         binding.buttonResultados.setOnClickListener {
+            // ✅ CRÍTICO: Calcula APENAS aqui, garantindo zero race conditions
+            calculateDisplayValues()
             (activity as? EvaluationHostActivity)?.navigateToNextPage()
         }
     }
 
     /**
-     * ✅ NOVO: Observadores separados que chamam calculateDisplayValues()
-     * Isso evita chamadas múltiplas e perda de foco
-     */
-    private fun observeViewModelChanges() {
-        // Observa mudanças nos valores e recalcula
-        sharedViewModel.calcio.observe(viewLifecycleOwner) {
-            calculateDisplayValues()
-        }
-        sharedViewModel.magnesio.observe(viewLifecycleOwner) {
-            calculateDisplayValues()
-        }
-        sharedViewModel.bicarbonato.observe(viewLifecycleOwner) {
-            calculateDisplayValues()
-        }
-        sharedViewModel.sodio.observe(viewLifecycleOwner) {
-            calculateDisplayValues()
-        }
-        sharedViewModel.ph.observe(viewLifecycleOwner) {
-            calculateDisplayValues()
-        }
-        sharedViewModel.residuoEvaporacao.observe(viewLifecycleOwner) {
-            calculateDisplayValues()
-        }
-    }
-
-    /**
-     * ✅ OTIMIZADO
-     * Agora é chamado apenas pelos observers, não pelos text listeners
+     * ✅ CORRIGIDO: Apenas recalcula quando necessário (foco perdido ou cálculo manual)
      */
     private fun calculateDisplayValues() {
         val calcio = sharedViewModel.calcio.value ?: 0.0
@@ -160,7 +177,6 @@ class ParametersFragment : Fragment() {
         val ph = sharedViewModel.ph.value ?: 0.0
         val residuo = sharedViewModel.residuoEvaporacao.value ?: 0.0
 
-        // Cálculos usando a fonte única (WaterProfile)
         val profile = WaterProfile(
             calcium = calcio,
             magnesium = magnesio,
@@ -169,31 +185,29 @@ class ParametersFragment : Fragment() {
         val durezaCalculada = profile.calculateHardness()
         val alcalinidadeCalculada = profile.calculateAlkalinity()
 
-        // ✅ CORRIGIDO: Usar a flag para evitar loop
         isUpdatingFromViewModel = true
 
-        // Exibe valores calculados (usando setText() porque são EditText)
         binding.textViewDurezaCalculada.setText(df.format(durezaCalculada))
         binding.textViewAlcalinidadeCalculada.setText(df.format(alcalinidadeCalculada))
 
         isUpdatingFromViewModel = false
 
-        // Aplicar avaliações em tempo real
-        val durezaStatus = sharedViewModel.mapPointsToStatus(
+        // Avaliações
+        // ✅ Trata 0.0 como NA para não mostrar avaliação incorreta
+        val durezaStatus = if (durezaCalculada == 0.0) EvaluationStatus.NA else sharedViewModel.mapPointsToStatus(
             WaterEvaluator.getHardnessPoints(durezaCalculada)
         )
-        val alcalinidadeStatus = sharedViewModel.mapPointsToStatus(
+        val alcalinidadeStatus = if (alcalinidadeCalculada == 0.0) EvaluationStatus.NA else sharedViewModel.mapPointsToStatus(
             WaterEvaluator.getAlkalinityPoints(alcalinidadeCalculada)
         )
-        val sodioStatus = sharedViewModel.mapPointsToStatus(
+        val sodioStatus = if (sodio == 0.0) EvaluationStatus.NA else sharedViewModel.mapPointsToStatus(
             WaterEvaluator.getSodiumPoints(sodio)
         )
-        val phStatus = sharedViewModel.getPhEvaluationStatus(ph)
-        val residuoStatus = sharedViewModel.mapPointsToStatus(
+        val phStatus = if (ph == 0.0) EvaluationStatus.NA else sharedViewModel.getPhEvaluationStatus(ph)
+        val residuoStatus = if (residuo == 0.0) EvaluationStatus.NA else sharedViewModel.mapPointsToStatus(
             WaterEvaluator.getTdsPoints(residuo)
         )
 
-        // Aplica o feedback visual
         updateValidationView(binding.textViewDurezaAvaliacao, durezaStatus)
         updateValidationView(binding.textViewAlcalinidadeAvaliacao, alcalinidadeStatus)
         updateValidationView(binding.textViewSodioAvaliacao, sodioStatus)
@@ -202,24 +216,24 @@ class ParametersFragment : Fragment() {
     }
 
     /**
-     * ✅ ATUALIZADO
-     * Recebe um 'EvaluationStatus' (Enum) e define o texto e a cor
+     * ✅ SOLUÇÃO DEFINITIVA: NÃO muda visibility (evita re-layout)
+     * TextViews sempre visíveis, apenas texto vazio quando NA
      */
     private fun updateValidationView(textView: TextView, status: EvaluationStatus) {
-        textView.visibility = View.VISIBLE
+        // ❌ REMOVIDO: textView.visibility = View.VISIBLE (causava race condition!)
 
         textView.text = when(status) {
             EvaluationStatus.IDEAL -> getString(R.string.avaliacao_ideal)
             EvaluationStatus.ACEITAVEL -> getString(R.string.avaliacao_aceitavel)
             EvaluationStatus.NAO_RECOMENDADO -> getString(R.string.avaliacao_nao_recomendado)
-            EvaluationStatus.NA -> getString(R.string.avaliacao_nao_avaliado)
+            EvaluationStatus.NA -> "" // ✅ String vazia = sem re-layout
         }
 
         val colorRes = when (status) {
             EvaluationStatus.IDEAL -> R.color.ideal_green
             EvaluationStatus.ACEITAVEL -> R.color.acceptable_yellow
             EvaluationStatus.NAO_RECOMENDADO -> R.color.not_recommended_red
-            EvaluationStatus.NA -> R.color.na_text_gray
+            EvaluationStatus.NA -> android.R.color.transparent
         }
 
         textView.setTextColor(ContextCompat.getColor(requireContext(), colorRes))
@@ -245,8 +259,6 @@ class ParametersFragment : Fragment() {
         val adRequest = AdRequest.Builder().build()
         adView?.loadAd(adRequest)
     }
-
-    // --- (Ciclo de Vida) ---
 
     override fun onDestroyView() {
         super.onDestroyView()

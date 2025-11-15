@@ -47,11 +47,13 @@ import java.util.Date
 import java.util.Locale
 import com.marcos.cafecomagua.app.analytics.Category
 import com.marcos.cafecomagua.app.analytics.Event
+import kotlin.math.abs
 
 // --- (Helpers do WaterInputActivity) ---
 data class ParameterInfo(
     val canonicalName: String,
-    val keywords: List<String>
+    val keywords: List<String>,
+    val validRange: ClosedRange<Double>? = null
 )
 
 fun String.unaccent(): String {
@@ -71,21 +73,47 @@ class WaterInputFragment : Fragment() {
 
     private val sharedViewModel: EvaluationViewModel by activityViewModels()
 
-    // ✅ NOVO: Listener para ajuste do teclado
     private var keyboardListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     private var adView: AdView? = null
     private lateinit var adContainerView: FrameLayout
     private var ocrData = mutableMapOf<String, String>()
     private var latestTmpUri: Uri? = null
+
+    // ✅ MELHORADO: Keywords mais específicas e com ranges de validação
     private val parameterList = listOf(
-        ParameterInfo("ph", listOf("ph a 25 c")),
-        ParameterInfo("sodio", listOf("sódio", "sodio", "na")),
-        ParameterInfo("calcio", listOf("cálcio", "calcio", "ca")),
-        ParameterInfo("magnesio", listOf("magnésio", "magnesio", "mg")),
-        ParameterInfo("bicarbonato", listOf("bicarbonato", "bicarbonatos", "hco3")),
-        ParameterInfo("residuo", listOf("residuo de evaporacao a 180 c"))
+        ParameterInfo(
+            "ph",
+            listOf("ph", "ph a 25", "potencial hidrogenionico"),
+            validRange = 0.0..14.0
+        ),
+        ParameterInfo(
+            "sodio",
+            listOf("sodio", "na+", "ion sodio"),
+            validRange = 0.0..1000.0
+        ),
+        ParameterInfo(
+            "calcio",
+            listOf("calcio", "ca2+", "ca++", "ion calcio"),
+            validRange = 0.0..500.0
+        ),
+        ParameterInfo(
+            "magnesio",
+            listOf("magnesio", "mg2+", "mg++", "ion magnesio"),
+            validRange = 0.0..500.0
+        ),
+        ParameterInfo(
+            "bicarbonato",
+            listOf("bicarbonato", "bicarbonatos", "hco3", "hco3-"),
+            validRange = 0.0..1000.0
+        ),
+        ParameterInfo(
+            "residuo",
+            listOf("residuo", "evaporacao", "sdt", "solidos totais", "solidos dissolvidos"),
+            validRange = 0.0..5000.0
+        )
     )
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
@@ -124,8 +152,6 @@ class WaterInputFragment : Fragment() {
         setupListeners()
         bindViewModelToViews()
         setupToolbar()
-
-        // ✅ NOVO: Configura listener do teclado
         setupKeyboardListener()
     }
 
@@ -140,7 +166,6 @@ class WaterInputFragment : Fragment() {
         }
     }
 
-    // ✅ NOVO: Função que detecta abertura do teclado e ajusta o scroll
     private fun setupKeyboardListener() {
         keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
             val rect = Rect()
@@ -148,12 +173,9 @@ class WaterInputFragment : Fragment() {
             val screenHeight = binding.root.rootView.height
             val keypadHeight = screenHeight - rect.bottom
 
-            // Se o teclado está visível (keypadHeight > 15% da tela)
             if (keypadHeight > screenHeight * 0.15) {
-                // Encontra qual campo está focado
                 val focusedView = activity?.currentFocus
                 if (focusedView != null) {
-                    // Aguarda um frame para garantir que o layout foi ajustado
                     binding.scrollView.post {
                         val scrollViewLocation = IntArray(2)
                         binding.scrollView.getLocationOnScreen(scrollViewLocation)
@@ -161,7 +183,6 @@ class WaterInputFragment : Fragment() {
                         val focusedViewLocation = IntArray(2)
                         focusedView.getLocationOnScreen(focusedViewLocation)
 
-                        // Calcula a posição ideal para scroll (campo focado + 100dp de margem)
                         val scrollToY = focusedViewLocation[1] - scrollViewLocation[1] -
                                 (100 * resources.displayMetrics.density).toInt()
 
@@ -322,65 +343,222 @@ class WaterInputFragment : Fragment() {
             }
     }
 
+    // ✅ MELHORADO: Lógica de parsing mais robusta com validação de keywords
     private fun parseOcrResultAndPopulateFields(visionText: Text) {
         ocrData.clear()
         val paramsToFind = parameterList.toMutableList()
         val numberRegex = Regex("(\\d+[.,]\\d+|\\d+)")
 
-        Log.d("OCR_TABLE_PARSER", "--- INICIANDO ANÁLISE ESTRUTURADA ---")
+        Log.d("OCR_TABLE_PARSER", "=== INICIANDO ANÁLISE ESTRUTURADA ===")
 
+        // Tenta extrair de forma estruturada (linha por linha)
         for (block in visionText.textBlocks) {
             for (line in block.lines) {
                 val lineText = line.text.unaccent().lowercase()
-                Log.d("OCR_TABLE_PARSER", "Analisando Linha: '$lineText'")
+                Log.d("OCR_TABLE_PARSER", "Linha: '$lineText'")
 
-                var foundParam: ParameterInfo? = null
+                for (param in paramsToFind.toList()) {
+                    // ✅ CORRIGIDO: Validação mais rigorosa de keywords
+                    if (matchesKeyword(lineText, param.keywords)) {
+                        val numbers = numberRegex.findAll(lineText)
+                            .map { it.value.replace(",", ".") }
+                            .toList()
 
-                for (param in paramsToFind) {
-                    if (param.keywords.any { keyword -> lineText.contains(keyword.unaccent().lowercase()) }) {
-                        foundParam = param
-                        break
-                    }
-                }
+                        // ✅ MELHORADO: Pega o primeiro número válido
+                        val validValue = numbers.firstOrNull {
+                            isValidValue(param.canonicalName, it.toDoubleOrNull())
+                        }
 
-                if (foundParam != null) {
-                    val numberMatch = numberRegex.findAll(lineText)
-                        .map { it.value.replace(",", ".") }
-                        .lastOrNull()
-
-                    if (numberMatch != null) {
-                        ocrData[foundParam.canonicalName] = numberMatch
-                        paramsToFind.remove(foundParam)
-                        Log.d("OCR_TABLE_PARSER", "SUCESSO: '${foundParam.canonicalName}' -> '$numberMatch'")
+                        if (validValue != null) {
+                            ocrData[param.canonicalName] = validValue
+                            paramsToFind.remove(param)
+                            Log.d("OCR_TABLE_PARSER", "✓ ${param.canonicalName} = $validValue")
+                            break
+                        } else if (numbers.isNotEmpty()) {
+                            Log.d("OCR_TABLE_PARSER", "⚠ ${param.canonicalName}: valores fora do range: $numbers")
+                        }
                     }
                 }
             }
         }
 
-        ocrData["bicarbonato"]?.let { binding.editTextBicarbonato.setText(it); sharedViewModel.bicarbonato.value = it.toDoubleOrNull() ?: 0.0 }
-        ocrData["calcio"]?.let { binding.editTextCalcio.setText(it); sharedViewModel.calcio.value = it.toDoubleOrNull() ?: 0.0 }
-        ocrData["magnesio"]?.let { binding.editTextMagnesio.setText(it); sharedViewModel.magnesio.value = it.toDoubleOrNull() ?: 0.0 }
-        ocrData["sodio"]?.let { sharedViewModel.sodio.value = it.replace(",", ".").toDoubleOrNull() ?: 0.0 }
-        ocrData["ph"]?.let { sharedViewModel.ph.value = it.replace(",", ".").toDoubleOrNull() ?: 0.0 }
-        ocrData["residuo"]?.let { sharedViewModel.residuoEvaporacao.value = it.replace(",", ".").toDoubleOrNull() ?: 0.0 }
-
-        if (ocrData.isNotEmpty()) {
-            Toast.makeText(requireContext(), getString(R.string.toast_ocr_success), Toast.LENGTH_LONG).show()
-            requireContext().analytics().logEvent(
-                Category.USER_ACTION,
-                Event.OCR_SUCCESS,
-                mapOf("params_found" to ocrData.size)
-            )
-        } else {
-            Toast.makeText(requireContext(), getString(R.string.toast_ocr_no_params), Toast.LENGTH_LONG).show()
+        // ✅ MELHORADO: Tenta extração espacial para parâmetros não encontrados
+        if (paramsToFind.isNotEmpty()) {
+            Log.d("OCR_TABLE_PARSER", "--- Tentando extração espacial ---")
+            tryProximityBasedExtraction(visionText, paramsToFind)
         }
-        Log.d("OCR_TABLE_PARSER", "--- ANÁLISE FINALIZADA ---")
+
+        populateFieldsFromOcrData()
+        showOcrResults()
+
+        Log.d("OCR_TABLE_PARSER", "=== ANÁLISE FINALIZADA ===")
+    }
+
+    // ✅ NOVO: Função para validar keywords de forma mais rigorosa
+    private fun matchesKeyword(text: String, keywords: List<String>): Boolean {
+        for (keyword in keywords) {
+            // Para keywords de 2 ou menos caracteres, exige palavra isolada
+            if (keyword.length <= 2) {
+                // Busca com bordas de palavra: \b keyword \b
+                val pattern = Regex("\\b${Regex.escape(keyword)}\\b")
+                if (pattern.containsMatchIn(text)) {
+                    return true
+                }
+            } else {
+                // Para keywords maiores, usa contains normal
+                if (text.contains(keyword)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    // ✅ NOVO: Extração baseada em proximidade espacial
+    private fun tryProximityBasedExtraction(visionText: Text, paramsToFind: MutableList<ParameterInfo>) {
+        val numberRegex = Regex("(\\d+[.,]\\d+|\\d+)")
+
+        for (param in paramsToFind.toList()) {
+            var paramElement: Text.Element? = null
+
+            // Encontra o elemento que contém a keyword
+            for (block in visionText.textBlocks) {
+                for (line in block.lines) {
+                    for (element in line.elements) {
+                        val elementText = element.text.unaccent().lowercase()
+                        // ✅ CORRIGIDO: Usa a mesma validação rigorosa de keywords
+                        if (matchesKeyword(elementText, param.keywords)) {
+                            paramElement = element
+                            break
+                        }
+                    }
+                    if (paramElement != null) break
+                }
+                if (paramElement != null) break
+            }
+
+            if (paramElement != null) {
+                val paramBox = paramElement.boundingBox
+                if (paramBox != null) {
+                    // Busca números próximos ao parâmetro
+                    val nearbyNumbers = mutableListOf<Pair<String, Float>>()
+
+                    for (block in visionText.textBlocks) {
+                        for (line in block.lines) {
+                            for (element in line.elements) {
+                                val matches = numberRegex.findAll(element.text)
+                                for (match in matches) {
+                                    val numBox = element.boundingBox
+                                    if (numBox != null) {
+                                        val distance = calculateDistance(paramBox, numBox)
+                                        nearbyNumbers.add(match.value.replace(",", ".") to distance)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Pega o número mais próximo que seja válido
+                    val closestValid = nearbyNumbers
+                        .sortedBy { it.second }
+                        .firstOrNull { isValidValue(param.canonicalName, it.first.toDoubleOrNull()) }
+
+                    if (closestValid != null) {
+                        ocrData[param.canonicalName] = closestValid.first
+                        paramsToFind.remove(param)
+                        Log.d("OCR_TABLE_PARSER", "✓ [Proximidade] ${param.canonicalName} = ${closestValid.first}")
+                    }
+                }
+            }
+        }
+    }
+
+    // ✅ NOVO: Calcula distância entre dois bounding boxes
+    private fun calculateDistance(box1: Rect, box2: Rect): Float {
+        val centerX1 = box1.centerX().toFloat()
+        val centerY1 = box1.centerY().toFloat()
+        val centerX2 = box2.centerX().toFloat()
+        val centerY2 = box2.centerY().toFloat()
+
+        return kotlin.math.sqrt(
+            (centerX2 - centerX1) * (centerX2 - centerX1) +
+                    (centerY2 - centerY1) * (centerY2 - centerY1)
+        )
+    }
+
+    // ✅ NOVO: Validação de valores por parâmetro
+    private fun isValidValue(paramName: String, value: Double?): Boolean {
+        if (value == null || value < 0) return false
+
+        val param = parameterList.find { it.canonicalName == paramName }
+        return param?.validRange?.contains(value) ?: true
+    }
+
+    // ✅ NOVO: Função separada para popular os campos
+    private fun populateFieldsFromOcrData() {
+        ocrData["bicarbonato"]?.toDoubleOrNull()?.let {
+            binding.editTextBicarbonato.setText(it.toString())
+            sharedViewModel.bicarbonato.value = it
+        }
+        ocrData["calcio"]?.toDoubleOrNull()?.let {
+            binding.editTextCalcio.setText(it.toString())
+            sharedViewModel.calcio.value = it
+        }
+        ocrData["magnesio"]?.toDoubleOrNull()?.let {
+            binding.editTextMagnesio.setText(it.toString())
+            sharedViewModel.magnesio.value = it
+        }
+        ocrData["sodio"]?.toDoubleOrNull()?.let {
+            sharedViewModel.sodio.value = it
+        }
+        ocrData["ph"]?.toDoubleOrNull()?.let {
+            sharedViewModel.ph.value = it
+        }
+        ocrData["residuo"]?.toDoubleOrNull()?.let {
+            sharedViewModel.residuoEvaporacao.value = it
+        }
+    }
+
+    // ✅ NOVO: Feedback mais detalhado ao usuário
+    private fun showOcrResults() {
+        when {
+            ocrData.isEmpty() -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.toast_ocr_no_params),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            ocrData.size >= 3 -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.toast_ocr_success),
+                    Toast.LENGTH_LONG
+                ).show()
+                requireContext().analytics().logEvent(
+                    Category.USER_ACTION,
+                    Event.OCR_SUCCESS,
+                    mapOf("params_found" to ocrData.size)
+                )
+            }
+            else -> {
+                Toast.makeText(
+                    requireContext(),
+                    "OCR encontrou ${ocrData.size} parâmetro(s). Verifique os campos.",
+                    Toast.LENGTH_LONG
+                ).show()
+                requireContext().analytics().logEvent(
+                    Category.USER_ACTION,
+                    Event.OCR_SUCCESS,
+                    mapOf("params_found" to ocrData.size, "partial" to true)
+                )
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
-        // ✅ NOVO: Remove o listener do teclado
         keyboardListener?.let {
             binding.root.viewTreeObserver.removeOnGlobalLayoutListener(it)
         }

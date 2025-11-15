@@ -159,6 +159,24 @@
                     android:autoLink="web"
                     android:text="@string/help_topic_calculator_content" />
 
+                <TextView
+                    android:id="@+id/textViewTopicBlendTitle"
+                    style="@style/TextAppearance.App.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:justificationMode="inter_word"
+                    android:text="@string/help_topic_blend_title" />
+                <TextView
+                    android:id="@+id/textViewTopicBlendContent"
+                    style="@style/TextAppearance.App.Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:justificationMode="inter_word"
+                    android:linksClickable="true"
+                    android:autoLink="web"
+                    android:text="@string/help_topic_blend_content" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

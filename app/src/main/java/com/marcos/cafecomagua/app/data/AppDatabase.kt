@@ -48,7 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
                             DATABASE_NAME
                         )
                             // Recria o banco se o schema mudar (perfeito para desenvolvimento)
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration(false)
                             // Proteção contra corrupção de dados
                             // TRUNCATE é mais seguro em dispositivos com storage limitado
                             .setJournalMode(JournalMode.TRUNCATE)

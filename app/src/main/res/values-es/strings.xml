@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Café con Agua</string>
     <string name="button_ok">Aceptar</string>
     <string name="button_cancelar">Cancelar</string>
     <string name="button_save">Guardar</string>
     <string name="button_delete">Eliminar</string>
+    <string name="info">Información</string>
+    <string name="premium_badge_text">Premium</string>
+
     <string name="unidade_mg_l">%1$s mg/L</string>
     <string name="value_with_unit_mg_l">%s mg/L</string>
     <string name="preco_indisponivel" translatable="false">…</string>
-
+    <string name="pontuacao_total_format">Puntuación: %.2f</string>
 
     <string name="avaliacao_ideal">Ideal</string>
     <string name="avaliacao_aceitavel">Aceptable</string>
@@ -16,19 +20,17 @@
     <string name="avaliacao_nao_avaliado">No Evaluado</string>
     <string name="avaliacao_nao_recomendado_abrev">No Rec.</string>
 
-
     <string name="error_marca_empty">¡La marca no puede estar vacía!</string>
     <string name="error_fonte_empty">¡La fuente no puede estar vacía!</string>
     <string name="error_bicarbonato_empty">¡El Bicarbonato no puede estar vacío!</string>
     <string name="error_calcio_empty">¡El Calcio no puede estar vacío!</string>
     <string name="error_magnesio_empty">¡El Magnesio no puede estar vacío!</string>
-
     <string name="toast_erro_carregar_resultados">Error al cargar los resultados.</string>
     <string name="toast_avaliacao_salva">¡Evaluación guardada con éxito!</string>
     <string name="toast_compra_cancelada">Compra cancelada.</string>
     <string name="toast_erro_iniciar_compra">Error al iniciar la compra. Inténtalo de nuevo.</string>
     <string name="warning_agua_ja_avaliada">Aviso: Agua ya evaluada en el historial.</string>
-
+    <string name="error_open_playstore">No se pudo abrir Play Store. Inténtalo de nuevo.</string>
 
     <string name="logo_do_aplicativo">Logo de la aplicación Café con Agua</string>
     <string name="toggle_theme_description">Alternar tema</string>
@@ -38,8 +40,6 @@
     <string name="water_optimizer_icon">Icono del Optimizador de Agua</string>
     <string name="feature_icon">Icono de función</string>
     <string name="content_desc_delete_recipe">Eliminar receta</string>
-    <string name="info">Información</string>
-
 
     <string name="title_welcome">CAFÉ con AGUA</string>
     <string name="subtitle_welcome">Evaluador de Calidad del Agua para Preparar Café</string>
@@ -47,10 +47,23 @@
     <string name="button_historico">Historial</string>
     <string name="home_water_optimizer">Optimizador de Agua</string>
     <string name="title_optimize_saved_water">Optimizar Agua Guardada</string>
+    <string name="dialog_no_saved_water_title">Ninguna Agua Guardada</string>
+    <string name="dialog_no_saved_water_message">Primero debes evaluar y guardar un agua para poder optimizarla.</string>
+    <string name="button_evaluate_water">Evaluar Agua</string>
 
-
+    <string name="onboarding_skip">Saltar</string>
+    <string name="onboarding_finish">Finalizar</string>
     <string name="button_avancar">Siguiente</string>
     <string name="button_voltar">Volver</string>
+    <string name="onboarding_title_1">Bienvenido a Café con Agua</string>
+    <string name="onboarding_message_1">Descubre el agua mineral ideal para un café perfecto, basado en la ciencia de la extracción.</string>
+    <string name="onboarding_title_2">¿Qué importa realmente?</string>
+    <string name="onboarding_message_2">La ciencia del café es clara: la Alcalinidad (que controla la acidez) y la Dureza (que extrae el sabor) son los factores más importantes.</string>
+    <string name="onboarding_title_3">¿Y el Sodio y el TDS?</string>
+    <string name="onboarding_message_3">Parámetros populares como el TDS (Sólidos Totales Disueltos) se tienen en cuenta, pero con un peso menor. Nuestro sistema prioriza lo que afecta el sabor.</string>
+    <string name="onboarding_title_4">Calcula el Agua Perfecta</string>
+    <string name="onboarding_message_4">Usa nuestra calculadora premium para saber exactamente cuántas gotas de minerales añadir y transformar tu agua en el agua ideal de la SCA.</string>
+
     <string name="title_dados_agua">DATOS DEL AGUA</string>
     <string name="label_marca">Marca del Agua</string>
     <string name="hint_marca">Ej: Agua Mineral XYZ</string>
@@ -73,9 +86,17 @@
     <string name="label_alcalinidade_calculada">Alcalinidad (Calculada)</string>
     <string name="button_ver_resultados">Ver Resultados</string>
 
+    <string name="scan_label_button">Intentar leer la etiqueta</string>
+    <string name="toast_permission_denied">Permiso de cámara denegado. No se puede leer la etiqueta.</string>
+    <string name="toast_no_image">No se pudo obtener la imagen.</string>
+    <string name="toast_no_camera_app">No se encontró ninguna aplicación de cámara.</string>
+    <string name="toast_image_read_error">Error al leer el archivo de imagen.</string>
+    <string name="toast_ocr_analyzing">Analizando etiqueta…</string>
+    <string name="toast_ocr_failure">Fallo al reconocer el texto: %1$s</string>
+    <string name="toast_ocr_success">¡Valores encontrados! Verifica que sean correctos.</string>
+    <string name="toast_ocr_no_params">No se pudieron identificar los parámetros. Por favor, ingrésalos manually.</string>
 
     <string name="title_resultados">RESULTADOS</string>
-    <string name="pontuacao_total_format">Puntuación: %.2f</string>
     <string name="label_qualidade_geral">Calidad: %1$s</string>
     <string name="label_detalhes_parametros">Detalles de los Parámetros:</string>
     <string name="param_ph_valor">pH: %1$s</string>
@@ -90,14 +111,131 @@
     <string name="results_cta_message">Tu agua ha sido clasificada como "%1$s". ¿Quieres saber exactamente cómo corregirla? El Optimizador Premium calcula la receta por ti.</string>
     <string name="results_cta_button">Ver Optimizador Premium</string>
 
-
     <string name="title_historico">HISTORIAL DE EVALUACIONES</string>
     <string name="label_historico_fonte">Fuente: %1$s</string>
     <string name="label_historico_pontuacao">Puntuación: %1$s</string>
     <string name="label_historico_qualidade">Calidad: %1$s</string>
 
+    <string name="water_optimizer_title">Optimizador de Agua</string>
+    <string name="water_comparison_title">Comparación de Agua</string>
+    <string name="parameter">Parámetro</string>
+    <string name="current_water">Actual</string>
+    <string name="ideal_water">Ideal</string>
+    <string name="improvement_potential">Potencial de Mejora</string>
+    <string name="improvement_score_format">%s/10</string>
+    <string name="drop_recommendations_title">Recomendaciones de Gotas</string>
+    <string name="button_save_recipe">Guardar Receta</string>
+    <string name="button_share_recipe">Compartir Receta</string>
+    <string name="button_view_guide">Ver Guía</string>
+    <string name="share_recipe">Compartir receta</string>
+    <string name="drops_format">Gotas: %d</string>
+    <string name="ppm_added_format">PPM añadido: %s</string>
+    <string name="final_value_format">Valor final: %s ppm</string>
+    <string name="solution_preparation_title">Preparación de la Solución</string>
+
+    <string name="saved_recipes_title">Mis Recetas</string>
+    <string name="save_recipe_title">Guardar Receta</string>
+    <string name="save_recipe_message">Dale un nombre a esta receta de optimización:</string>
+    <string name="recipe_name_hint">Ej: Mi Receta V60</string>
+    <string name="recipe_notes_hint">Notas (opcional)</string>
+    <string name="recipe_notes_helper">Ej: Agua del grifo filtrada - perfil para V60</string>
+    <string name="toast_recipe_name_empty">El nombre no puede estar vacío</string>
+    <string name="toast_recipe_saved_success">¡Receta guardada con éxito!</string>
+    <string name="toast_recipe_saved_error">Error al guardar la receta</string>
+    <string name="recipe_saved_on_date">Guardada el %1$s</string>
+    <string name="recipe_drops_calcium">• Calcio: %1$d gotas</string>
+    <string name="recipe_drops_magnesium">• Magnesio: %1$d gotas</string>
+    <string name="recipe_drops_sodium">• Sodio: %1$d gotas</string>
+    <string name="recipe_drops_potassium">• Potasio: %1$d gotas</string>
+    <string name="recipe_no_drops_added">No se añadieron gotas</string>
+    <string name="delete_recipe_title">Eliminar Receta</string>
+    <string name="delete_recipe_message">"¿Estás seguro de que quieres eliminar la receta '%1$s'?"</string>
+    <string name="tab_recipes">Recetas</string>
+    <string name="tab_blend">Mezcla</string>
+
+    <string name="blend_title">Mezcla de Aguas (Blend)</string>
+    <string name="blend_description">Calcula la composición química resultante de mezclar dos aguas en proporciones personalizadas.</string>
+    <string name="blend_water_a_label">Agua A</string>
+    <string name="blend_water_b_label">Agua B</string>
+    <string name="blend_water_a_short">Agua A</string>
+    <string name="blend_water_b_short">Agua B</string>
+    <string name="blend_select_water">Seleccionar Agua</string>
+    <string name="blend_volume_hint">Volumen</string>
+    <string name="blend_volume_prefix">Vol:</string>
+    <string name="blend_calculate_button">Calcular Mezcla</string>
+    <string name="blend_result_title">Resultado de la Mezcla</string>
+    <string name="blend_score_label">Puntuación</string>
+    <string name="blend_status_label">Estado</string>
+    <string name="blend_parameters_title">Parámetros Químicos</string>
+    <string name="blend_improvements_label">✨ Mejoras</string>
+    <string name="blend_warnings_label">⚠️ Advertencias</string>
+    <string name="blend_save_button">Guardar</string>
+    <string name="blend_share_button">Compartir</string>
+    <string name="blend_no_recipes">No hay recetas guardadas. ¡Guarda recetas primero!</string>
+    <string name="blend_need_two_recipes">¡Necesitas al menos 2 recetas diferentes!</string>
+    <string name="blend_select_water_a_title">Seleccionar Agua A</string>
+    <string name="blend_select_water_b_title">Seleccionar Agua B</string>
+    <string name="blend_calculation_error">Error al calcular la mezcla: %s</string>
+    <string name="blend_save_success">¡Mezcla guardada con éxito!</string>
+    <string name="blend_save_error">Error al guardar: %s</string>
+    <string name="blend_name_empty">El nombre no puede estar vacío</string>
+    <string name="blend_save_dialog_title">Guardar Mezcla</string>
+
+    <string name="settings_title">Configuración</string>
+    <string name="settings_category_appearance">Apariencia</string>
+    <string name="settings_category_data">Tus Datos</string>
+    <string name="settings_category_account">Cuenta</string>
+    <string name="settings_category_help">Ayuda y Soporte</string>
+    <string name="settings_theme_title">Tema Oscuro</string>
+    <string name="settings_theme_subtitle">Alternar entre modo claro y oscuro</string>
+    <string name="settings_restore_purchase">Restaurar Compras</string>
+    <string name="settings_restore_purchases_description">Recupera tu suscripción Premium</string>
+    <string name="toast_restore_purchases_pending">Lógica de restauración de compras pendiente</string>
+
+    <string name="settings_backup_export">Exportar Copia de Seguridad</string>
+    <string name="settings_backup_export_description">Guarda tus datos en un archivo JSON</string>
+    <string name="settings_backup_import">Restaurar Copia de Seguridad</string>
+    <string name="settings_backup_import_description">Importa datos guardados previamente</string>
+    <string name="dialog_restore_title">¿Restaurar Copia de Seguridad?</string>
+    <string name="dialog_restore_message">Restaurar una copia de seguridad reemplazará TODOS los historiales y recetas guardados actualmente. Esta acción no se puede deshacer.</string>
+    <string name="button_restore">Restaurar</string>
+    <string name="toast_export_cancelled">Exportación cancelada</string>
+    <string name="toast_restore_cancelled">Restauración cancelada</string>
+    <string name="toast_backup_success">¡Copia de seguridad guardada con éxito!</string>
+    <string name="toast_backup_error">Error al guardar la copia: %s</string>
+    <string name="toast_restore_success">¡Restauración completada con éxito!</string>
+    <string name="toast_restore_error">Fallo en la restauración: %s</string>
+    <string name="error_empty_backup">Archivo de copia de seguridad vacío o inválido</string>
+    <string name="error_invalid_backup">Formato de copia de seguridad inválido</string>
+
+    <string name="premium_bottom_sheet_title">Desbloquea el Optimizador</string>
+    <string name="premium_bottom_sheet_message">Transforma tu agua. La Calculadora Premium te muestra exactamente cuántas gotas de minerales añadir para alcanzar el perfil de agua ideal para café. Prueba de 7 días.</string>
+    <string name="premium_bottom_sheet_button">Probar el Optimizador</string>
+    <string name="premium_title">Café con Agua Premium</string>
+    <string name="premium_subtitle">Mejores resultados, sin distracciones.</string>
+    <string name="benefits">Beneficios</string>
+    <string name="benefit_ads_removal">Sin anuncios</string>
+    <string name="benefit_water_optimizer">Optimizador de Agua</string>
+    <string name="benefit_unlimited_recipes">Guarda recetas ilimitadas</string>
+    <string name="benefit_backup">Copia de seguridad</string>
+    <string name="benefit_blend">Calcula la mezcla perfecta</string>
+    <string name="benefit_diy">DIY: Próximamente</string>
+    <string name="special_offer">Oferta Especial</string>
+    <string name="monthly_plan">Suscripción Mensal</string>
+    <string name="premium_status_active">Premium Activo</string>
+    <string name="subscribe_now">Suscríbete ahora</string>
+    <string name="continue_to_result">Continuar al resultado</string>
+    <string name="legal_smallprint">Cancela en cualquier momento. El precio puede variar según la región.</string>
+    <string name="premium_required_title">Función Premium</string>
+    <string name="premium_required_message">El Optimizador de Agua es una función exclusiva para suscriptores premium. ¡Suscríbete ahora para tener acceso!</string>
+    <string name="button_subscribe">Suscribirse</string>
+    <string name="premium_feature_title">Característica Premium</string>
+    <string name="premium_feature_backup_message">La copia de seguridad y restauración de datos es una característica exclusiva para suscriptores Premium. ¡Suscríbete ahora para obtener acceso a este y otros beneficios!</string>
+    <string name="view_premium">Ver Premium</string>
 
     <string name="help_screen_title">Ayuda e Información</string>
+    <string name="settings_help_description">Aprende a usar todas las funciones</string>
+
     <string name="help_topic_1_param_qual_title">Parámetros de Calidad</string>
     <string name="help_topic_1_param_qual_content" formatted="false"><![CDATA[
 <p>No todos los parámetros del agua son iguales. Según el consenso científico actual (incluyendo estudios de la Specialty Coffee Association - SCA - y expertos como Scott Rao), la calidad del agua para café está determinada principalmente por dos factores:</p>
@@ -118,6 +256,7 @@
 <br>
 <p>El pH, aunque se monitorea, se considera menos impactante en el sabor final que la alcalinidad.</p>
 ]]></string>
+
     <string name="help_topic_2_tds_title">El Mito del TDS (Residuo)</string>
     <string name="help_topic_2_tds_content" formatted="false"><![CDATA[
     <p>Notarás que el TDS (Total de Sólidos Disueltos) y el Sodio son parte de nuestro análisis. Estamos siendo transparentes sobre cómo los manejamos.</p>
@@ -130,6 +269,7 @@
 <p>Incluimos el TDS y el Sodio en nuestra puntuación porque sabemos que son una preocupación popular y aparecen en muchos informes de agua. Usamos los rangos de referencia de la SCAA de 2011 para evaluarlos.</p>
 <p>Sin embargo, para asegurar que tu puntuación refleje lo que realmente importa para el sabor, <b>el TDS y el Sodio tienen un peso muy bajo</b> en nuestro cálculo final. Sirven como "desempate", pero nunca definirán si tu agua es buena o mala.</p>
 ]]></string>
+
     <string name="help_topic_3_scoring_system_title">Nuestro Sistema de Puntuación</string>
     <string name="help_topic_3_scoring_system_content" formatted="false"><![CDATA[
 <p>No existe un "número mágico" o un estándar único para el agua perfecta. El agua ideal para un espresso puede ser ligeramente diferente de la ideal para un café filtrado. Por eso, nuestro sistema se basa en <b>rangos óptimos</b> y <b>pesos de importancia</b>.</p>
@@ -146,6 +286,7 @@
 <br>
 <p>Esto asegura que un agua con óptima alcalinidad y dureza siempre tendrá una buena puntuación, incluso si el TDS está fuera del "ideal" popular. E, inversamente, un agua con TDS de 150 recibirá una nota baja si la alcalinidad (el factor más importante) es mala.</p>
 ]]></string>
+
     <string name="help_topic_ocr_title">Consejos para Leer Etiquetas (OCR)</string>
     <string name="help_topic_ocr_content" formatted="false"><![CDATA[
     La función de lectura de etiquetas usa la cámara para acelerar el ingreso de datos químicos. Sin embargo, el éxito de la captura enfrenta grandes desafíos:\n\n
@@ -153,137 +294,6 @@
     <b>• Calidad de la Imagen:</b> Factores como la <b>curvatura</b> de la botella, <b>reflejos</b> de luz, <b>condensación</b> y <b>enfoque</b> de la cámara pueden degradar la calidad de la imagen y dificultar la lectura del texto.\n\n
     Por eso, la captura debe verse como una <b>herramienta de ayuda</b>. Siempre <b>verifica los valores</b> capturados antes de proceder con la evaluación para garantizar la precisión de los resultados.
 ]]></string>
-
-
-    <string name="onboarding_title_1">Bienvenido a Café con Agua</string>
-    <string name="onboarding_message_1">Descubre el agua mineral ideal para un café perfecto, basado en la ciencia de la extracción.</string>
-    <string name="onboarding_title_2">¿Qué importa realmente?</string>
-    <string name="onboarding_message_2">La ciencia del café es clara: la Alcalinidad (que controla la acidez) y la Dureza (que extrae el sabor) son los factores más importantes.</string>
-    <string name="onboarding_title_3">¿Y el Sodio y el TDS?</string>
-    <string name="onboarding_message_3">Parámetros populares como el TDS (Sólidos Totales Disueltos) se tienen en cuenta, pero con un peso menor. Nuestro sistema prioriza lo que afecta el sabor.</string>
-    <string name="onboarding_title_4">Calcula el Agua Perfecta</string>
-    <string name="onboarding_message_4">Usa nuestra calculadora premium para saber exactamente cuántas gotas de minerales añadir y transformar tu agua en el agua ideal de la SCA.</string>
-
-
-    <string name="scan_label_button">Intentar leer la etiqueta</string>
-    <string name="toast_permission_denied">Permiso de cámara denegado. No se puede leer la etiqueta.</string>
-    <string name="toast_no_image">No se pudo obtener la imagen.</string>
-    <string name="toast_no_camera_app">No se encontró ninguna aplicación de cámara.</string>
-    <string name="toast_image_read_error">Error al leer el archivo de imagen.</string>
-    <string name="toast_ocr_analyzing">Analizando etiqueta…</string>
-    <string name="toast_ocr_failure">Fallo al reconocer el texto: %1$s</string>
-    <string name="toast_ocr_success">¡Valores encontrados! Verifica que sean correctos.</string>
-    <string name="toast_ocr_no_params">No se pudieron identificar los parámetros. Por favor, ingrésalos manualmente.</string>
-
-
-    <string name="water_optimizer_title">Optimizador de Agua</string>
-    <string name="water_comparison_title">Comparación de Agua</string>
-    <string name="parameter">Parámetro</string>
-    <string name="current_water">Actual</string>
-    <string name="ideal_water">Ideal</string>
-    <string name="improvement_potential">Potencial de Mejora</string>
-    <string name="improvement_score_format">%s/10</string>
-    <string name="drop_recommendations_title">Recomendaciones de Gotas</string>
-    <string name="button_save_recipe">Guardar Receta</string>
-    <string name="button_share_recipe">Compartir Receta</string>
-    <string name="button_view_guide">Ver Guía</string>
-    <string name="share_recipe">Compartir receta</string>
-    <string name="drops_format">Gotas: %d</string>
-    <string name="ppm_added_format">PPM añadido: %s</string>
-    <string name="final_value_format">Valor final: %s ppm</string>
-    <string name="solution_preparation_title">Preparación de la Solución</string>
-
-
-    <string name="premium_bottom_sheet_title">Desbloquea el Optimizador</string>
-    <string name="premium_bottom_sheet_message">Transforma tu agua. La Calculadora Premium te muestra exactamente cuántas gotas de minerales añadir para alcanzar el perfil de agua ideal para café. Prueba de 7 días.</string>
-    <string name="premium_bottom_sheet_button">Probar el Optimizador</string>
-
-    <string name="premium_title">Café con Agua Premium</string>
-    <string name="premium_subtitle">Mejores resultados, sin distracciones.</string>
-    <string name="benefits">Beneficios</string>
-    <string name="benefit_ads_removal">Sin anuncios</string>
-    <string name="benefit_water_optimizer">Optimizador de Agua</string>
-    <string name="benefit_unlimited_recipes">Guarda recetas ilimitadas</string>
-    <string name="benefit_backup">Copia de seguridad</string>
-    <string name="benefit_blend">Calcula la mezcla perfecta</string>
-    <string name="benefit_diy">DIY: Próximamente</string>
-    <string name="special_offer">Oferta Especial</string>
-    <string name="monthly_plan">Suscripción Mensual</string>
-    <string name="premium_status_active">Premium Activo</string>
-    <string name="subscribe_now">Suscríbete ahora</string>
-    <string name="continue_to_result">Continuar al resultado</string>
-    <string name="legal_smallprint">Cancela en cualquier momento. El precio puede variar según la región.</string>
-
-    <string name="premium_required_title">Función Premium</string>
-    <string name="premium_required_message">El Optimizador de Agua es una función exclusiva para suscriptores premium. ¡Suscríbete ahora para tener acceso!</string>
-    <string name="button_subscribe">Suscribirse</string>
-
-
-    <string name="save_recipe_title">Guardar Receta</string>
-    <string name="save_recipe_message">Dale un nombre a esta receta de optimización:</string>
-    <string name="recipe_name_hint">Ej: Mi Receta V60</string>
-    <string name="toast_recipe_name_empty">El nombre no puede estar vacío</string>
-    <string name="toast_recipe_saved_success">¡Receta guardada con éxito!</string>
-    <string name="toast_recipe_saved_error">Error al guardar la receta</string>
-
-    <string name="recipe_saved_on_date">Guardada el %1$s</string>
-    <string name="recipe_drops_calcium">• Calcio: %1$d gotas</string>
-    <string name="recipe_drops_magnesium">• Magnesio: %1$d gotas</string>
-    <string name="recipe_drops_sodium">• Sodio: %1$d gotas</string>
-    <string name="recipe_drops_potassium">• Potasio: %1$d gotas</string>
-    <string name="recipe_no_drops_added">No se añadieron gotas</string>
-
-    <string name="delete_recipe_title">Eliminar Receta</string>
-    <string name="delete_recipe_message">"¿Estás seguro de que quieres eliminar la receta '%1$s'?"</string>
-
-    <string name="onboarding_skip">Saltar</string>
-    <string name="onboarding_finish">Finalizar</string>
-
-    <string name="recipe_notes_hint">Notas (opcional)</string>
-    <string name="recipe_notes_helper">Ej: Agua del grifo filtrada - perfil para V60</string>
-
-    <string name="premium_badge_text">Premium</string>
-
-    <string name="settings_title">Configuración</string>
-
-    <string name="settings_category_appearance">Apariencia</string>
-    <string name="settings_category_data">Tus Datos</string>
-    <string name="settings_category_account">Cuenta</string>
-    <string name="settings_category_help">Ayuda y Soporte</string>
-
-    <string name="settings_theme_title">Tema Oscuro</string>
-    <string name="settings_theme_subtitle">Alternar entre modo claro y oscuro</string>
-
-    <string name="settings_backup_export">Exportar Copia de Seguridad</string>
-    <string name="settings_backup_export_description">Guarda tus datos en un archivo JSON</string>
-    <string name="settings_backup_import">Restaurar Copia de Seguridad</string>
-    <string name="settings_backup_import_description">Importa datos guardados previamente</string>
-
-    <string name="settings_restore_purchase">Restaurar Compras</string>
-    <string name="settings_restore_purchases_description">Recupera tu suscripción Premium</string>
-
-    <string name="settings_help_description">Aprende a usar todas las funciones</string>
-
-    <string name="dialog_no_saved_water_title">Ninguna Agua Guardada</string>
-    <string name="dialog_no_saved_water_message">Primero debes evaluar y guardar un agua para poder optimizarla.</string>
-    <string name="button_evaluate_water">Evaluar Agua</string>
-
-    <string name="dialog_restore_title">¿Restaurar Copia de Seguridad?</string>
-    <string name="dialog_restore_message">Restaurar una copia de seguridad reemplazará TODOS los historiales y recetas guardados actualmente. Esta acción no se puede deshacer.</string>
-    <string name="button_restore">Restaurar</string>
-
-    <string name="toast_export_cancelled">Exportación cancelada</string>
-    <string name="toast_restore_cancelled">Restauración cancelada</string>
-    <string name="toast_backup_success">¡Copia de seguridad guardada con éxito!</string>
-    <string name="toast_backup_error">Error al guardar la copia: %s</string>
-    <string name="toast_restore_success">¡Restauración completada con éxito!</string>
-    <string name="toast_restore_error">Fallo en la restauración: %s</string>
-    <string name="toast_restore_purchases_pending">Lógica de restauración de compras pendiente</string>
-
-    <string name="error_empty_backup">Archivo de copia de seguridad vacío o inválido</string>
-    <string name="error_invalid_backup">Formato de copia de seguridad inválido</string>
-
-    <string name="saved_recipes_title">Mis Recetas</string>
 
     <string name="help_topic_storage_title">¿Dónde se guardan tus datos?</string>
     <string name="help_topic_storage_content"><![CDATA[
@@ -379,8 +389,9 @@
         </ul>
 
         <p>¡Cuanto más cerca del centro del rango, mejor la puntuación!</p>
+    ]]></string>
 
-<string name="help_topic_blend_title">Cómo usar la Calculadora de Mezcla (Blend)</string>
+    <string name="help_topic_blend_title">Cómo usar la Calculadora de Mezcla (Blend)</string>
     <string name="help_topic_blend_content"><![CDATA[
         <h3>💧 ¿Qué es una Mezcla (Blend)?</h3>
         <p>La <b>Calculadora de Mezcla</b> es una función que te permite simular la mezcla de dos aguas diferentes que ya has guardado (ya sea de tu <b>Historial</b> o de tus <b>Recetas Guardadas</b>).</p>
@@ -390,7 +401,7 @@
         <p>Mezclar es una técnica poderosa para:</p>
         <ul>
             <li><b>Diluir:</b> Tomar un agua muy "dura" (ej: 200 ppm de Dureza) y mezclarla con un agua "blanda" (como destilada o de ósmosis inversa, que puedes guardar como receta con "0" en todo) para alcanzar el rango ideal.</li>
-            <li><b>Corregir:</b> Intentar "arreglar" un agua con un parámetro deficiente (ej: alcalinidad muy alta) mezclándola con otra que tenga el parámetro opuesto (alcalinidad baja).</li>
+            <li><b>Corregir:</b> Intentar "arreglar" un agua con un parámetro deficiente (ej: alcalinidad muy alta) mezclándola con otra que tenga el parámetro oposto (alcalinidad baja).</li>
             <li><b>Experimentar:</b> Simplemente ver qué sucede al combinar los perfiles de dos aguas minerales diferentes que has evaluado.</li>
         </ul>
 
@@ -408,47 +419,5 @@
         <p>La app mostrará el perfil químico final de la mezcla, la nueva puntuación, y si la mezcla resultó en <b>✨ Mejoras</b> (ej: la dureza entró en el rango ideal) o <b>⚠️ Advertencias</b> (ej: el sodio quedó demasiado alto).</p>
         <p>Si te gusta el resultado, puedes <b>Guardar</b> la mezcla. ¡Aparecerá en tu lista de "Recetas" para futuras consultas o incluso para ser usada en nuevas mezclas!</p>
     ]]></string>
-
-    <string name="premium_feature_title">Característica Premium</string>
-    <string name="premium_feature_backup_message">La copia de seguridad y restauración de datos es una característica exclusiva para suscriptores Premium. ¡Suscríbete ahora para obtener acceso a este y otros beneficios!</string>
-    <string name="view_premium">Ver Premium</string>
-    <string name="error_open_playstore">No se pudo abrir Play Store. Inténtalo de nuevo.</string>
-
-    <string name="blend_title">Mezcla de Aguas (Blend)</string>
-    <string name="blend_description">Calcula la composición química resultante de mezclar dos aguas en proporciones personalizadas.</string>
-
-    <string name="blend_water_a_label">Agua A</string>
-    <string name="blend_water_b_label">Agua B</string>
-    <string name="blend_water_a_short">Agua A</string>
-    <string name="blend_water_b_short">Agua B</string>
-
-    <string name="blend_select_water">Seleccionar Agua</string>
-    <string name="blend_volume_hint">Volumen</string>
-    <string name="blend_volume_prefix">Vol:</string>
-
-    <string name="blend_calculate_button">Calcular Mezcla</string>
-
-    <string name="blend_result_title">Resultado de la Mezcla</string>
-    <string name="blend_score_label">Puntuación</string>
-    <string name="blend_status_label">Estado</string>
-    <string name="blend_parameters_title">Parámetros Químicos</string>
-    <string name="blend_improvements_label">✨ Mejoras</string>
-    <string name="blend_warnings_label">⚠️ Advertencias</string>
-
-    <string name="blend_save_button">Guardar</string>
-    <string name="blend_share_button">Compartir</string>
-
-    <string name="blend_no_recipes">No hay recetas guardadas. ¡Guarda recetas primero!</string>
-    <string name="blend_need_two_recipes">¡Necesitas al menos 2 recetas diferentes!</string>
-    <string name="blend_select_water_a_title">Seleccionar Agua A</string>
-    <string name="blend_select_water_b_title">Seleccionar Agua B</string>
-    <string name="blend_calculation_error">Error al calcular la mezcla: %s</string>
-    <string name="blend_save_success">¡Mezcla guardada con éxito!</string>
-    <string name="blend_save_error">Error al guardar: %s</string>
-    <string name="blend_name_empty">El nombre no puede estar vacío</string>
-    <string name="blend_save_dialog_title">Guardar Mezcla</string>
-
-    <string name="tab_recipes">Recetas</string>
-    <string name="tab_blend">Mezcla</string>
 
 </resources>
